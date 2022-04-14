@@ -1,6 +1,8 @@
 :loop
 (
-"c:\Program Files\Python39\python.exe" G:\slingbox\flirc_remote.py
+g:
+cd slinger
+"c:\Program Files\Python39\python.exe" Slingbox_Server.py 16 nC4tc2XfIalAakJ 
 )
 goto :loop
 

@@ -1,0 +1,15 @@
+[Unit]
+Description=My Script Service
+After=multi-user.target
+
+[Service]
+Type=idle
+User=slingbox
+WorkingDirectory=/home/slingbox
+StandardOutput=file:/tmp/sling.log
+StandardError=file:/tmp/sling.log
+ExecStart=/usr/bin/python -u slingbox_server.py 16 nC4tc2XfIalAakJ 
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
