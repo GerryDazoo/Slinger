@@ -22,12 +22,14 @@ Linux/RaspberryPi Notes
     install Crypt::Tea_JS
     
     copy "slinbox_server.py, rec350_udp.pl, and sling.service to /home/slingbox  # 
-    edit sling.service with your default screen resolution and slingbox admin password 
+    edit sling.service with your default screen resolution, slingbox admin password  and port number to listen on for connections
     sudo cp sling.service /etc/systemd/system/.
  #   enable it
     sudo systemctl daemon-reload
     sudo systemctl enable sling.service
     sudo systemctl start sling.service
+    
+# The default config generates a log file /tmp/sling.log   to check to see whats going on....   
     
    
 Windows Notes
@@ -36,7 +38,7 @@ Windows Notes
     copy "slinbox_server.py, rec350_udp.pl, and RunSling.bat to /home/slingbox  #
     edit RunSling.bat to suit your local configuration, default screen size and slingbox admin password
     if you want to have the server start automatically on boot make a shortcut to RunSling.bat in the Startup folder
-    You need to open port 8080 in your firewall on the server box.
+    You need to open the port your using in your firewall on the server box if it's enabled.
     If you want remote access add a port map on your firewall to redirect to your server box
     
-Some Help needed. The slingbox resolution 12 should be 1280x720 but after startup VLC codec info says it's really 1280x540 basically the sling box is throwing away every scond scan line. Not sure what get pooped out if my cable box is set to send out 1280x720 instead of 1920x1080. 
+Here's a little something. The slingbox resolution 12 should be 1280x720 but after startup VLC codec info says it's really 1280x540 basically the sling box is throwing away every scond scan line. Apparently this is what you gt is the input to the slingbox is 1920x1080. Changing the output from my cable box to 1280x720 makes the slingbox send 1280x720. 

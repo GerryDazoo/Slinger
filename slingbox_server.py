@@ -70,6 +70,9 @@ def streamer(sling_addr, res, password):
     remote_q.queue.clear() # in case people pressed remote buttons before stream started
     # OPen UDP socket for data from perl script
     sling_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sling_sock.setsockopt( socket.SOL_SOCKET, socket.SO_RCVBUF, 2048000) 
+#    bufsize = sling_sock.getsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF) 
+#    print ("Buffer size [After]:%d" %bufsize) 
     sling_sock.bind(('127.0.0.1', 9999))
     # Start the perl script to get sream from slingbox
 #https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js
@@ -149,11 +152,17 @@ def remote_control_stream( connection, client, request):
     
 ######################################################################## 
 def ConnectionManager(resolution, SlingboxPassword): 
+
+    def closeconn( s ):
+        s.sendall(b'Go Away')
+        s.shutdown(socket.SHUT_RDWR)
+        s.close()
+
     global streams, stream_header, ConnectionManagerSocket
     print('Connection Manager Running....')
     streams = []
     stream_header = None
-    server_address = ('', 8080)
+    server_address = ('', int(sys.argv[3]))
     
     sling_net_address = find_slingbox_info()
     
@@ -182,13 +191,10 @@ def ConnectionManager(resolution, SlingboxPassword):
             ready_read, ready_write, exceptional = select.select([connection], [], [], 0.2)
             if not ready_read: 
                 print('No Get Request in time, hacker?')
-                connection.shutdown(socket.SHUT_RDWR)
-                connection.close()
+                closecon(connection)
                 continue
             
             data = connection.recv(1024).decode("utf-8")            
- #           print('Request = ', data)
- #           if 'slingbox' not in data or '\r\n\r\n' not in data :
             if 'slingbox' in data :
                 connection.sendall(b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n')
                 Thread(target=http_stream, args=(connection, client_address, sling_net_address, resolution, SlingboxPassword )).start()
@@ -196,12 +202,10 @@ def ConnectionManager(resolution, SlingboxPassword):
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
-                connection.shutdown(socket.SHUT_RDWR)
-                connection.close()
+                closecon(connection)
         except Exception as e:
-            print('Exception', e )
-            connection.shutdown(socket.SHUT_RDWR)
-            connection.close() 
+            print( 'Hacker Alert. Bad Data from ', client_address )
+            closecon(connection) 
 
 
 
@@ -334,7 +338,7 @@ def run_script_onClick(*clicks):
 
     if id == 'Restart' :
         killpid(os.getpid())
-    elif 'x' in id :
+    elif 'x' in id and id != 'Exit':
         print('Changing to Resolution', id, cmds[id])
         # Wait for thread to die
         ConnectionManagerSocket.shutdown(socket.SHUT_RDWR) # will cause exception in ConnectionManager
