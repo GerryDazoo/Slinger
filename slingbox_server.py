@@ -13,12 +13,16 @@ import binascii
 import queue
 from threading import Thread
 import platform
+import datetime
 
 streams = []
 stream_header = None
 ConnectionManagerSocket = None
 remote_q = queue.Queue()
 
+def ts():
+    return '\r\n%s ' % datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    
 def find_slingbox_info(): 
     ip = ''
     port = None
@@ -93,7 +97,7 @@ def streamer(sling_addr, res, password):
         msg = sling_sock.recvfrom(32768)
         pc += 1
         for q in streams: q.put(msg[0])
-        if pc % 10000 == 0 : print( '%4d Clients Connected' % len(streams))
+        if pc % 10000 == 0 : print( ts(),'%4d Clients Connected' % len(streams))
         if (not remote_q.empty()) and (time.time() - last_remote_command_time > 0.5):
             data = remote_q.get()
             print( 'Got Messgae from RC', binascii.hexlify(data))
@@ -122,7 +126,7 @@ def http_stream( connection, client, sling_addr, res, password ):
         print('Exception', e)
     
     streams.remove(my_stream)
-    print('Exiting Stream Handler for', client )
+    print(ts(),'Exiting Stream Handler for', client )
     
 def remote_control_stream( connection, client, request):
     print('\r\nStarting remote control stream hander for ', str(client))
@@ -154,7 +158,7 @@ def remote_control_stream( connection, client, request):
 def ConnectionManager(resolution, SlingboxPassword): 
 
     def closeconn( s ):
-        s.sendall(b'Go Away')
+        s.sendall(b'\0x00')
         s.shutdown(socket.SHUT_RDWR)
         s.close()
 
@@ -186,12 +190,12 @@ def ConnectionManager(resolution, SlingboxPassword):
             break
             
         try:
-            print('connection from', str(client_address))
+            print(ts(), ' connection from', str(client_address))
             
             ready_read, ready_write, exceptional = select.select([connection], [], [], 0.2)
             if not ready_read: 
                 print('No Get Request in time, hacker?')
-                closecon(connection)
+                closeconn(connection)
                 continue
             
             data = connection.recv(1024).decode("utf-8")            
@@ -202,10 +206,10 @@ def ConnectionManager(resolution, SlingboxPassword):
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
-                closecon(connection)
+                closeconn(connection)
         except Exception as e:
             print( 'Hacker Alert. Bad Data from ', client_address )
-            closecon(connection) 
+            closeconn(connection) 
 
 
 

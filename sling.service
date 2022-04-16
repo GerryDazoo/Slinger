@@ -1,0 +1,15 @@
+[Unit]
+Description=SlingBox Server Service
+After=multi-user.target
+
+[Service]
+Type=idle
+User=slingbox
+WorkingDirectory=/home/slingbox
+StandardOutput=append:/tmp/sling.log
+StandardError=append:/tmp/sling.log
+ExecStart=/usr/bin/python -u slingbox_server.py 16 YourAdminPassword 
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

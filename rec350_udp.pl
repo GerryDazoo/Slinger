@@ -69,7 +69,7 @@ $pktsiz = 3072;         # SB 350 always? uses 3072 byte packets
 read($s_stream, $ibuf, $pktsiz) == $pktsiz or die; # read Header Object and data header
 ($pos = index($ibuf, pack("H*", "3626b2758e66cf11a6d900aa0062ce6c"))) > 0 or die; # find data hdr
 $pos += 50;                     # end of data hdr
-print STDERR "stream started $pos\r\n"; # unless $sleep;
+print STDOUT "stream started $pos\r\n"; # unless $sleep;
 
 $s_http->send(substr($ibuf, 0, $pos));
 read($s_stream, $tbuf, $pos);     # get rest of 1st data packet
@@ -88,7 +88,7 @@ while (1) {
             last unless sysread($s_ctrl, $hbuf, 999); # read but ignore replies
         }
         sling_cmd(0x66, ''); # send a keepalive
-        printf(STDERR "\r\n%02d:%02d:%02d pkts:%d", int($runt / 3600), int($runt / 60) % 60, $runt % 60, $pktn); # show stats
+        printf(STDOUT "\r\n%02d:%02d:%02d pkts:%d", int($runt / 3600), int($runt / 60) % 60, $runt % 60, $pktn); # show stats
     }
     # Ckeck for IR Requests
     if ($ir_sel->can_read(0)){
@@ -163,7 +163,7 @@ sub sling_open_control {                # open a connection to SB, send HTTP hea
     my $sock = IO::Socket::INET->new(
         PeerAddr  => $ip,
         PeerPort  =>  $port,
-        LocalPort => 12345,
+ #       LocalPort => 12345, for debugging makes it easier to capture only control stram
         Proto     => 'tcp' ) or die $!; # open socket
     print $sock "GET /stream.asf HTTP/1.1\r\nAccept: */*\r\n" # send HTTP header
         . "Pragma: Sling-Connection-Type=Control, Session-Id=$sid\r\n\r\n";
