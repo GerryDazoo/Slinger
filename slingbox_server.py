@@ -86,6 +86,13 @@ def find_slingbox_info():
 
     s.close()
     return (ip, port)
+    
+def closeconn( s ):
+    if s :
+        print('Closing Connection')
+        s.shutdown(socket.SHUT_RDWR)
+        s.close()
+    return None
 
 def streamer(sling_addr, password):
     global streams, stream_header, ir_q, Resolution
@@ -230,10 +237,8 @@ def streamer(sling_addr, password):
                     print( 'OBM ', cmd, value )
                     if cmd == 'RESOLUTION' : 
                         Resolution = int(value)
-                        s_ctl.shutdown(socket.SHUT_RDWR)
-                        s_ctl.close()
-                        stream.shutdown(socket.SHUT_RDWR)
-                        stream.close()
+                        s_ctl = closeconn()
+                        stream = closeconn(stream)
                         pc = 0
                         s_ctl, stream = start_slingbox_session()                    
                 else:
@@ -241,11 +246,11 @@ def streamer(sling_addr, password):
                     last_remote_command_time = time.time()
         else:  # Slingbox has stopped sending data. Due to video format change at source
             print(ts(), 'Stream Stopped Unexpectly')
-            s_ctl.close()
-            stream.close()
+            s_ctl = closeconn(s_ctl)
+            stream = closeconn(stream)
             s_ctl, stream = start_slingbox_session()         
-    stream.close()
-    s_ctl.close()
+    s_ctl = closeconn(s_ctl)
+    stream = closeconn(stream)
     stream_header = None
     print('Streamer Quiting')
     
@@ -262,11 +267,12 @@ def http_stream( connection, client, sling_addr, password ):
         connection.sendall(stream_header)
         while True: connection.sendall(my_stream.get()) 
     except Exception as e:
-        print('http_stream Exception', e)
-        traceback.print_exc()
+        print('HTTP stream Closed by Peer')
     
     streams.remove(my_stream)
+    connection.close()
     print(ts(),'Exiting HTTP Connection Handler for', client )
+
     
 def remote_control_stream( connection, client, request):
     print('\r\nStarting remote control stream hander for ', str(client))
@@ -287,22 +293,13 @@ def remote_control_stream( connection, client, request):
         else:
             continue
         break
-    connection.shutdown(socket.SHUT_RDWR)
-    connection.close()        
-    remote_control_socket.shutdown(socket.SHUT_RDWR)
-    remote_control_socket.close()
+    connection = closeconn(connection)    
+    remote_control_socket = closeconn(remote_control_socket)
     print('Exiting Remote Control Stream Handler for', client )
     
     
 ######################################################################## 
 def ConnectionManager(slingbox_address, SlingboxPassword, port ): 
-
-    def closeconn( s ):
-        if s :
-            s.shutdown(socket.SHUT_RDWR)
-            s.close()
-        return None
-
     global streams, stream_header
     print('Connection Manager Running....')
     streams = []
@@ -322,11 +319,13 @@ def ConnectionManager(slingbox_address, SlingboxPassword, port ):
         try:
             connection, client_address = ConnectionManagerSocket.accept()
         except:
-            print('Stopping ConnectionManager')
-            streams = []
-            stream_header = None
-            ConnectionManagerSocket = None
-            break
+            print(ts(), 'Restarting ConnectionManager')
+            ConnectionManagerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            ConnectionManagerSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            print('starting up on %s port %s' % server_address )
+            ConnectionManagerSocket.bind(server_address)
+            ConnectionManagerSocket.listen(10)
+            continue          
             
         try:
             print(ts(), ' connection from', str(client_address))
@@ -346,9 +345,11 @@ def ConnectionManager(slingbox_address, SlingboxPassword, port ):
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
                 connection = closeconn(connection)
+                continue
         except Exception as e:
             print( 'Hacker Alert. Bad Data from ', client_address )
-            connection = closeconn(connection) 
+            connection = closeconn(connection)
+            continue
 
 
 
@@ -427,7 +428,7 @@ cmds = {'1'  : 9,
         'Ch-'  : 5,
         'Pg+' : 43, 
         'Pg-' : 44,
- #       'Br7'  : '',
+        'Br7'  : '',
         'Day-' : 59,
         'Day+' : 60,        
         'Br5'  : '',
