@@ -150,10 +150,8 @@ def streamer(sling_addr, password):
         
     def SetVideoParameters(Resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate ):
         if Resolution == 16 :
-            FrameRate = 30
             VideoBandwidth = 8000
         else:
-            FrameRate = 60
             VideoBandwidth = 4000
         VideoSmoothness = 63
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
@@ -301,7 +299,6 @@ def ConnectionManager(slingbox_address, SlingboxPassword, port ):
 
     def closeconn( s ):
         if s :
-            s.sendall(b'\0x00')
             s.shutdown(socket.SHUT_RDWR)
             s.close()
         return None
@@ -495,7 +492,7 @@ mypid = os.getpid()
 streams = []
 Resolution = int(sys.argv[1])
 stream_header = None
-ConnectionManagerSocket = None
+#ConnectionManagerSocket = None
 password = sys.argv[2]
 ConnectionManagerPort = int(sys.argv[3])
 ir_q = queue.Queue()
