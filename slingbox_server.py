@@ -340,7 +340,7 @@ def ConnectionManager(slingbox_address, SlingboxPassword, port ):
             if 'slingbox' in data :
                 connection.sendall(b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n')
                 Thread(target=http_stream, args=(connection, client_address, sling_net_address, SlingboxPassword )).start()
-            elif 'Remote' in data :
+            elif 'Remote' in data or 'buttons' in data:
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
@@ -426,8 +426,8 @@ cmds = {'1'  : 9,
         'Br4'  : '',
         'Ch+'  : 4,
         'Ch-'  : 5,
-        'Pg+' : 43, 
-        'Pg-' : 44,
+        'Pg-' : 43, 
+        'Pg+' : 44,
         'Br7'  : '',
         'Day-' : 59,
         'Day+' : 60,        
@@ -440,15 +440,18 @@ cmds = {'1'  : 9,
         '1920x1080' : 16,
         '1280x720' : 12,
         'Br8'  : '',
-        'Restart': ''
+        'Restart': '',
+        'Channel': ''
     }
  
-
 def BuildPage():
     BasePage = '''
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Remote</title>
   <style>
 .button {
@@ -456,6 +459,18 @@ def BuildPage():
   color: white;
   background-color: blue;
   padding: 0px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 70px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.text {
+  border: none;
+  color: black;
+  background-color: lightblue;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -474,11 +489,13 @@ def BuildPage():
 '''
     formstr = ''
     for key, data in cmds.items():
-      if 'Br' in  key:
-        formstr = formstr + '<br><br>'
-      else:
-        formstr = formstr + '<button class=button type="submit" name="%s" value="%s">%s</button>&nbsp&nbsp;' % (key,str(data), key)     
-    page = BasePage % formstr
+        if 'Br' in  key:
+            formstr = formstr + '<br><br>'
+        else:
+            formstr = formstr + '<button class=button type="submit" name="%s" value="%s">%s</button>&nbsp&nbsp;' % (key,str(data), key) 
+            if 'Channel' == key:
+                formstr = formstr + '<input class=text type="text" name="Digits" maxlength="4" size="4" id="" value=""></input>'            
+        page = BasePage % formstr
     return page 
 
 def killmyself():
@@ -514,17 +531,25 @@ if sling_net_address[0] and sling_net_address[1] :
     @app.route('/buttons', methods=["POST"])
     def button():
         global ir_q
+        digits2buttons = [18,9,10,11,12,13,14,15,16,17]
         print('Button Clicked', request.form)
-        for cmd in cmds.keys():
-            data = request.form.get(cmd)
-            if data != None:           
-                if cmd == 'Restart' :
-                    killmyself()
-                elif 'x' in cmd and cmd != 'Exit':
-                    ir_q.put( bytearray(1) + bytes('RESOLUTION=%d' % cmds[cmd], 'utf-8'))
-                else:
-                    ir_q.put(int(data).to_bytes(1, byteorder='little') +
-                                  b'\x00\x00\x00\x00\x00\x00\x00')
+        if request.form.get('Digits'):
+            channel = request.form.get('Digits').strip()
+            print('Sending Channel Digits', channel)
+            for digit in channel:
+                ir_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
+                b'\x00\x00\x00\x00\x00\x00\x00')
+        else:
+            for cmd in cmds.keys():
+                data = request.form.get(cmd)
+                if data != None:  
+                    if cmd == 'Restart' :
+                        killmyself()
+                    elif 'x' in cmd and cmd != 'Exit':
+                        ir_q.put( bytearray(1) + bytes('RESOLUTION=%d' % cmds[cmd], 'utf-8'))
+                    else:
+                        ir_q.put(int(data).to_bytes(1, byteorder='little') +
+                                      b'\x00\x00\x00\x00\x00\x00\x00')
         return render_template_string(Page)
 
     app.run(host='0.0.0.0', port=9998, debug=False)
