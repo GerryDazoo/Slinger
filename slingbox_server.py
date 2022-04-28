@@ -97,7 +97,7 @@ def closeconn( s ):
         s.close()
     return None
 
-def streamer(sling_addr, password, resolution):
+def streamer():
     global streamer_q
     smode = 0x2000               # basic cipher mode,
     sid = 0   
@@ -154,8 +154,8 @@ def streamer(sling_addr, password, resolution):
                       
     def sling_open(connection_type):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print('Connecting...', sling_addr, connection_type )
-        s.connect(sling_addr)
+        print('Connecting...', sling_net_address, connection_type )
+        s.connect(sling_net_address)
         s.sendall(str.encode('GET /stream.asf HTTP/1.1\r\nAccept: */*\r\nPragma: Sling-Connection-Type=%s, Session-Id=%d\r\n\r\n' % (connection_type, sid)))
         return s
         
@@ -163,7 +163,7 @@ def streamer(sling_addr, password, resolution):
         VideoBandwidth = 8000
         VideoSmoothness = 63
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
-        print('VideoParameters: resolution=',resolution, 'FrameRate=', FrameRate, 
+        print('VideoParameters: Resolution=',resolution, 'FrameRate=', FrameRate, 
               'VideoBandwidth=', VideoBandwidth, 'VideoSmoothness=', VideoSmoothness, 
               'IframeRate=', IframeRate) 
         sling_cmd(0xb5, pack("11I 16s 2I 92x", 
@@ -211,6 +211,32 @@ def streamer(sling_addr, password, resolution):
 
     ################## START of Streamer Execution        
     print('Streamer Running: ')
+    cp = ConfigParser()
+    cp.read('config.ini')
+    slinginfo = cp['SLINGBOX']
+    password = slinginfo['password']
+    cp = ConfigParser()
+    cp.read('config.ini')
+    slinginfo = cp['SLINGBOX']
+    password = slinginfo['password'].strip()
+    resolution = int(slinginfo.get('Resolution', 12 ))
+    FrameRate = int(slinginfo.get('FramRate', 30 ))
+    VideoBandwidth = int(slinginfo.get('VideoBandwidth', 8000 ))
+    VideoSmoothness = int(slinginfo.get('VideoSmoothness', 63 ))
+    IframeRate = int(slinginfo.get('IframeRate', 5 ))
+    AudioBitRate = int(slinginfo.get('AudioBitRate', 64 ))
+    slingip =  slinginfo.get('ipaddress', '' )
+    slingport = int(slinginfo.get('port', 5201))
+
+    if not slingip :
+        sling_net_address = find_slingbox_info()
+    else:
+        sling_net_address = (slingip, slingport )
+        
+    print( 'Slinginfo', password, resolution, slingip, slingport )
+    
+    streamer_q = queue.Queue()
+
     while True:        
         stream_header = None
         streams = []
@@ -265,13 +291,18 @@ def streamer(sling_addr, password, resolution):
                         sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
                         last_remote_command_time = time.time()
             else:  # Slingbox has stopped sending data. Due to video format change at source
-                print(ts(), 'Stream Stopped Unexpectly')
+                print(ts(), 'Stream Stopped Unexpectly, possible slingbox video format change')
                 stream = closeconn(stream)
                 s_ctl = closeconn(s_ctl)
                 time.sleep(2)
-                s_ctl, stream = start_slingbox_session()         
-        s_ctl = closeconn(s_ctl)
+                s_ctl, stream = start_slingbox_session()
+                for stream_socket in streams: stream_socket.sendall(stream_header)
         stream = closeconn(stream)
+        s_ctl = closeconn(s_ctl)
+        time.sleep(2)
+    print('Streamer Exiting.. should never get here')
+    s_ctl = closeconn(s_ctl)
+    stream = closeconn(stream)
       
 def remote_control_stream( connection, client, request):
     print('\r\nStarting remote control stream hander for ', str(client))
@@ -298,13 +329,19 @@ def remote_control_stream( connection, client, request):
     
     
 ######################################################################## 
-def ConnectionManager(maxstreams, slingbox_address, SlingboxPassword, port, resolution ): 
+def ConnectionManager(): 
     global streamer_q
+    
+    cp = ConfigParser()
+    cp.read('config.ini')
+    serverinfo = cp['SERVER']
+    port = int(serverinfo['port'])
+    maxstreams = int(serverinfo.get('maxstreams', 4))
     print('Connection Manager Running %d max streams....' % maxstreams)
 
     server_address = ('', port)
     
-    Thread(target=streamer, args=(slingbox_address, password, resolution)).start()  
+    Thread(target=streamer).start()  
      
     # Create a TCP/IP socket
     ConnectionManagerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -338,9 +375,12 @@ def ConnectionManager(maxstreams, slingbox_address, SlingboxPassword, port, reso
             
             data = connection.recv(1024).decode("utf-8")            
             if 'slingbox' in data :
-                connection.sendall(b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n')
-                streamer_q.put( bytearray(1) + bytes('STREAM=', 'utf-8'))
-                streamer_q.put(connection)
+                if streamer_q : # Streamer Thread ready to accept connections
+                    connection.sendall(b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n')
+                    streamer_q.put( bytearray(1) + bytes('STREAM=', 'utf-8'))
+                    streamer_q.put(connection)
+                else:
+                    connetion = closeconn(connection)
             elif 'Remote' in data or 'buttons' in data:
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
@@ -533,7 +573,9 @@ def BuildPage():
                 cmds.append((name.strip(), value.strip()))
  #       print(cmds)
         return cmds
-        
+    
+    cp = ConfigParser()
+    cp.read('config.ini')    
     remoteinfo = cp['REMOTE']
     style=remoteinfo.get('style', default_style )
 #    print('STYLE', style)
@@ -556,72 +598,45 @@ def killmyself():
     if 'windows' in platform.platform().lower():
         os.system('taskkill /f /pid %d /t' % mypid)
     else:
-        os.system('kill -9 %d' % mypip)
+        os.system('kill -9 %d' % mypid)
         
 print( 'Running on', platform.platform())
-mypid = os.getpid()
-#resolution = int(sys.argv[1])
-#ConnectionManagerSocket = None
-#password = sys.argv[2]
-#ConnectionManagerPort = int(sys.argv[3])
-cp = ConfigParser()
-cp.read('config.ini')
-slinginfo = cp['SLINGBOX']
-password = slinginfo['password']
-resolution = int(slinginfo['resolution'])
-slingip =  slinginfo.get('ipaddress', '' )
-slingport = int(slinginfo.get('port', 0))
 
-serverinfo = cp['SERVER']
-ConnectionManagerPort = int(serverinfo['port'])
-maxstreams = int(serverinfo.get('maxstreams', 4))
+streamer_q = None
 
-print( 'Slinginfo', password, resolution, slingip, slingport )
-if not slingip :
-    sling_net_address = find_slingbox_info()
-else:
-    sling_net_address = (slingip, slingport )
+Thread(target=ConnectionManager).start()
+
+Page = BuildPage()
+
+app = Flask(__name__)
+
+@app.route('/Remote', methods=["GET"])
+def index():
+    return render_template_string(Page)
     
-print('SLINGADDR', sling_net_address)
+@app.route('/buttons', methods=["POST"])
+def button():
+    global streamer_q
+    digits2buttons = [18,9,10,11,12,13,14,15,16,17]
+    print('Button Clicked', request.form)
+    if request.form.get('Digits'):
+        channel = request.form.get('Digits').strip()
+        print('Sending Channel Digits', channel)
+        for digit in channel:
+            streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
+            b'\x00\x00\x00\x00\x00\x00\x00')
+    else:
+        for cmd in cmds.keys():
+            data = request.form.get(cmd)
+            if data != None:  
+                if cmd == 'Restart' :
+                    killmyself()
+                elif 'x' in cmd and cmd != 'Exit':
+                    streamer_q.put( bytearray(1) + bytes('RESOLUTION=%d' % cmds[cmd], 'utf-8'))
+                else:
+                    streamer_q.put(int(data).to_bytes(1, byteorder='little') +
+                                  b'\x00\x00\x00\x00\x00\x00\x00')
+    return render_template_string(Page)
 
-streamer_q = queue.Queue()
+app.run(host='0.0.0.0', port=9998, debug=False)
 
-if sling_net_address[0] and sling_net_address[1] :
-    print('Found Slingbox at ', sling_net_address )
-    Thread(target=ConnectionManager,args=(maxstreams, sling_net_address, password, ConnectionManagerPort, resolution )).start()
-
-    Page = BuildPage()
-
-    app = Flask(__name__)
-
-    @app.route('/Remote', methods=["GET"])
-    def index():
-        return render_template_string(Page)
-        
-    @app.route('/buttons', methods=["POST"])
-    def button():
-        global streamer_q
-        digits2buttons = [18,9,10,11,12,13,14,15,16,17]
-        print('Button Clicked', request.form)
-        if request.form.get('Digits'):
-            channel = request.form.get('Digits').strip()
-            print('Sending Channel Digits', channel)
-            for digit in channel:
-                streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
-                b'\x00\x00\x00\x00\x00\x00\x00')
-        else:
-            for cmd in cmds.keys():
-                data = request.form.get(cmd)
-                if data != None:  
-                    if cmd == 'Restart' :
-                        killmyself()
-                    elif 'x' in cmd and cmd != 'Exit':
-                        streamer_q.put( bytearray(1) + bytes('RESOLUTION=%d' % cmds[cmd], 'utf-8'))
-                    else:
-                        streamer_q.put(int(data).to_bytes(1, byteorder='little') +
-                                      b'\x00\x00\x00\x00\x00\x00\x00')
-        return render_template_string(Page)
-
-    app.run(host='0.0.0.0', port=9998, debug=False)
-else:
-    print("Quitting. Can't find a Slingbox on the local network. Sorry")
