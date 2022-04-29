@@ -236,15 +236,18 @@ def streamer():
     print( 'Slinginfo', password, resolution, slingip, slingport )
     
     streamer_q = queue.Queue()
+    stream_clients = {}
 
     while True:        
         stream_header = None
         streams = []
         # Wait for first stream request to arrive 
-        print('Streamer: Waiting for first stream')
+        print('Streamer: Waiting for first stream, flushing any IR request that might have accummulated while not connected to slingbox')
         while b'STREAM' not in streamer_q.get() : continue
          
-        streams.append(streamer_q.get()) ## Get the socket to stream on   
+        stream_socket = (streamer_q.get()) ## Get the socket to stream o
+        stream_clients[stream_socket] = stream_socket.getpeername() 
+        streams.append(stream_socket)
         s_ctl, stream = start_slingbox_session()
         streams[0].sendall(stream_header)
         pc = 0
@@ -258,8 +261,9 @@ def streamer():
                     try:
                         stream_socket.sendall(msg)
                     except Exception as e:
-                        print('Stream Terminated')
+                        print('Stream Terminated for ', stream_clients[stream_socket])
                         #print( e, traceback.print_exc())
+                        del stream_clients[stream_socket]
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
                         continue
@@ -267,7 +271,7 @@ def streamer():
                 if pc % 1000 == 0 : 
                     print(pc, end='\r')      
                     sling_cmd(0x66, '') # send a keepalive
-                    if pc % 10000 == 0 : print( '\r\n', ts(),'%4d Clients Connected' % len(streams))
+                    if pc % 10000 == 0 : print( '\r\n', ts(),'%4d Clients Connected' % len(streams), stream_clients.values())
                     
                 if (not streamer_q.empty()) and (time.time() - last_remote_command_time > 0.5):
                     data = streamer_q.get()
@@ -284,6 +288,7 @@ def streamer():
                         elif cmd == 'STREAM' :
                             new_stream = streamer_q.get()
                             new_stream.sendall(stream_header)
+                            stream_clients[new_stream] = stream_socket.getpeername()
                             streams.append(new_stream)
                             print('New Stream Started for', streams[-1].getpeername(), 'num clients = ', len(streams), len(stream_header))
                     else:
