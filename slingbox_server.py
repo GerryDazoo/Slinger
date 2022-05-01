@@ -242,8 +242,14 @@ def streamer():
         stream_header = None
         streams = []
         # Wait for first stream request to arrive 
-        print('Streamer: Waiting for first stream, flushing any IR request that might have accummulated while not connected to slingbox')
-        while b'STREAM' not in streamer_q.get() : continue
+        print('Streamer: Waiting for first stream, flushing any IR requests that arrive while not connected to slingbox')
+        while True:
+            data = streamer_q.get()
+            if b'STREAM' in data : break
+            if b'RESOLUTION' in data :
+                cmd, value = data[1:].decode('utf-8').split('=')
+                print('Changing Resolution', cmd, value)
+                resolution= int(value)
          
         stream_socket = (streamer_q.get()) ## Get the socket to stream o
         stream_clients[stream_socket] = stream_socket.getpeername() 
@@ -288,7 +294,7 @@ def streamer():
                         elif cmd == 'STREAM' :
                             new_stream = streamer_q.get()
                             new_stream.sendall(stream_header)
-                            stream_clients[new_stream] = stream_socket.getpeername()
+                            stream_clients[new_stream] = new_stream.getpeername()
                             streams.append(new_stream)
                             print('New Stream Started for', streams[-1].getpeername(), 'num clients = ', len(streams), len(stream_header))
                     else:
