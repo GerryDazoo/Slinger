@@ -98,7 +98,7 @@ def closeconn( s ):
     return None
 
 def streamer():
-    global streamer_q
+    global streamer_q, status
     smode = 0x2000               # basic cipher mode,
     sid = 0   
     seq = 0
@@ -185,6 +185,7 @@ def streamer():
 
     def start_slingbox_session():
         nonlocal stream_header, sid, seq, s_ctl, dbuf, skey, stat, smode
+        global status
         skey = [0xBCDEAAAA,0x87FBBBBA,0x7CCCCFFA,0xDDDDAABC]
  #       print('skey', skey )
         smode = 0x2000               # basic cipher mode,
@@ -198,9 +199,11 @@ def streamer():
 #        print('New Key ', skey)
         smode = 0x8000                # use dynamic key from now on
         sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
-        if stat :
+        while stat:
             print('Box in use!' )
-            exit(1)
+            status = 'Slingbox in Use! Cannot start session, retrying in 10 seconds..'
+            time.sleep(10)
+            sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, 30, 8000, 63, 5 )
@@ -244,6 +247,7 @@ def streamer():
         # Wait for first stream request to arrive 
         print('Streamer: Waiting for first stream, flushing any IR requests that arrive while not connected to slingbox')
         while True:
+            status = 'Waiting for first client. Resolution = %d' % resolution
             data = streamer_q.get()
             if b'STREAM' in data : break
             if b'RESOLUTION' in data :
@@ -277,6 +281,7 @@ def streamer():
                 if pc % 1000 == 0 : 
                     print(pc, end='\r')      
                     sling_cmd(0x66, '') # send a keepalive
+                    status = 'Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
                     if pc % 10000 == 0 : print( '\r\n', ts(),'%4d Clients Connected' % len(streams), stream_clients.values())
                     
                 if (not streamer_q.empty()) and (time.time() - last_remote_command_time > 0.5):
@@ -465,9 +470,10 @@ def BuildPage():
   </style>
 </head>
 <body >
-     <form method="post" action="/buttons"> 
+     <form method="post" action="/Remote"> 
         %s
      </form>
+     <h3>Status:%s</h2>
 </body>
 </html>
 '''
@@ -601,7 +607,7 @@ def BuildPage():
             formstr = formstr + '<button class=button type="submit" name="%s" value="%s">%s</button>' % (key,str(data), key) 
             if 'Channel' == data:
                 formstr = formstr + '<input class=text type="text" name="Digits" maxlength="4" size="4" id="" value=""></input>'            
-        page = BasePage % ( style, formstr )
+        page = BasePage % ( style, formstr, '%s' )
     return page 
 
 def killmyself():
@@ -614,6 +620,7 @@ def killmyself():
 print( 'Running on', platform.platform())
 
 streamer_q = None
+status = 'Testing'
 
 Thread(target=ConnectionManager).start()
 
@@ -623,9 +630,9 @@ app = Flask(__name__)
 
 @app.route('/Remote', methods=["GET"])
 def index():
-    return render_template_string(Page)
+    return render_template_string(Page % status)
     
-@app.route('/buttons', methods=["POST"])
+@app.route('/Remote', methods=["POST"])
 def button():
     global streamer_q
     digits2buttons = [18,9,10,11,12,13,14,15,16,17]
@@ -647,7 +654,7 @@ def button():
                 else:
                     streamer_q.put(int(data).to_bytes(1, byteorder='little') +
                                   b'\x00\x00\x00\x00\x00\x00\x00')
-    return render_template_string(Page)
+    return render_template_string(Page%status)
 
 app.run(host='0.0.0.0', port=9998, debug=False)
 
