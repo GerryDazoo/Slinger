@@ -96,7 +96,7 @@ def closeconn( s ):
         s.close()
     return None
 
-def streamer():
+def streamer(maxstreams):
     global streamer_q, status
     smode = 0x2000               # basic cipher mode,
     sid = 0   
@@ -227,6 +227,8 @@ def streamer():
             
     ################## START of Streamer Execution        
     print('Streamer Running: ')
+    OK = b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
+    ERROR =b'HTTP/1.0 503 ERROR\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
     cp = ConfigParser()
     cp.read('config.ini')
     slinginfo = cp['SLINGBOX']
@@ -269,23 +271,33 @@ def streamer():
         client_addr = str(value) 
         print('Starting Stream for ', client_addr) 
          
-        stream_socket = (streamer_q.get()) ## Get the socket to stream o
-        stream_clients[stream_socket] = client_addr
-        streams.append(stream_socket)
+        client_socket = (streamer_q.get()) ## Get the socket to stream o
+ #       client_socket.setblocking(0)
+        stream_clients[client_socket] = client_addr
+        streams.append(client_socket)
+        client_socket.sendall(OK)
         s_ctl, stream = start_slingbox_session(streams)
         pc = 0
         last_remote_command_time = time.time()
         while streams:
-            socket_ready, _, _ = select.select([stream], [], [], 2.0 )
-            if socket_ready:
+            sling_ready, _ , _ = select.select([stream], [], [], 4.0 )
+            if sling_ready:
                 msg = stream.recv(3072)
                 pc += 1
                 for stream_socket in streams: 
                     try:
-                        stream_socket.sendall(msg)
+                        _ , client_ready , _ = select.select([], [stream_socket], [], 0.2 )
+                        if client_ready : 
+                            stream_socket.sendall(msg)
+                        else:
+                            print('Client Not ready', stream_clients[stream_socket], 'Shutting Down')
+                            del stream_clients[stream_socket]
+                            streams.remove(stream_socket)
+                            closeconn(stream_socket)
+                        
                     except Exception as e:
                         print('Stream Terminated for ', stream_clients[stream_socket])
-                        #print( e, traceback.print_exc())
+                        print( e, traceback.print_exc())
                         del stream_clients[stream_socket]
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
@@ -314,10 +326,16 @@ def streamer():
                         s_ctl, stream = start_slingbox_session(streams) 
                     elif cmd == 'STREAM' :
                         new_stream = streamer_q.get()
-                        stream_clients[new_stream] = data
-                        streams.append(new_stream)
-                        new_stream.sendall(stream_header)
-                        print('New Stream Started, num clients = ', len(streams))
+ #                       new_stream.setblocking(0)
+                        if len(streams) == maxstreams :
+                            new_stream.sendall(ERROR)
+                            closeconn(new_stream)
+                        else:
+                            new_stream.sendall(OK)
+                            stream_clients[new_stream] = data
+                            streams.append(new_stream)
+                            new_stream.sendall(stream_header)
+                            print('New Stream Started, num clients = ', len(streams))
                     elif cmd == 'IR':
                         sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
                         last_remote_command_time = time.time()
@@ -371,14 +389,14 @@ def ConnectionManager():
 
     server_address = ('', port)
     
-    Thread(target=streamer).start()  
+    Thread(target=streamer, args=(maxstreams,)).start()  
      
     # Create a TCP/IP socket
     ConnectionManagerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ConnectionManagerSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     print('starting up on %s port %s' % server_address )
     ConnectionManagerSocket.bind(server_address)
-    ConnectionManagerSocket.listen(maxstreams)
+    ConnectionManagerSocket.listen()
 
     while True:
         # Wait for a connection
@@ -406,7 +424,6 @@ def ConnectionManager():
             data = connection.recv(1024).decode("utf-8")            
             if 'slingbox' in data :
                 if streamer_q : # Streamer Thread ready to accept connections
-                    connection.sendall(b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n')
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
                     streamer_q.put(connection)
                 else:
