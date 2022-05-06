@@ -272,7 +272,6 @@ def streamer(maxstreams):
         print('Starting Stream for ', client_addr) 
          
         client_socket = (streamer_q.get()) ## Get the socket to stream o
- #       client_socket.setblocking(0)
         stream_clients[client_socket] = client_addr
         streams.append(client_socket)
         client_socket.sendall(OK)
@@ -280,83 +279,72 @@ def streamer(maxstreams):
         pc = 0
         lasttick = laststatus = lastkeepalive = last_remote_command_time = time.time()
         while streams:
-            sling_ready, _ , _ = select.select([stream], [], [], 4.0 )
-            if sling_ready:
-                msg = stream.recv(3072)
-                if len(msg) == 0 :
-                    print('SlingBox Closed Streaming socket. Shutting down.')
-                    break
-                pc += 1
-                for stream_socket in streams: 
-                    try:
-                        _ , client_ready , _ = select.select([], [stream_socket], [], 0.2 )
-                        if client_ready : 
-                            stream_socket.sendall(msg)
-                        else:
-                            print('Client Not ready', stream_clients[stream_socket], 'Shutting Down')
-                            del stream_clients[stream_socket]
-                            streams.remove(stream_socket)
-                            closeconn(stream_socket)
-                        
-                    except Exception as e:
-                        print('Stream Terminated for ', stream_clients[stream_socket])
-                        del stream_clients[stream_socket]
-                        streams.remove(stream_socket)
-                        closeconn(stream_socket)
-                        continue
-                
-                curtime = time.time()                
-                if curtime - lasttick > 10.0 : 
-                    print('.', end='')      
-                    status = 'Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
-                    lasttick = curtime
-                    
-                if curtime - laststatus > 90.0 :
-                    print( ts(),'%d Clients.' % len(streams), end='')
-                    for c in stream_clients.values(): print( c, end=' ')
-                    print('')
-                    laststatus = curtime
-                    sys.stdout.flush()
-                
-                if curtime - lastkeepalive > 10.0 :
-  #                  print('Sending Keep Alive' )
-                    sling_cmd(0x66, '') # send a keepalive
-                    lastkeepalive = curtime
-                    socket_ready, _, _ = select.select([s_ctl], [], [], 0.0 )
-                    if socket_ready : s_ctl.recv(8192)
-                        
-                if (not streamer_q.empty()) and (curtime - last_remote_command_time > 0.5):
-                    cmd, data = parse_cmd(streamer_q.get())
-                    print( 'Got Streamer Control Message', cmd, data )                   
-                    if cmd == 'RESOLUTION' : 
-                        resolution = int(value)
-                        s_ctl = closeconn(s_ctl)
-                        stream = closeconn(stream)
-                        pc = 0
-                        s_ctl, stream = start_slingbox_session(streams) 
-                    elif cmd == 'STREAM' :
-                        new_stream = streamer_q.get()
- #                       new_stream.setblocking(0)
-                        if len(streams) == maxstreams :
-                            new_stream.sendall(ERROR)
-                            closeconn(new_stream)
-                        else:
-                            new_stream.sendall(OK)
-                            stream_clients[new_stream] = data
-                            streams.append(new_stream)
-                            new_stream.sendall(stream_header)
-                            print('New Stream Started, num clients = ', len(streams))
-                    elif cmd == 'IR':
-                        sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
-                        last_remote_command_time = time.time()
-            else:
+            msg = stream.recv(3072)
+            if len(msg) == 0 :
                 print(ts(), 'Stream Stopped Unexpectly, possible slingbox video format change')
                 stream = closeconn(stream)
                 s_ctl = closeconn(s_ctl)
-                s_ctl, stream = start_slingbox_session(streams)
-        stream = closeconn(stream)
+                break
+            pc += 1
+            for stream_socket in streams: 
+                try:
+                    stream_socket.sendall(msg)                                       
+                except Exception as e:
+                    print('Stream Terminated for ', stream_clients[stream_socket])
+                    del stream_clients[stream_socket]
+                    streams.remove(stream_socket)
+                    closeconn(stream_socket)
+                    continue
+            
+            curtime = time.time()                
+            if curtime - lasttick > 10.0 : 
+                print('.', end='')      
+                status = 'Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
+                lasttick = curtime
+                sys.stdout.flush()
+                
+            if curtime - laststatus > 90.0 :
+                print( ts(),'%d Clients.' % len(streams), end='')
+                for c in stream_clients.values(): print( c, end=' ')
+                print('')
+                laststatus = curtime
+                sys.stdout.flush()
+            
+            if curtime - lastkeepalive > 10.0 :
+#                  print('Sending Keep Alive' )
+                sling_cmd(0x66, '') # send a keepalive
+                lastkeepalive = curtime
+                socket_ready, _, _ = select.select([s_ctl], [], [], 0.0 )
+                if socket_ready : s_ctl.recv(8192)
+                    
+            if (not streamer_q.empty()) and (curtime - last_remote_command_time > 0.5):
+                cmd, data = parse_cmd(streamer_q.get())
+                print( 'Got Streamer Control Message', cmd, data )                   
+                if cmd == 'RESOLUTION' : 
+                    resolution = int(value)
+                    s_ctl = closeconn(s_ctl)
+                    stream = closeconn(stream)
+                    pc = 0
+                    s_ctl, stream = start_slingbox_session(streams) 
+                elif cmd == 'STREAM' :
+                    new_stream = streamer_q.get()
+                    if len(streams) == maxstreams :
+                        new_stream.sendall(ERROR)
+                        closeconn(new_stream)
+                    else:
+                        new_stream.sendall(OK)
+                        stream_clients[new_stream] = data
+                        streams.append(new_stream)
+                        new_stream.sendall(stream_header)
+                        print('New Stream Started, num clients = ', len(streams))
+                elif cmd == 'IR':
+                    sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
+                    last_remote_command_time = time.time()
+                    
+        ### No More Streams                    
         s_ctl = closeconn(s_ctl)
-
+        stream = closeconn(stream)
+        
     print('Streamer Exiting.. should never get here')
     s_ctl = closeconn(s_ctl)
     stream = closeconn(stream)
@@ -433,6 +421,8 @@ def ConnectionManager():
             
             data = connection.recv(1024).decode("utf-8")            
             if 'slingbox' in data :
+                connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*5)
+                connection.setblocking(False)
                 if streamer_q : # Streamer Thread ready to accept connections
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
                     streamer_q.put(connection)

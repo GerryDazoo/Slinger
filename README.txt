@@ -1,5 +1,3 @@
-You'll need a working Python3 interpreter to get going.  
-
 You'll need your SlingBox admin password. "https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js"
 
 Bonus: The HTTP streaming server can server out mutliple simultaneous streams so more than one person can see the Sling content at once. An integrated RTSP server should not be hard to do.
@@ -7,6 +5,8 @@ Bonus: The HTTP streaming server can server out mutliple simultaneous streams so
 The web-based remote control is yet another huge hack to get something working quickly. Uses "Flask", definately can be made prettier. You can tweek the look in the [REMOTE] section of the config.ini file. You can insert any valid HTML between the buttons and change the button and text style.
 
 Linux/RaspberryPi Notes
+You'll need a working Python3 interpreter to get going. Comes pre-installed on the Raspberry Pi distribution
+
 #    A minimum system is just less that 2G. So for safety sake use at least a 4G micro sd card
 #    Make a user "slingbox" with whatever password you'd like
     sudo apt-get update
@@ -29,6 +29,7 @@ sudo systemctl stop sling.service to shut it down
     
    
 Windows Notes
+    There is a windows executable now available so you don't need  to do a python install.
     I used cygwin Python on my Windows box but any widows python program should work. You'll need flask and netifaces module for python. See note about netifaces above.
     make a folder "slingbox" somewhere
     copy "slinbox_server.py, tea.py, keys.dat, config.ini and RunSling.bat to the slingbox folder #
