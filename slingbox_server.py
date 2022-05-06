@@ -300,7 +300,6 @@ def streamer(maxstreams):
                         
                     except Exception as e:
                         print('Stream Terminated for ', stream_clients[stream_socket])
-                        print( e, traceback.print_exc())
                         del stream_clients[stream_socket]
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
