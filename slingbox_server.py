@@ -158,13 +158,11 @@ def streamer(maxstreams):
         s.sendall(str.encode('GET /stream.asf HTTP/1.1\r\nAccept: */*\r\nPragma: Sling-Connection-Type=%s, Session-Id=%d\r\n\r\n' % (connection_type, sid)))
         return s
         
-    def SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate ):
-        VideoBandwidth = 8000
-        VideoSmoothness = 63
+    def SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate ):
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
         print('VideoParameters: Resolution=',resolution, 'FrameRate=', FrameRate, 
               'VideoBandwidth=', VideoBandwidth, 'VideoSmoothness=', VideoSmoothness, 
-              'IframeRate=', IframeRate) 
+              'IframeRate=', IframeRate, 'AudioBitRate=', AudioBitRate) 
         sling_cmd(0xb5, pack("11I 16s 2I 92x", 
                          0xff, 
                          0xff, 
@@ -174,8 +172,9 @@ def streamer(maxstreams):
                           0x10001 + (VideoSmoothness << 8), #Video Smoothness
                          3, #fixed
                          1, #fixed
-                         0x40, #Audio Bitrate
-                         0x4f, 
+                         AudioBitRate,
+                         3,                         
+#                        0x4f, 
                          1, 
                          rand, 
                          0x1012020, 
@@ -205,18 +204,18 @@ def streamer(maxstreams):
             sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
-        SetVideoParameters(resolution, 30, 8000, 63, 5 )
+        SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
         stream = sling_open('Stream')  
         first_buffer = stream.recv(3072) 
-        mp4_header = b'\x36\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c' 
-        mp4_header_pos = first_buffer.find( mp4_header ) + 50
+        h264_header = b'\x36\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c' 
+        h264_header_pos = first_buffer.find( h264_header ) + 50
  #       print( 'mp4_header_pos', mp4_header_pos, len( first_buffer ))
-        stream_header = first_buffer[0:mp4_header_pos]
+        stream_header = first_buffer[0:h264_header_pos]
         print('Stream started at', ts(), len(stream_header))
         for s in streams :
             s.sendall(stream_header)
             # Send any left over bits
-            s.sendall(first_buffer[mp4_header_pos:])
+            s.sendall(first_buffer[h264_header_pos:])
         return s_ctl, stream
 
     def parse_cmd(msg):
@@ -229,6 +228,7 @@ def streamer(maxstreams):
     print('Streamer Running: ')
     OK = b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
     ERROR =b'HTTP/1.0 503 ERROR\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
+    
     cp = ConfigParser()
     cp.read('config.ini')
     slinginfo = cp['SLINGBOX']
@@ -238,7 +238,7 @@ def streamer(maxstreams):
     slinginfo = cp['SLINGBOX']
     password = slinginfo['password'].strip()
     resolution = int(slinginfo.get('Resolution', 12 ))
-    FrameRate = int(slinginfo.get('FramRate', 30 ))
+    FrameRate = int(slinginfo.get('FrameRate', 30 ))
     VideoBandwidth = int(slinginfo.get('VideoBandwidth', 8000 ))
     VideoSmoothness = int(slinginfo.get('VideoSmoothness', 63 ))
     IframeRate = int(slinginfo.get('IframeRate', 5 ))
@@ -251,7 +251,7 @@ def streamer(maxstreams):
     else:
         sling_net_address = (slingip, slingport )
         
-    print( 'Slinginfo', password, resolution, slingip, slingport )
+    print( 'Slinginfo', password, resolution, FrameRate, slingip, slingport )
     
     streamer_q = queue.Queue()
     stream_clients = {}
@@ -278,11 +278,14 @@ def streamer(maxstreams):
         client_socket.sendall(OK)
         s_ctl, stream = start_slingbox_session(streams)
         pc = 0
-        last_remote_command_time = time.time()
+        lasttick = laststatus = lastkeepalive = last_remote_command_time = time.time()
         while streams:
             sling_ready, _ , _ = select.select([stream], [], [], 4.0 )
             if sling_ready:
                 msg = stream.recv(3072)
+                if len(msg) == 0 :
+                    print('SlingBox Closed Streaming socket. Shutting down.')
+                    break
                 pc += 1
                 for stream_socket in streams: 
                     try:
@@ -302,20 +305,28 @@ def streamer(maxstreams):
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
                         continue
-                        
-                if pc % 1000 == 0 : 
+                
+                curtime = time.time()                
+                if curtime - lasttick > 10.0 : 
                     print('.', end='')      
-                    sling_cmd(0x66, '') # send a keepalive
                     status = 'Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
-                    if pc % 10000 == 0 : 
-                        print( ts(),'%d Clients.' % len(streams), end='')
-                        for c in stream_clients.values(): print( c, end=' ')
-                        print('')
-                        socket_ready, _, _ = select.select([s_ctl], [], [], 0.0 )
-                        if socket_ready : s_ctl.recv(8192)
-                    sys.stdout.flush()
+                    lasttick = curtime
                     
-                if (not streamer_q.empty()) and (time.time() - last_remote_command_time > 0.5):
+                if curtime - laststatus > 90.0 :
+                    print( ts(),'%d Clients.' % len(streams), end='')
+                    for c in stream_clients.values(): print( c, end=' ')
+                    print('')
+                    laststatus = curtime
+                    sys.stdout.flush()
+                
+                if curtime - lastkeepalive > 10.0 :
+  #                  print('Sending Keep Alive' )
+                    sling_cmd(0x66, '') # send a keepalive
+                    lastkeepalive = curtime
+                    socket_ready, _, _ = select.select([s_ctl], [], [], 0.0 )
+                    if socket_ready : s_ctl.recv(8192)
+                        
+                if (not streamer_q.empty()) and (curtime - last_remote_command_time > 0.5):
                     cmd, data = parse_cmd(streamer_q.get())
                     print( 'Got Streamer Control Message', cmd, data )                   
                     if cmd == 'RESOLUTION' : 

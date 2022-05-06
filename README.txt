@@ -39,49 +39,106 @@ Windows Notes
     
 Not getting what your expecting. Note the Slingbox does not upscale the input, See https://www.slingbox.com/help/KB/KB-2000464 for more info.
 
-Here's what I've figured out about the key codes. Please let me know if you know what the keys with ????s do. I don't remember where I got the key codes for my remote :-(. Except it was from Slingbox software somewhere (Slingplayer Desktop? when setting up remote?)
+// slingbox video sizes
+#define SBVS_320x240	1
+#define SBVS_160x120	2
+#define SBVS_352x240	3
+#define SBVS_176x120	4
+#define SBVS_640x480	5
+#define SBVS_640x240	6
+#define SBVS_320x480	7
+#define SBVS_128x96		8
+#define SBVS_224x176	9
+#define SBVS_448x240	10
+#define SBVS_256x192	11
+#define SBVS_1280x720	12
+#define SBVS_1440x544	13
+#define SBVS_1680x544	14
+#define SBVS_1920x544	15
+#define SBVS_1920x1080	16
 
  #Key Codes : For my Motorola DCX3400M PVR. 1,4,5,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,53,54,55,56,57,58,59,60
  
-# 1 = power
-# 4 = chnl +
-# 5 = chnl -
-# 9 = digit 1
-# 10 = digit 2
-# 11 = digit 3
-#.....
-# 18 = digit 0
-# 19 = Screen format (Stretch, Wide ..... )
-# 21 = chnl +
-# 22 = ???
-# 23 = DVR
-# 24 = Play
-# 25 = ???
-# 26 = Pause
-# 27 = Rewind
-# 28 = FF
-# 29 = Record
-# 31 = Back 10 Seconds
-# 32 = ->|
-# 33 = Menu
-# 34 = OnDemand
-# 35 = Guide
-# 37 = Exit
-# 38 = "Up arrow"
-# 39 = "down Arrow"
-# 40 = "<-"
-# 41 = "->"
-# 42 = "OK"
-# 43 = Page Up
-# 44 = Page Down
-# 45 = Favourites
-# 46 = Info
-# 47 = ???
-# 53 = PIP on/off
-# 54 = ????
-# 55 = ????
-# 56 = Last
-# 57 = ????
-# 58 = Lock PIN
-# 59 = Day -
-# 60 = Day +
+// slingbox command codes
+#define SBCMD_INVALID			0
+#define SBCMD_POWER				1
+#define SBCMD_POWERON			2
+#define SBCMD_POWEROFF			3
+#define SBCMD_CHANNELUP			4
+#define SBCMD_CHANNELDOWN		5
+#define SBCMD_VOLUMEUP			6
+#define SBCMD_VOLUMEDOWN		7
+#define SBCMD_MUTE				8
+#define SBCMD_NUM1				9
+#define SBCMD_NUM2				10 
+#define SBCMD_NUM3				11 
+#define SBCMD_NUM4				12 
+#define SBCMD_NUM5				13 
+#define SBCMD_NUM6				14 
+#define SBCMD_NUM7				15 
+#define SBCMD_NUM8				16 
+#define SBCMD_NUM9				17 
+#define SBCMD_NUM0				18 
+#define SBCMD_ENTER				19 
+#define SBCMD_HUNDRED			20 
+#define SBCMD_LASTCHANNEL		21 
+#define SBCMD_TVVCR				22 
+#define SBCMD_EXTERNAL			23 
+#define SBCMD_PLAY				24 
+#define SBCMD_STOP				25 
+#define SBCMD_PAUSE				26 
+#define SBCMD_REWIND			27 
+#define SBCMD_FASTFORWARD		28 
+#define SBCMD_RECORD			29 
+#define SBCMD_SKIPFORWARD		30 
+#define SBCMD_SKIPBACK			31 
+#define SBCMD_LIVE				32 
+#define SBCMD_MENU				33 
+#define SBCMD_SETUP				34 
+#define SBCMD_GUIDE				35 
+#define SBCMD_CANCEL			36 
+#define SBCMD_EXIT				37 
+#define SBCMD_UP				38 
+#define SBCMD_DOWN				39 
+#define SBCMD_LEFT				40 
+#define SBCMD_RIGHT				41 
+#define SBCMD_SELECT			42 
+#define SBCMD_PAGEUP			43 
+#define SBCMD_PAGEDOWN			44 
+#define SBCMD_FAVORITE			45 
+#define SBCMD_INFO				46 
+#define SBCMD_FORMAT			47 
+#define SBCMD_SUBTITLE			48 
+#define SBCMD_SURROUND			49 
+#define SBCMD_SLOW				50 
+#define SBCMD_EJECT				51 
+#define SBCMD_RANDOM			52 
+#define SBCMD_PIP				53 
+#define SBCMD_PIPFORMAT			54 
+#define SBCMD_PIPFREEZE			55 
+#define SBCMD_PIPSWAP			56 
+#define SBCMD_PIPMOVE			57 
+#define SBCMD_PIPSOURCE			58 
+#define SBCMD_PIPCHANUP			59 
+#define SBCMD_PIPCHANDOWN		60 
+#define SBCMD_PIPMULTI			61 
+#define SBCMD_CUSTOM10			62 
+#define SBCMD_CUSTOM11			63 
+#define SBCMD_CUSTOM12			64 
+#define SBCMD_CUSTOM13			65 
+#define SBCMD_CUSTOM14			66 
+#define SBCMD_CUSTOM15			67 
+#define SBCMD_CUSTOM16			68 
+#define SBCMD_CUSTOM17			69 
+#define SBCMD_CUSTOM18			70 
+#define SBCMD_CUSTOM19			71 
+#define SBCMD_CUSTOM20			72 
+#define SBCMD_CUSTOM21			73 
+#define SBCMD_RED				74 
+#define SBCMD_GREEN				75 
+#define SBCMD_YELLOW			76 
+#define SBCMD_BLUE				77 
+#define SBCMD_WHITE				78 
+#define SBCMD_CUSTOM27			79 
+#define SBCMD_CUSTOM28			80 
+#define SBCMD_CUSTOM29			81 
