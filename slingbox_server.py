@@ -12,9 +12,63 @@ from threading import Thread
 import platform
 import datetime
 import traceback
-import tea
 from struct import pack, unpack
 from configparser import ConfigParser
+from ctypes import *
+
+def encipher(v, k):
+    y = c_uint32(v[0])
+    z = c_uint32(v[1])
+    sum = c_uint32(0)
+    delta = 0x61C88647
+    n = 32
+    w = [0,0]
+
+    while(n>0):
+        sum.value -= delta
+        y.value += ( z.value << 4 ) + k[0] ^ z.value + sum.value ^ ( z.value >> 5 ) + k[1]
+        z.value += ( y.value << 4 ) + k[2] ^ y.value + sum.value ^ ( y.value >> 5 ) + k[3]
+        n -= 1
+
+    w[0] = y.value
+    w[1] = z.value
+    return w
+
+def decipher(v, k):
+    y = c_uint32(v[0])
+    z = c_uint32(v[1])
+    sum = c_uint32(0xc6ef3720)
+    delta = 0x9e3779b9
+    n = 32
+    w = [0,0]
+
+    while(n>0):
+        z.value -= ( y.value << 4 ) + k[2] ^ y.value + sum.value ^ ( y.value >> 5 ) + k[3]
+        y.value -= ( z.value << 4 ) + k[0] ^ z.value + sum.value ^ ( z.value >> 5 ) + k[1]
+        sum.value -= delta
+        n -= 1
+
+    w[0] = y.value
+    w[1] = z.value
+    return w
+    
+def Crypt( data, key ):
+    bytes = b''
+    info = [int.from_bytes(data[i:i+4],byteorder='little')  for i in range(0, len(data), 4)]
+    for i in range(0, len(info), 2):
+        chunk = [info[i], info[i+1]] 
+        ciphertext = encipher(chunk, key)
+        bytes = bytes + ciphertext[0].to_bytes(4, byteorder='little') + ciphertext[1].to_bytes(4, byteorder='little')
+    return bytes
+    
+def Decrypt( data, key ):
+    bytes = b''
+    info = [int.from_bytes(data[i:i+4],byteorder='little')  for i in range(0, len(data), 4)]
+    for i in range(0, len(info), 2):
+        chunk = [info[i], info[i+1]] 
+        cleartext = decipher(chunk, key)
+        bytes = bytes + cleartext[0].to_bytes(4, byteorder='little') + cleartext[1].to_bytes(4, byteorder='little')
+    return bytes
 
 def ts():
     return '%s ' % datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
@@ -133,7 +187,7 @@ def streamer(maxstreams):
  #       print( 'Sending to Slingbox ', hex(opcode), hex(parity), hex(len(data)))
         seq += 1
         try:
-            cmd = pack("<HHHHH 6x HH 4x H 6x", msg_type, sid, opcode, 0, seq, len(data), smode, parity) + tea.Crypt(data, skey)
+            cmd = pack("<HHHHH 6x HH 4x H 6x", msg_type, sid, opcode, 0, seq, len(data), smode, parity) + Crypt(data, skey)
             s_ctl.sendall( cmd )
         except:
             print('EXCEPTION', hex(msg_type), sid, hex(opcode), 0, seq, len(data), hex(smode), hex(parity))
@@ -149,10 +203,11 @@ def streamer(maxstreams):
             print( "cmd:", hex(opcode), "err:",  hex(stat), dlen )
         if dlen > 0 :
             in_buf = s_ctl.recv( 512 ) 
-            dbuf = tea.Decrypt(in_buf, skey)
+            dbuf = Decrypt(in_buf, skey)
                       
     def sling_open(connection_type):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024*8)
         print('Connecting...', sling_net_address, connection_type )
         s.connect(sling_net_address)
         s.sendall(str.encode('GET /stream.asf HTTP/1.1\r\nAccept: */*\r\nPragma: Sling-Connection-Type=%s, Session-Id=%d\r\n\r\n' % (connection_type, sid)))
@@ -168,7 +223,7 @@ def streamer(maxstreams):
                          0xff, 
                          resolution, # Screen Size
                          1,
-                         0x05000000 + (FrameRate << 16) + VideoBandwidth,
+                         (IframeRate << 24 ) + (FrameRate << 16) + VideoBandwidth,
                           0x10001 + (VideoSmoothness << 8), #Video Smoothness
                          3, #fixed
                          1, #fixed
@@ -288,9 +343,9 @@ def streamer(maxstreams):
             pc += 1
             for stream_socket in streams: 
                 try:
-                    stream_socket.sendall(msg)                                       
+                    sent = stream_socket.send(msg)                                       
                 except Exception as e:
-                    print('Stream Terminated for ', stream_clients[stream_socket])
+                    print(ts(), 'Stream Terminated for ', stream_clients[stream_socket], e)
                     del stream_clients[stream_socket]
                     streams.remove(stream_socket)
                     closeconn(stream_socket)
@@ -421,7 +476,7 @@ def ConnectionManager():
             
             data = connection.recv(1024).decode("utf-8")            
             if 'slingbox' in data :
-                connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*5)
+                connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
                 connection.setblocking(False)
                 if streamer_q : # Streamer Thread ready to accept connections
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
