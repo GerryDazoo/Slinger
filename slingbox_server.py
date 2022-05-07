@@ -662,7 +662,7 @@ def BuildPage(cp):
 print( 'Running on', platform.platform())
 
 streamer_q = None
-status = 'Testing'
+status = 'Waiting for first update...'
 
 Thread(target=ConnectionManager).start()
 

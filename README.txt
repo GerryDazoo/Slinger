@@ -4,18 +4,27 @@ Bonus: The HTTP streaming server can server out mutliple simultaneous streams so
 
 The web-based remote control is yet another huge hack to get something working quickly. Uses "Flask", definately can be made prettier. You can tweek the look in the [REMOTE] section of the config.ini file. You can insert any valid HTML between the buttons and change the button and text style.
 
+To watch your slingbox use a media player that supports http streaming. I've tested VLC, OBS studio, ffplayer and mxplayer. http://your_ip_address_or_FQDN:your_port_number/slingbox
+your_port_number defaults to 8080 but you can override that with the port= entry in the config.ini file.
+i.e. http://192.168.1.10:8080/slingbox
+
+To access the Remote control functionality use the same IP address and port number but replace slingbox with Remote into any ol' web browser.
+i.e. http://192.168.1.10:8080/Remote
+
+
 Linux/RaspberryPi Notes
 You'll need a working Python3 interpreter to get going. Comes pre-installed on the Raspberry Pi distribution
 
 #    A minimum system is just less that 2G. So for safety sake use at least a 4G micro sd card
 #    Make a user "slingbox" with whatever password you'd like
     sudo apt-get update
-    sudo apt-get install python3-pip 
+    sudo apt-get install python3-pip
+# you don't need the flask modlue if you're not using the embedded web server to server out the Remote Control page. Disable the remote in your config.ini file set enableremote=no.
     sudo pip install flask
 # you don't need netifaces if you configure the slingbox ip address and port number in the config.ini file
     sudo pip install netifaces
     
-    copy "slinbox_server.py, tea.py, keys.dat, config.ini and sling.service to /home/slingbox  # 
+    copy "slinbox_server.py, keys.dat, config.ini and sling.service to /home/slingbox  # 
 
     sudo cp sling.service /etc/systemd/system/.
  #   enable it
@@ -23,21 +32,28 @@ You'll need a working Python3 interpreter to get going. Comes pre-installed on t
     sudo systemctl enable sling.service
     sudo systemctl start sling.service
     
-sudo systemctl stop sling.service to shut it down   
+sudo systemctl stop sling.service # to shut it down   
     
-# The default config generates a log file /tmp/sling.log   to check to see what's going on....   
+# The default config generates a log file /tmp/sling.log   to check to see what's going on....
+
+Added or modify the two following lines to your /etc/sysctl.conf 
+    net.core.rmem_max = 8192000
+    net.core.wmem_max = 8192000
+  
     
-   
 Windows Notes
-    There is a windows executable now available so you don't need  to do a python install.
-    I used cygwin Python on my Windows box but any widows python program should work. You'll need flask and netifaces module for python. See note about netifaces above.
+    There is a windows executable now available so you don't need to do a python install but your welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask and netifaces module for python. See note about netifaces and flask above.
     make a folder "slingbox" somewhere
-    copy "slinbox_server.py, tea.py, keys.dat, config.ini and RunSling.bat to the slingbox folder #
+    copy "slinbox_server.py, keys.dat, config.ini and RunSling.bat to the slingbox folder #
     if you want to have the server start automatically on boot make a shortcut to RunSling.bat in the Startup folder
     You need to open the port your using in your firewall on the server box if it's enabled.
-    The port number the server binds to is set in the config.ini file. 
-    If you want remote access add a port map on your firewall to redirect to your server box
+    The port number the server binds to is set in the config.ini file, defaults to 8080. 
+    If you want remote access add a port map on your firewall to redirect to your server box.
     
+    Security. Windows defender may think there are two viruses in the slingbox_server.exe file. This is not the case. Add an execption on your system for slingbox_server.exe
+     pc settings/update & security/windows security/virus & threat protection/virus & thread protection settings/add or remove exclusions/add an exclusion .. enter path to slingbox_server.exe.
+     Apparently there is a way around this by changing the source code and then signing the executable but I haven't tested it yet.
+     
 Not getting what your expecting. Note the Slingbox does not upscale the input, See https://www.slingbox.com/help/KB/KB-2000464 for more info.
 
 // slingbox video sizes
