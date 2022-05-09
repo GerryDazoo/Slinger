@@ -470,12 +470,12 @@ def ConnectionManager():
             
             ready_read, ready_write, exceptional = select.select([connection], [], [], 0.2)
             if not ready_read: 
-                print('No Get Request in time, hacker?')
+                print('No request in time, hacker?')
                 connection = closeconn(connection)
                 continue
             
             data = connection.recv(1024).decode("utf-8")            
-            if 'slingbox' in data :
+            if 'slingbox' in data and 'GET' in data:
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
                 connection.setblocking(False)
                 if streamer_q : # Streamer Thread ready to accept connections
@@ -483,13 +483,10 @@ def ConnectionManager():
                     streamer_q.put(connection)
                 else:
                     connetion = closeconn(connection)
-            elif 'Remote' in data and remoteenabled :
+            elif 'Remote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
-                if remoteenabled : 
-                    print('Hacker Alert. Invalid Request from ', client_address )
-                else:
-                    print('Got Remote connection request but Remote no enabled')
+                print('Hacker Alert. Invalid Request from ', client_address )
                 connection = closeconn(connection)
                 continue
         except Exception as e:
@@ -701,6 +698,7 @@ if serverinfo.get('enableremote', 'yes') == 'yes' :
                     elif 'x' in cmd and cmd != 'Exit':
  #                       print('Changing Resolution', data )
                         streamer_q.put( bytearray(1) + bytes('RESOLUTION=%s' % data, 'utf-8'))
+                    elif cmd == 'Channel' : pass # Channel request with no digits
                     else:
                         streamer_q.put(int(data).to_bytes(1, byteorder='little') +
                                       b'\x00\x00\x00\x00\x00\x00\x00')
