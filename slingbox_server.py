@@ -173,7 +173,7 @@ def streamer(maxstreams):
             data = f.read(16)
             return list(unpack('IIII', data))
                
-    def futf16(in_str): 
+    def futf16(in_str):   
         out_str = ''
         for c in in_str: out_str = out_str + c + chr(0)
         return bytes(out_str, 'utf-8')    
@@ -189,8 +189,8 @@ def streamer(maxstreams):
         try:
             cmd = pack("<HHHHH 6x HH 4x H 6x", msg_type, sid, opcode, 0, seq, len(data), smode, parity) + Crypt(data, skey)
             s_ctl.sendall( cmd )
-        except:
-            print('EXCEPTION', hex(msg_type), sid, hex(opcode), 0, seq, len(data), hex(smode), hex(parity))
+        except Exception as e:
+            print('EXCEPTION', e, hex(msg_type), sid, hex(opcode), 0, seq, len(data), hex(smode), hex(parity))
             exit(1)
         
         if opcode == 0x66 : return
@@ -257,10 +257,12 @@ def streamer(maxstreams):
         smode = 0x8000                # use dynamic key from now on
         sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         while stat:
-            print('Box in use!' )
-            status = 'Slingbox in Use! Cannot start session, retrying in 10 seconds..'
-            time.sleep(10)
-            sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
+            print('Box in use! Kicking off other user.' )
+            status = 'Slingbox in Use! Cannot start session, kicking off other user..'
+            sling_cmd(0x93, pack('32s 32s 8x', futf16('admin'), futf16(password)))
+            time.sleep(1)
+            sling_cmd(0x6a, pack("I 172x", 1)); # unk fn
+            sling_cmd(0x7e, pack("I I", 1, 0)) # stream control            
         
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
@@ -282,6 +284,10 @@ def streamer(maxstreams):
             return msg[1:].decode('utf-8').split('=')
         else:
             return 'IR', msg
+            
+    def start_new_stream(sock):
+        time.sleep(1)
+        streams.append(sock)
             
     ################## START of Streamer Execution        
     print('Streamer Running: ')
@@ -393,9 +399,10 @@ def streamer(maxstreams):
                         else:
                             new_stream.sendall(OK)
                             stream_clients[new_stream] = data
-                            streams.append(new_stream)
+                            #streams.append(new_stream)
                             new_stream.sendall(stream_header)
-                            print('New Stream Started, num clients = ', len(streams))
+                            print('New Stream Starting')
+                            Thread(target=start_new_stream, args=(new_stream,)).start()
                     elif cmd == 'IR':
                         sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
                         last_remote_command_time = time.time()
@@ -482,6 +489,7 @@ def ConnectionManager():
             data = connection.recv(1024).decode("utf-8")            
             if 'slingbox' in data and 'GET' in data:
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
+                connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 connection.setblocking(False)
                 if streamer_q : # Streamer Thread ready to accept connections
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))

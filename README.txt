@@ -1,3 +1,5 @@
+!!! The current code only supports the Slingbox 350/500  :-( !!!
+
 You'll need your SlingBox admin password. "https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js"
 
 Bonus: The HTTP streaming server can server out mutliple simultaneous streams so more than one person can see the Sling content at once. An integrated RTSP server should not be hard to do.
