@@ -74,7 +74,10 @@ def ts():
     return '%s ' % datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     
 def find_slingbox_info(): 
-    import netifaces
+    try:
+        import netifaces
+    except: return ('', 0)
+    
     def ip4_addresses():
         ips = []
         interfaces = netifaces.interfaces()
@@ -89,21 +92,21 @@ def find_slingbox_info():
                 ips.append(address['addr'])
         return ips
         
-
-    port = None
+    port = 0
     data =  [0x01, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
               
-
     ip = ''
     for local_ip in ip4_addresses():
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             print('\nFinding Slingbox on local network. My IP Info = ', local_ip) 
-            s.bind((local_ip, 0))
+            try:
+                s.bind((local_ip, 0))
+            except: continue
             for i in range(1,4):
                 try: 
                     s.sendto( bytearray(data), ('255.255.255.255', 5004 ))
@@ -288,12 +291,21 @@ def streamer(maxstreams):
     def start_new_stream(sock):
         time.sleep(1)
         streams.append(sock)
+        
+    def check_ip( sling_net_address):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(2)
+        try:
+            s.connect(sling_net_address)
+            return True
+        except: return False
             
     ################## START of Streamer Execution        
     print('Streamer Running: ')
     OK = b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
     ERROR =b'HTTP/1.0 503 ERROR\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
-    
+    streamer_q = queue.Queue()
+    stream_clients = {}
     cp = ConfigParser()
     cp.read('config.ini')
     slinginfo = cp['SLINGBOX']
@@ -304,19 +316,25 @@ def streamer(maxstreams):
     slingip =  slinginfo.get('ipaddress', '' )
     slingport = int(slinginfo.get('port', 5201))
 
-    if not slingip :
-        sling_net_address = find_slingbox_info()
-    else:
-        sling_net_address = (slingip, slingport )
-        
-    streamer_q = queue.Queue()
-    stream_clients = {}
-
+    while True:
+        sling_net_address = (slingip, slingport)
+        if check_ip(sling_net_address): break
+        else:
+            sling_net_address = find_slingbox_info()
+            if check_ip( sling_net_address ): break           
+            else:
+                status = "Can't find slingbox on network. Please make sure it's plugged in and connected."
+                if slingip : status = status + ' Check config.ini'
+                print(status)
+                time.sleep(10)
+            
+    print('Using slingbox at ', sling_net_address)
     while True:        
         stream_header = None
         streams = []
         # Wait for first stream request to arrive 
         print('Streamer: Waiting for first stream, flushing any IR requests that arrive while not connected to slingbox')
+        status = 'Waiting for first client. Slingbox at ' + str(sling_net_address)
         while True:
             cmd, value = parse_cmd(streamer_q.get())
             if cmd == 'STREAM': break
