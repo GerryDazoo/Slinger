@@ -255,6 +255,13 @@ def streamer(maxstreams):
         except:
             print('Error Starting Session. Check your admin password in config.ini file!')
             return None, None
+        c = binascii.hexlify(dbuf[0:16])
+        c = c.decode('utf-8')
+        print('CHALLANGE', c)
+ #       print('CHALLANGE', c[6:8] ,   c[4:6] ,   c[2:4] ,   c[0:2] , 
+ #                          c[14:16] , c[12:14] , c[10:12] , c[8:10] , 
+ #                          c[22:24] , c[20:22] , c[18:20] , c[16:18] , 
+ #                          c[30:32] , c[28:30] , c[26:28] , c[24:26])  
         skey = dynk(sid)
 #        print('New Key ', skey)
         smode = 0x8000                # use dynamic key from now on
