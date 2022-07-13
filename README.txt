@@ -11,7 +11,7 @@ To watch your slingbox use a media player that supports http streaming. I've tes
 your_port_number defaults to 8080 but you can override that with the port= entry in the config.ini file.
 i.e. http://192.168.1.10:8080/slingbox
 
-IMPORTANT - There is an issue with the default keys.dat file that contains the encryption keys for the SlingBox. I'm working on a software fix but until that is complete you'll see the connection to the slingbox fail after the logon sequence. To workaround this I need to prepare a keys.dat file for your specific box. On github open an issue with the line from the program logs that starts with CHALLANGE.It's 16 byte hex value.I can generate a new keys.dat file for you that should get you on the air.
+Note: The first time you run the server it will connect to the web to download a file with the proper encryption keys for you sling box. I'll try to intergrate that code as some point to remove this step.
 
 To access the Remote control functionality use the same IP address and port number but replace slingbox with Remote into any ol' web browser.
 i.e. http://192.168.1.10:8080/Remote
