@@ -15,6 +15,8 @@ from struct import pack, unpack
 from configparser import ConfigParser
 from ctypes import *
 
+version='1.01'
+
 def encipher(v, k):
     y = c_uint32(v[0])
     z = c_uint32(v[1])
@@ -764,7 +766,7 @@ def dynk(sid):
         return list(unpack('IIII', data))
 ###############################################################################
 ###########   START OF EXECUTION #####################################
-print( 'Running on', platform.platform())
+print( 'Version :', version, 'Running on', platform.platform())
 mypid = os.getpid()
 
 streamer_q = None
