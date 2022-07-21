@@ -3,15 +3,15 @@
 
 You'll need your SlingBox admin password. "https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js"
 
-Bonus: The HTTP streaming server can server out mutliple simultaneous streams so more than one person can see the Sling content at once. An integrated RTSP server should not be hard to do.
+Bonus: The HTTP streaming server can server out multiple simultaneous streams so more than one person can see the Sling content at once. An integrated RTSP server should not be hard to do.
 
-The web-based remote control is yet another huge hack to get something working quickly. Uses "Flask", definately can be made prettier. You can tweek the look in the [REMOTE] section of the config.ini file. You can insert any valid HTML between the buttons and change the button and text style.
+The web-based remote control is yet another huge hack to get something working quickly. Uses "Flask", definitely can be made prettier. You can tweak the look in the [REMOTE] section of the config.ini file. You can insert any valid HTML between the buttons and change the button and text style.
 
 To watch your slingbox use a media player that supports http streaming. I've tested VLC, OBS studio, ffplayer and mxplayer. http://your_ip_address_or_FQDN:your_port_number/slingbox
 your_port_number defaults to 8080 but you can override that with the port= entry in the config.ini file.
 i.e. http://192.168.1.10:8080/slingbox
 
-Note: The first time you run the server it will connect to the web to download a file with the proper encryption keys for you sling box. I'll try to intergrate that code as some point to remove this step.
+Note: The first time you run the server it will connect to the web to download a file with the proper encryption keys for your sling box. I'll try to integrate that code as some point to remove this step.
 
 To access the Remote control functionality use the same IP address and port number but replace slingbox with Remote into any ol' web browser.
 i.e. http://192.168.1.10:8080/Remote
@@ -47,19 +47,19 @@ Added or modify the two following lines to your /etc/sysctl.conf
   
     
 Windows Notes
-    There is a windows executable now available so you don't need to do a python install but your welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask and netifaces module for python. See note about netifaces and flask above.
+    There is a windows executable now available so you don't need to do a python install but you're welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask and netifaces module for python. See note about netifaces and flask above.
     make a folder "slingbox" somewhere
     copy "slinbox_server.py, keys.dat, config.ini and RunSling.bat to the slingbox folder #
     if you want to have the server start automatically on boot make a shortcut to RunSling.bat in the Startup folder
-    You need to open the port your using in your firewall on the server box if it's enabled.
+    You need to open the port you're using in your firewall on the server box if it's enabled.
     The port number the server binds to is set in the config.ini file, defaults to 8080. 
     If you want remote access add a port map on your firewall to redirect to your server box.
     
-    Security. Windows defender may think there are two viruses in the slingbox_server.exe file. This is not the case. Add an execption on your system for slingbox_server.exe
+    Security. Windows defender may think there are two viruses in the slingbox_server.exe file. This is not the case. Add an exception on your system for slingbox_server.exe
      pc settings/update & security/windows security/virus & threat protection/virus & thread protection settings/add or remove exclusions/add an exclusion .. enter path to slingbox_server.exe.
      Apparently there is a way around this by changing the source code and then signing the executable but I haven't tested it yet.
      
-Not getting what your expecting. Note the Slingbox does not upscale the input, See https://www.slingbox.com/help/KB/KB-2000464 for more info.
+Not getting what you're expecting? Note the Slingbox does not upscale the input, See https://www.slingbox.com/help/KB/KB-2000464 for more info.
 
 // slingbox video sizes
 #define SBVS_320x240	1
