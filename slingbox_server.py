@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.00'
+version='2.01'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -75,75 +75,52 @@ def ts():
     return '%s ' % datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
 def find_slingbox_info():
-    try:
-        import netifaces
-    except: return ('', 0)
-
+    import netifaces
     def ip4_addresses():
         ips = []
         interfaces = netifaces.interfaces()
         for interface in interfaces:
             addresses = netifaces.ifaddresses(interface)
-            family_addresses = addresses.get(netifaces.AF_INET)
-            if not family_addresses:
-                continue
-            for address in family_addresses:
-                ip = address['addr']
-                if ip.startswith('169.254.') or ip == "127.0.0.1" : continue
-                ips.append(address['addr'])
+            for address in addresses:
+                info = addresses[address][0]
+                if 'broadcast' in info:
+                    ips.append((info['addr'],info['broadcast'])) 
         return ips
 
-    port = 0
-    data =  [0x01, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+    boxes = []
+
+    query =  [0x01, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
     ip = ''
-    for local_ip in ip4_addresses():
+    port = 0
+    boxes = []
+    print('No slingbox ip info found in config.ini')
+    for local_ip, broadcast in ip4_addresses():
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            print('\nFinding Slingbox on local network. My IP Info = ', local_ip)
+            print('Finding Slingbox on local network. My IP Info = ', local_ip)
             try:
                 s.bind((local_ip, 0))
             except: continue
-            for i in range(1,4):
+         
+            s.sendto( bytearray(query), (broadcast, 5004 ))
+            while True:
                 try:
-                    s.sendto( bytearray(data), ('255.255.255.255', 5004 ))
-                    msg, source = s.recvfrom(32768)
-                #    print('Got', str(msg), source)
+                    msg, source = s.recvfrom(128)
                     if len( msg ) == 124 :
-                      #  print('good len')
-                        if b'S\x00l\x00i\x00n\x00g\x00b\x00o\x00x' in msg:
-                            print('Slingbox Found')
-                            ip = source[0]
-                            break
-                except socket.timeout:
-                    print('.', end='')
-            else:
-                continue
-        break
-        s.close()
-
-    if ip :
-        port = 0
-        print('Scanning for open control port')
-        for p in range(5201, 5220):
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                try:
-                    print('Checking port ', ip, p)
-                    result = s.connect_ex((ip,p))
-                    if result ==0:
-                        print("Port {} is open".format(p))
-                        port = p
-                        break
-                except:
-                    print('EX')
-                    continue
-
-    s.close()
-    return (ip, port)
+                        data = unpack('62H', msg)
+                        port = data[60]
+                        name = ''
+                        for i in range( 28, 60): name = name + chr(data[i])
+                        print('Slingbox Found', source[0], port, '"',name, '"')
+                        boxes.append((source[0], port, name))
+                except :
+                    break
+    return boxes    
 
 def closeconn( s ):
     if s :
@@ -347,17 +324,30 @@ def streamer(maxstreams):
     slingport = int(slinginfo.get('port', 5201))
     bts = bco = runt = 0
 
-    while True:
-        sling_net_address = (slingip, slingport)
-        if check_ip(sling_net_address): break
+    sling_net_address = (slingip, slingport)
+    if slingip:
+        if not check_ip(sling_net_address): 
+            slingip = ''
+    if not slingip:
+        time.sleep(1)
+        boxes = find_slingbox_info()
+        if len(boxes):        
+            if len(boxes)>1:
+                print("""Found more than one slingbox on the local network.
+Please select the one you want to use and update the config.ini accordingly.
+\nGiving up. Sorry..""")
+                return
+            slingip = boxes[0][0]
+            slingport = boxes[0][1]
+            sling_net_address = (slingip, slingport)
         else:
-            sling_net_address = find_slingbox_info()
-            if check_ip( sling_net_address ): break
-            else:
-                status = "Can't find slingbox on network. Please make sure it's plugged in and connected."
-                if slingip : status = status + ' Check config.ini'
-                print(status)
-                time.sleep(10)
+            slingip = ''
+    
+    if not slingip:
+        status = "Can't find a slingbox on network. Please make sure it's plugged in and connected."
+        status = status + ' Check config.ini'
+        print(status)
+        time.sleep(10)
 
     def readnbytes(sock, n):
 #        print( 'Reading', n )
