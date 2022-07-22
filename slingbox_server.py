@@ -11,11 +11,11 @@ import platform
 import datetime
 import traceback
 import requests
-from struct import pack, unpack
+from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='1.01'
+version='2.00'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -159,6 +159,10 @@ def streamer(maxstreams):
     smode = 0x2000               # basic cipher mode,
     sid = 0
     seq = 0
+    tbd = 0
+    dco = b''
+    bco = 0
+    bts = 0
     s_ctl = None
     stream = None
     dbuf = None
@@ -204,7 +208,7 @@ def streamer(maxstreams):
         if smode == 0x8000 :
             for x in data:
               parity ^= x
- #       print( 'Sending to Slingbox ', hex(opcode), hex(parity), hex(len(data)))
+ #       if opcode == 0xb5 : print( 'Sending to Slingbox ', hex(opcode), hex(parity), '\r\n', pbuf(data))
         seq += 1
         try:
             cmd = pack("<HHHHH 6x HH 4x H 6x", msg_type, sid, opcode, 0, seq, len(data), smode, parity) + Crypt(data, skey)
@@ -218,18 +222,18 @@ def streamer(maxstreams):
         response = s_ctl.recv(32)
         sid, stat, dlen = unpack("2x H 8x H 2x H", response[0:18] ) # "x2 v x8 v x2 v", $hbuf);
 #        print( 'Sent to Slingbox ', hex(opcode), hex(parity), hex(len(data)))
-#        print( 'Received from Slingbox', sid, hex(stat), dlen )
+ #       print( 'Received from Slingbox', sid, hex(stat), dlen )
         if stat & stat != 0x0d & stat != 0x13 :
             print( "cmd:", hex(opcode), "err:",  hex(stat), dlen )
         if dlen > 0 :
             in_buf = s_ctl.recv( 512 )
             dbuf = Decrypt(in_buf, skey)
 
-    def sling_open(connection_type):
+    def sling_open(addr, connection_type):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024*1024*8)
-        print('Connecting...', sling_net_address, connection_type )
-        s.connect(sling_net_address)
+        print('Connecting...', addr, connection_type )
+        s.connect(addr)
         s.sendall(str.encode('GET /stream.asf HTTP/1.1\r\nAccept: */*\r\nPragma: Sling-Connection-Type=%s, Session-Id=%d\r\n\r\n' % (connection_type, sid)))
         return s
 
@@ -248,14 +252,13 @@ def streamer(maxstreams):
                          3, #fixed
                          1, #fixed
                          AudioBitRate,
-                         3,
-#                        0x4f,
+#                         3,
+                         0x4f,
                          1,
                          rand,
                          0x1012020,
                          1)); # set stream params
-
-
+ 
     def start_slingbox_session(streams):
         nonlocal stream_header, sid, seq, s_ctl, dbuf, skey, stat, smode
         global status
@@ -264,7 +267,7 @@ def streamer(maxstreams):
         smode = 0x2000               # basic cipher mode,
         sid = seq = 0                # no session ID, seq 0
  #       print('Opening Control stream', hex(smode), sid, seq)
-        s_ctl = sling_open('Control') # open control connection to SB
+        s_ctl = sling_open(sling_net_address, 'Control') # open control connection to SB
         sling_cmd(0x67, pack('I 32s 32s 132x', 0, futf16('admin'), futf16(password))) # log in to SB
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
         try:
@@ -289,24 +292,27 @@ def streamer(maxstreams):
 
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
-        stream = sling_open('Stream')
-        first_buffer = stream.recv(pksize)
+        stream = sling_open(sling_net_address, 'Stream')
+        first_buffer = bytearray(stream.recv(pksize, socket.MSG_PEEK))
+#        print( 'FIRST', type(first_buffer), pbuf(first_buffer))
         h264_header = b'\x36\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c'
         h264_header_pos = first_buffer.find( h264_header ) + 50
-        print( 'h246_header_pos', h264_header_pos, len( first_buffer ))
+ #       print( 'h246_header_pos', h264_header_pos, len( first_buffer ))
         if 'Solo' in sbtype:
+            tbd = 0
             audio_header = b'\x91\x07\xDC\xB7\xB7\xA9\xCF\x11\x8E\xE6\x00\xC0\x0C\x20\x53\x65\x72'
             audio_header_pos = first_buffer.find( audio_header ) + 0x60 # find audio hdr
-#substr($ibuf, $apos + 0x60, 10) = pack("v x8", 0x9012); # fix audio header so VLC will play
-            print('AUDIO HEADER', audio_header_pos )
-            first_buffer = first_buffer[0:audio_header_pos] + pack("H 8x", 0x9012) + first_buffer[audio_header_pos+10:]
-#            print(pbuf(first_buffer))
+            first_buffer[audio_header_pos:audio_header_pos+10] = pack("H 8x", 0x9012)
+            
         stream_header = first_buffer[0:h264_header_pos]
-        print('Stream started at', ts(), len(stream_header))
+        #print( 'SH', type(stream_header), pbuf(stream_header))
+        
+        print('Stream started at', ts(), len(stream_header), len(first_buffer[h264_header_pos:]))
         for s in streams :
             s.sendall(stream_header)
-            # Send any left over bits
-            s.sendall(first_buffer[h264_header_pos:])
+        # flush header from socket
+        stream.recv(h264_header_pos)
+
         return s_ctl, stream
 
     def parse_cmd(msg):
@@ -339,6 +345,7 @@ def streamer(maxstreams):
     slinginfo = cp['SLINGBOX']
     slingip =  slinginfo.get('ipaddress', '' )
     slingport = int(slinginfo.get('port', 5201))
+    bts = bco = runt = 0
 
     while True:
         sling_net_address = (slingip, slingport)
@@ -353,40 +360,93 @@ def streamer(maxstreams):
                 time.sleep(10)
 
     def readnbytes(sock, n):
+#        print( 'Reading', n )
         buff = b''
-        while n > 0:
-            b = sock.recv(n)
-            buff += b
-            if len(b) == 0:
-                return b          # peer socket has received a SH_WR shutdown
-            n -= len(b)
+        try:
+            while n > 0:
+                b = sock.recv(n)
+                buff += b
+                if len(b) == 0:
+                    return b          # peer socket has received a SH_WR shutdown
+                n -= len(b)
+        except:
+            print('Error Reading video stream')
+            buff = b''
         return buff
-    
+
     def process_solo_msg( msg ):
-#    ($pmode, $pad, $pktt, $pcnt) = unpack("N x V2 x2 C", $ibuf);
-#   last if ($pmode & ~1) != 0x82000018; # unexpected or corrupted data
-        pmode, pad, pktt, pcnt = unpack(">L x 2L 2x B", msg[0:16])
-#        print(hex(pmode))
+    
+        def cs( mybuf ):
+            sum = 0
+            for byte in mybuf:
+                sum = sum + byte
+            return sum
+            
+        nonlocal tbd, dco, bco, pc, bts
+#        print('MSG', pbuf(msg[0:16]))
+        msg = bytearray( msg )
+        pmode = unpack(">I", msg[0:4])[0]
+        pad, pktt, pcnt = unpack("<x I I 2x B", msg[4:16])
+ #       print('pmode..', pc, hex(pmode), pad, pktt, pcnt)
         if ( pmode & 0xFFFFFFFE ) != 0x82000018 :
+            print('Bad Pmode')
             return b''            
-#   $off = 16;
-#   $off = 15, $pcnt = 1 unless $pmode & 1; # if single payload packet
+
         off = 16
         if pmode == 0x82000018 :
             off = 15
             pcnt = 1
- #    for ($p = 0; $p < ($pcnt & 63); $off += $len, ++$p) { # check each payload
- #       ($sn, $objoff, $objsiz, $len) = unpack("x$off C x V x V x4 v", $ibuf);
- #       $off += 17;
- #       $off -= 2, $len = $pktsiz - 30 - $pad unless $pmode & 1;
-  #      next unless $sn == 0x82 || ($sn & 63) == 1; # process only video key frame and audio
+            
         p = 0
-        while p < pcnt & 63 :
-            break
- 
+        while p < (pcnt & 63) :
+ #           print( "loop", p, off, pcnt & 63); 
+            fmt = "<B x I x I 4x H"
+            size = calcsize(fmt)
+            if off > 3000 - size : break 
+            sn, objoff, objsiz, length = unpack(fmt, msg[off:off+size]);
+ #           print( 'info', off, sn, objoff, objsiz, length )  
+            off += 17
+            if not pmode & 1 :
+                off -= 2
+                length = 2970 - pad   
+            if ( sn == 0x82 or (sn & 63 == 1 )) : 
+                if objoff == 0 : tbd = objsiz & ~15
+                bts = (bco + length ) & 15
+                cbd = (bco + length) & ~15
+                if (cbd):
+ #                  print( 'SN', sn, off, tbd, bts, objsiz, objoff, cbd, bco )
+
+                   if (bco):
+     #                  print('Decrypting',  bco, off, cbd)
+                       buf = Decrypt(dco + msg[off:off + (cbd - bco)], skey); 
+                       dco = buf[0:bco] # fix data carried over
+                       msg[off:off+(cbd - bco)] = buf[bco:] # fix current packet
+                       bco = 0;
+                   else:
+     #                  print('DEcrypting', off, cbd, len(msg), pbuf(msg[off:off+cbd]))
+                       buf = Decrypt(msg[off:off+cbd], skey) # decrypt
+    #                   print('DEcrypted', pbuf(buf))
+                       msg[off:off+cbd] = buf
+                tbd -= cbd
+                if tbd == 0 : bts = 0
+                if sn == 0x82 and objoff == 0:
+                   break
+               
+            off += length
+            p += 1 
+        
+#        print $out $dco if $dco ne '';
+        msg = dco + msg
+        bco = bts
+        if bco > 0 : 
+            dco = msg[-bts:]
+            msg = msg[0:-bts]
+ #           print('DCO', bts, pbuf(dco)[7:-2])
+        else:
+            dco = b''
+            
         return msg
-                        
-                            
+                                                       
     print('Using slingbox at ', sling_net_address)
     while True:
         stream_header = None
@@ -400,9 +460,15 @@ def streamer(maxstreams):
             if cmd == 'RESOLUTION' :
                 print('Changing Resolution', value)
                 resolution= int(value)
-        sbtype = slinginfo['sbtype'].strip()
+        cp = ConfigParser()
+        cp.read('config.ini')
+        slinginfo = cp['SLINGBOX']
+        sbtype = slinginfo.get('sbtype', "350/500").strip()
         password = slinginfo['password'].strip()
-        resolution = int(slinginfo.get('Resolution', 12 ))
+        resolution = int(slinginfo.get('Resolution', 12 )) & 15
+        if resolution == 0 : 
+            print('Invalid Resolution', resolution, 'Defaulting to 640x480')
+            resolution = 5;
         FrameRate = int(slinginfo.get('FrameRate', 30 ))
         VideoBandwidth = int(slinginfo.get('VideoBandwidth', 2000 ))
         VideoSmoothness = int(slinginfo.get('VideoSmoothness', 63 ))
@@ -418,33 +484,29 @@ def streamer(maxstreams):
         stream_clients[client_socket] = client_addr
         streams.append(client_socket)
         client_socket.sendall(OK)
-        try:
-            s_ctl, stream = start_slingbox_session(streams)
+        try:          
+            s_ctl, stream  = start_slingbox_session(streams)
         except Exception as e:
-            print('Badness starting slingbox session ', e )
+            print('Badness starting slingbox session ', e, traceback.print_exc())
             killmyself()
         if s_ctl and stream :
             pc = 0
             lasttick = laststatus = lastkeepalive = last_remote_command_time = time.time()
             while streams:
- #               msg = stream.recv(pksize)
                 msg = readnbytes(stream, pksize)
+                if 'Solo' in sbtype and len(msg) > 0: 
+                    msg = process_solo_msg( msg )
+                    if len(msg) == 0 :
+                        print(ts(), 'Bad or Corrupted Solo message')
                 
                 if len(msg) == 0 :
                     print(ts(), 'Stream Stopped Unexpectly, possible slingbox video format change')
                     stream = closeconn(stream)
                     s_ctl = closeconn(s_ctl)
                     break
+                    
                 pc += 1
-                for stream_socket in streams:
-                    if 'Solo' in sbtype: 
-                        msg = process_solo_msg( msg )
-                        if len(msg) == 0 :
-                            print(ts(), 'Bad or Corrupted Solo messgae')
-                            stream = closeconn(stream)
-                            s_ctl = closeconn(s_ctl)
-                            break
-                        
+                for stream_socket in streams:                    
                     try:
                         sent = stream_socket.send(msg)
                     except Exception as e:
@@ -453,7 +515,7 @@ def streamer(maxstreams):
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
                         continue
-
+                msg = b''
                 curtime = time.time()
                 if curtime - lasttick > 10.0 :
                     print('.', end='')
@@ -500,9 +562,11 @@ def streamer(maxstreams):
                         sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
                         last_remote_command_time = time.time()
 
-            ### No More Streams
+            ### No More Streams OR input stream stopped
+            print('Shutting down connections')
             s_ctl = closeconn(s_ctl)
             stream = closeconn(stream)
+            for s in streams: closeconn(s)
         else:
             print('ERROR: Slingbox session startup failed.')
     print('Streamer Exiting.. should never get here')
