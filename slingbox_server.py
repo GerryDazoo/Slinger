@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.01'
+version='2.02'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -97,7 +97,7 @@ def find_slingbox_info():
     ip = ''
     port = 0
     boxes = []
-    print('No slingbox ip info found in config.ini')
+    print('No valid slingbox ip info found in config.ini')
     for local_ip, broadcast in ip4_addresses():
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
@@ -303,13 +303,16 @@ def streamer(maxstreams):
         streams.append(sock)
 
     def check_ip( sling_net_address):
-        print('Checking ', sling_net_address)
+        print('Checking for slingbox at', sling_net_address)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(2)
         try:
             s.connect(sling_net_address)
+            print(sling_net_address, 'OK')
             return True
-        except: return False
+        except: 
+            print('Error connecting to ', sling_net_address) 
+            return False
 
     ################## START of Streamer Execution
     print('Streamer Running: ')
@@ -325,9 +328,8 @@ def streamer(maxstreams):
     bts = bco = runt = 0
 
     sling_net_address = (slingip, slingport)
-    if slingip:
-        if not check_ip(sling_net_address): 
-            slingip = ''
+    if not slingip == '' : 
+        if not check_ip(sling_net_address): slingip = ''
     if not slingip:
         time.sleep(1)
         boxes = find_slingbox_info()
@@ -340,8 +342,6 @@ Please select the one you want to use and update the config.ini accordingly.
             slingip = boxes[0][0]
             slingport = boxes[0][1]
             sling_net_address = (slingip, slingport)
-        else:
-            slingip = ''
     
     if not slingip:
         status = "Can't find a slingbox on network. Please make sure it's plugged in and connected."
@@ -643,7 +643,7 @@ def ConnectionManager():
                     streamer_q.put(connection)
                 else:
                     connetion = closeconn(connection)
-            elif 'Remote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
+            elif 'emote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
                 Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
