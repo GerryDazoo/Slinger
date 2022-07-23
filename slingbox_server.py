@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.02'
+version='2.03'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -549,7 +549,10 @@ Please select the one you want to use and update the config.ini accordingly.
                             print('New Stream Starting')
                             Thread(target=start_new_stream, args=(new_stream,)).start()
                     elif cmd == 'IR':
-                        sling_cmd(0x87, data + pack('464x 4h', 3, 0, 0, 0), msg_type=0x0201)
+                        data = bytearray(data)
+                        data[2] = 0xf4
+                        data[3] = 0x01
+                        sling_cmd(0x87, data + pack('464x 4h', 2, 0, 0, 0), msg_type=0x0201)
                         last_remote_command_time = time.time()
 
             ### No More Streams OR input stream stopped
