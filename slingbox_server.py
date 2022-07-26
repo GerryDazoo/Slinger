@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.03'
+version='2.04'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -258,7 +258,12 @@ def streamer(maxstreams):
         skey = dynk(sid, c)
 #        print('New Key ', skey)
         smode = 0x8000                # use dynamic key from now on
-        sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
+        try:
+            sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
+        except:
+            print('Error with new encryption keys. Deleting keys.dat\r\n Please try again.')
+            os.remove("keys.dat") 
+            return (None,None)
         while stat:
             print('Box in use! Kicking off other user.' )
             status = 'Slingbox in Use! Cannot start session, kicking off other user..'
@@ -275,7 +280,7 @@ def streamer(maxstreams):
         h264_header = b'\x36\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c'
         h264_header_pos = first_buffer.find( h264_header ) + 50
  #       print( 'h246_header_pos', h264_header_pos, len( first_buffer ))
-        if 'Solo' in sbtype:
+        if Solo:
             tbd = 0
             audio_header = b'\x91\x07\xDC\xB7\xB7\xA9\xCF\x11\x8E\xE6\x00\xC0\x0C\x20\x53\x65\x72'
             audio_header_pos = first_buffer.find( audio_header ) + 0x60 # find audio hdr
@@ -454,6 +459,7 @@ Please select the one you want to use and update the config.ini accordingly.
         cp.read('config.ini')
         slinginfo = cp['SLINGBOX']
         sbtype = slinginfo.get('sbtype', "350/500").strip()
+        Solo = 'Solo' in sbtype
         password = slinginfo['password'].strip()
         resolution = int(slinginfo.get('Resolution', 12 )) & 15
         if resolution == 0 : 
@@ -465,7 +471,7 @@ Please select the one you want to use and update the config.ini accordingly.
         IframeRate = int(slinginfo.get('IframeRate', 5 ))
         AudioBitRate = int(slinginfo.get('AudioBitRate', 64 ))
         pksize = 3072
-        if "Solo" in sbtype : pksize = 3000
+        if Solo : pksize = 3000
         print( '\r\nSlinginfo ', sbtype, password, resolution, FrameRate, slingip, slingport, pksize )
 
         client_addr = str(value)
@@ -484,8 +490,12 @@ Please select the one you want to use and update the config.ini accordingly.
             lasttick = laststatus = lastkeepalive = last_remote_command_time = time.time()
             while streams:
                 msg = readnbytes(stream, pksize)
-                if 'Solo' in sbtype and len(msg) > 0: 
-                    msg = process_solo_msg( msg )
+                if Solo and len(msg) > 0: 
+                    try:
+                        msg = process_solo_msg( msg )
+                    except:
+                        print('Error Processing Solo Message, switching to 500')
+                        Solo = False
                     if len(msg) == 0 :
                         print(ts(), 'Bad or Corrupted Solo message')
                 
@@ -552,7 +562,7 @@ Please select the one you want to use and update the config.ini accordingly.
                         data = bytearray(data)
                         data[2] = 0xf4
                         data[3] = 0x01
-                        sling_cmd(0x87, data + pack('464x 4h', 2, 0, 0, 0), msg_type=0x0201)
+                        sling_cmd(0x87, data + pack('464x 4h', 2, 0, 0, 0), msg_type=0x0101)
                         last_remote_command_time = time.time()
 
             ### No More Streams OR input stream stopped
@@ -569,7 +579,7 @@ Please select the one you want to use and update the config.ini accordingly.
 def remote_control_stream( connection, client, request):
     print('\r\nStarting remote control stream hander for ', str(client))
     remote_control_socket =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    remote_control_socket.connect(('127.0.0.1', 9998 ))  ## Send Packets to Flask
+    remote_control_socket.connect(('127.0.0.1', http_port ))  ## Send Packets to Flask
     print('Remote Control Connected')
     remote_control_socket.sendall( bytes(request, 'utf-8' ))
     sockets = [remote_control_socket, connection]
@@ -851,10 +861,17 @@ if serverinfo.get('enableremote', 'yes') == 'yes' :
         print('Button Clicked', request.form)
         if request.form.get('Digits'):
             channel = request.form.get('Digits').strip()
-            print('Sending Channel Digits', channel)
-            for digit in channel:
-                streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
-                b'\x00\x00\x00\x00\x00\x00\x00')
+            if channel[0] == '?' :
+                kc = int(channel[1:])
+                print('Sending test keycode', kc )
+                streamer_q.put(kc.to_bytes(1, byteorder='little') +
+                                      b'\x00\x00\x00\x00\x00\x00\x00')
+            else:
+                print('Sending Channel Digits', channel)
+                for digit in channel:
+                    if digit in '0123456789' :
+                        streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
+                    b'\x00\x00\x00\x00\x00\x00\x00')
         else:
             for tuple in cmds:
                 cmd = tuple[0]
@@ -871,6 +888,9 @@ if serverinfo.get('enableremote', 'yes') == 'yes' :
                         streamer_q.put(int(data).to_bytes(1, byteorder='little') +
                                       b'\x00\x00\x00\x00\x00\x00\x00')
         return render_template_string(Page%status)
-
-    app.run(host='0.0.0.0', port=9998, debug=False)
+    cp = ConfigParser()
+    cp.read('config.ini')
+    serverinfo = cp['SERVER']
+    http_port = int(serverinfo.get('port', 8080))+1
+    app.run(host='0.0.0.0', port=http_port, debug=False)
 
