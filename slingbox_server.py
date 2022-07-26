@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.04'
+version='2.05'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -678,7 +678,7 @@ def parse_buttons(buttons):
 #        print('LINES=', lines)
     cmds = []
     for line in lines:
-            name, value = line.split(':')
+            name, value = line.split(':', 1)
 #               print( name, value)
             name = name.replace("'", '')
             cmds.append((name.strip(), value.strip()))
@@ -820,7 +820,10 @@ def BuildPage(cp):
         if key == '':
             formstr = formstr + data
         else:
-            formstr = formstr + '<button class=button type="submit" name="%s" value="%s">%s</button>' % (key,str(data), key)
+            print('BUTTON', data)
+            try: btn_class = data.split(':')[1].strip()
+            except: btn_class = 'button'
+            formstr = formstr + '<button class=%s type="submit" name="%s" value="%s">%s</button>' % (btn_class, key, str(data), key)
             if 'Channel' == data:
                 formstr = formstr + '<input class=text type="text" name="Digits" maxlength="4" size="4" id="" value=""></input>'
         page = BasePage % ( style, formstr, '%s' )
