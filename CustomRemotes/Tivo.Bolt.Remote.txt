@@ -1,6 +1,43 @@
 [REMOTE]
 
+
 style=.button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+     cursor: pointer;
+    }
+    .red-button {
+      border: none;
+      color: white;
+      background-color: red;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+    }
+    .yellow-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+    }
+    .blue-button {
       border: none;
       color: white;
       background-color: blue;
@@ -10,7 +47,19 @@ style=.button {
       display: inline-block;
       font-size: 20px;
       margin: 2px 2px;
-     cursor: pointer;
+      cursor: pointer;
+    }
+    .green-button {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
     }
     .text {
       border: none;
@@ -25,11 +74,11 @@ style=.button {
     }
 
  button text, key code
-buttons=:<h1>&emsp;&emsp;&emsp;TIVO BOLT Remote</h1>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-	'TIVO' : 36
+buttons=:<h1 style="color:darkblue">&emsp;&emsp;TIVO BOLT REMOTE</h1>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+	'TIVO' : 72
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         'LIVE' : 32 
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -57,17 +106,17 @@ buttons=:<h1>&emsp;&emsp;&emsp;TIVO BOLT Remote</h1>
         'CH-' : 5 
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
-        'REC' : 29
+        'REC' : 29 : red-button
 	:<br><br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         'PLAY' : 24 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-        'REW': 27
-        :&emsp;
-        'PAUSE' : 26 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;
+        '<<': 27
+        :&emsp;&nbsp;&nbsp;
+        'PAUSE' : 26 :yellow-button
         :&emsp;&emsp;
-        'FF' : 28         
+        '>>' : 28         
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         'SLOW' : 50
@@ -75,7 +124,16 @@ buttons=:<h1>&emsp;&emsp;&emsp;TIVO BOLT Remote</h1>
         'SKIP-': 31
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         'SKIP+' : 30
-	:<br>
+	:<br><br>
+	:&emsp;&emsp;&emsp;
+        'A' : 76 : yellow-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'B' : 77 : blue-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'C' : 74 : red-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'D' : 75 : green-button
+	:<br><br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         '1' : 9 
         :&emsp;&emsp;&emsp;
@@ -101,17 +159,8 @@ buttons=:<h1>&emsp;&emsp;&emsp;TIVO BOLT Remote</h1>
         'CLEAR' : 37     
         :&emsp;&nbsp;&nbsp;
 	'0' : 18
-        :&emsp;&emsp;
-        'LAST' : 21
-        :&emsp;&nbsp;
+        :&emsp;&nbsp;&nbsp;
         'ENTER' : 19
-	:<br><br><br>
-	:&emsp;&emsp;&emsp;
-        'A' : 76
-        :&emsp;&emsp;&emsp;&emsp;
-        'B' : 77
-        :&emsp;&emsp;&emsp;&emsp;
-        'C' : 74
-        :&emsp;&emsp;&emsp;&emsp;
-        'D' : 75
-        
+	:<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'LAST' : 21
