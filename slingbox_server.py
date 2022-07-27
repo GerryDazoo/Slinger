@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.05'
+version='2.06'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -199,12 +199,14 @@ def streamer(maxstreams):
         response = s_ctl.recv(32)
         sid, stat, dlen = unpack("2x H 8x H 2x H", response[0:18] ) # "x2 v x8 v x2 v", $hbuf);
 #        print( 'Sent to Slingbox ', hex(opcode), hex(parity), hex(len(data)))
- #       print( 'Received from Slingbox', sid, hex(stat), dlen )
+#        print( 'Received from Slingbox', sid, hex(stat), dlen )
+#        print('RESP', pbuf(response))
         if stat & stat != 0x0d & stat != 0x13 :
             print( "cmd:", hex(opcode), "err:",  hex(stat), dlen )
         if dlen > 0 :
             in_buf = s_ctl.recv( 512 )
             dbuf = Decrypt(in_buf, skey)
+#            print('DBUF', hex(opcode), pbuf(dbuf))
 
     def sling_open(addr, connection_type):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -562,7 +564,11 @@ Please select the one you want to use and update the config.ini accordingly.
                         data = bytearray(data)
                         data[2] = 0xf4
                         data[3] = 0x01
-                        sling_cmd(0x87, data + pack('464x 4h', 2, 0, 0, 0), msg_type=0x0101)
+                        end = 2
+                       # data[2] = 0xfa
+                       # data[3] = 0x00
+                       # end = 3
+                        sling_cmd(0x87, data + pack('464x 4h', end, 0, 0, 0), msg_type=0x0101)
                         last_remote_command_time = time.time()
 
             ### No More Streams OR input stream stopped
@@ -820,7 +826,7 @@ def BuildPage(cp):
         if key == '':
             formstr = formstr + data
         else:
-            print('BUTTON', data)
+#            print('BUTTON', data)
             try: btn_class = data.split(':')[1].strip()
             except: btn_class = 'button'
             formstr = formstr + '<button class=%s type="submit" name="%s" value="%s">%s</button>' % (btn_class, key, str(data), key)
@@ -888,6 +894,8 @@ if serverinfo.get('enableremote', 'yes') == 'yes' :
                         streamer_q.put( bytearray(1) + bytes('RESOLUTION=%s' % data, 'utf-8'))
                     elif cmd == 'Channel' : pass # Channel request with no digits
                     else:
+                        data = data.split(':')[0].strip()
+#                       print('KEY', data )
                         streamer_q.put(int(data).to_bytes(1, byteorder='little') +
                                       b'\x00\x00\x00\x00\x00\x00\x00')
         return render_template_string(Page%status)
