@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='2.06'
+version='3.00'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -131,8 +131,8 @@ def closeconn( s ):
         s.close()
     return None
 
-def streamer(maxstreams):
-    global streamer_q, status
+def streamer(maxstreams, config_fn, server_port):
+    global streamer_qs, status
     smode = 0x2000               # basic cipher mode,
     sid = 0
     seq = 0
@@ -160,16 +160,16 @@ def streamer(maxstreams):
             cnt += 16
         return out
 
-    def dynk(sid, challange):
+    def dynk(sid, challange, fn):
         try:
-            f = open('keys.dat', 'rb')
+            f = open(fn, 'rb')
         except:
-            print('Fetching new encryption keys from web')
+            print('Fetching new encryption keys from web for keys file', fn)
             url = 'http://www.dazoo.net:65432/cgi-bin/Sling/genkeys/?challange=%s' % challange
             r = requests.get(url, allow_redirects=False)
-            open('keys.dat', 'wb').write(r.content)
+            open(fn, 'wb').write(r.content)
             
-        with open('keys.dat', 'rb') as f:
+        with open(fn, 'rb') as f:
             f.seek( sid * 16 )
             data = f.read(16)
             return list(unpack('IIII', data))
@@ -245,35 +245,40 @@ def streamer(maxstreams):
  #       print('skey', skey )
         smode = 0x2000               # basic cipher mode,
         sid = seq = 0                # no session ID, seq 0
- #       print('Opening Control stream', hex(smode), sid, seq)
+ #       print(name, 'Opening Control stream', hex(smode), sid, seq)
         s_ctl = sling_open(sling_net_address, 'Control') # open control connection to SB
         sling_cmd(0x67, pack('I 32s 32s 132x', 0, futf16('admin'), futf16(password))) # log in to SB
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
         try:
             sling_cmd(0xc6, pack('I 16s 36x', 1, rand)) # setup dynamic key on SB
         except:
-            print('Error Starting Session. Check your admin password in config.ini file!')
+            print(name,'Error Starting Session. Check your admin password in config.ini file!')
             return None, None
         c = binascii.hexlify(dbuf[0:16])
         c = c.decode('utf-8')
-        print('CHALLANGE', c)            
-        skey = dynk(sid, c)
+        print(name,'CHALLANGE', c)            
+        skey = dynk(sid, c, keysfile)
 #        print('New Key ', skey)
         smode = 0x8000                # use dynamic key from now on
         try:
             sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         except:
-            print('Error with new encryption keys. Deleting keys.dat\r\n Please try again.')
-            os.remove("keys.dat") 
+            print(name,'Error with new encryption keys. Deleting keys.dat\r\n Please try again.')
+            os.remove(keysfile) 
             return (None,None)
         while stat:
-            print('Box in use! Kicking off other user.' )
-            status = 'Slingbox in Use! Cannot start session, kicking off other user..'
+            print(name,'Box in use! Kicking off other user.' )
+            stati[server_port] = name + ' Slingbox in Use! Cannot start session, kicking off other user..'
             sling_cmd(0x93, pack('32s 32s 8x', futf16('admin'), futf16(password)))
             time.sleep(1)
             sling_cmd(0x6a, pack("I 172x", 1)); # unk fn
             sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
-
+        
+        ## Select input
+        if VideoSource :
+            print(name,'Selecting Video Source', VideoSource)
+            sling_cmd(0x85, pack('4h', int(VideoSource), 0, 0, 0 ))
+            
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
         stream = sling_open(sling_net_address, 'Stream')
@@ -291,7 +296,7 @@ def streamer(maxstreams):
         stream_header = first_buffer[0:h264_header_pos]
         #print( 'SH', type(stream_header), pbuf(stream_header))
         
-        print('Stream started at', ts(), len(stream_header), len(first_buffer[h264_header_pos:]))
+        print(name,'Stream started at', ts(), len(stream_header), len(first_buffer[h264_header_pos:]))
         for s in streams :
             s.sendall(stream_header)
         # flush header from socket
@@ -322,13 +327,14 @@ def streamer(maxstreams):
             return False
 
     ################## START of Streamer Execution
-    print('Streamer Running: ')
+    print('Streamer Running: ', maxstreams, config_fn, server_port)
     OK = b'HTTP/1.0 200 OK\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
     ERROR =b'HTTP/1.0 503 ERROR\r\nContent-type: application/octet-stream\r\nCache-Control: no-cache\r\nConnection: close\r\n\r\n'
     streamer_q = queue.Queue()
+    streamer_qs[server_port] = streamer_q
     stream_clients = {}
     cp = ConfigParser()
-    cp.read('config.ini')
+    cp.read(config_fn)
     slinginfo = cp['SLINGBOX']
     slingip =  slinginfo.get('ipaddress', '' )
     slingport = int(slinginfo.get('port', 5201))
@@ -351,9 +357,10 @@ Please select the one you want to use and update the config.ini accordingly.
             sling_net_address = (slingip, slingport)
     
     if not slingip:
-        status = "Can't find a slingbox on network. Please make sure it's plugged in and connected."
-        status = status + ' Check config.ini'
-        print(status)
+        for port in stati.keys:
+            msg =  "Can't find a slingbox on network. Please make sure it's plugged in and connected. Check config.ini"
+            stati[port] = msg
+        print(msg)
         time.sleep(10)
 
     def readnbytes(sock, n):
@@ -449,35 +456,41 @@ Please select the one you want to use and update the config.ini accordingly.
         stream_header = None
         streams = []
         # Wait for first stream request to arrive
-        print('Streamer: Waiting for first stream, flushing any IR requests that arrive while not connected to slingbox')
-        status = 'Waiting for first client. Slingbox at ' + str(sling_net_address)
+        cp = ConfigParser()
+        cp.read(config_fn)
+        slinginfo = cp['SLINGBOX']
+        name = slinginfo.get('name', '').strip()
+        print('Streamer: ', name, 'Waiting for first stream, flushing any IR requests that arrive while not connected to slingbox')
+        stati[server_port] = 'Waiting for first client. Slingbox at ' + str(sling_net_address)
         while True:
             cmd, value = parse_cmd(streamer_q.get())
             if cmd == 'STREAM': break
             if cmd == 'RESOLUTION' :
                 print('Changing Resolution', value)
                 resolution= int(value)
-        cp = ConfigParser()
-        cp.read('config.ini')
+        cp.read(config_fn)
         slinginfo = cp['SLINGBOX']
         sbtype = slinginfo.get('sbtype', "350/500").strip()
         Solo = 'Solo' in sbtype
         password = slinginfo['password'].strip()
+        name = slinginfo.get('name', '').strip()
+        keysfile = str(server_port) + '.dat'
         resolution = int(slinginfo.get('Resolution', 12 )) & 15
         if resolution == 0 : 
-            print('Invalid Resolution', resolution, 'Defaulting to 640x480')
+            print(name, 'Invalid Resolution', resolution, 'Defaulting to 640x480')
             resolution = 5;
         FrameRate = int(slinginfo.get('FrameRate', 30 ))
         VideoBandwidth = int(slinginfo.get('VideoBandwidth', 2000 ))
         VideoSmoothness = int(slinginfo.get('VideoSmoothness', 63 ))
         IframeRate = int(slinginfo.get('IframeRate', 5 ))
         AudioBitRate = int(slinginfo.get('AudioBitRate', 64 ))
+        VideoSource = slinginfo.get('VideoSource', '' )
         pksize = 3072
         if Solo : pksize = 3000
         print( '\r\nSlinginfo ', sbtype, password, resolution, FrameRate, slingip, slingport, pksize )
 
         client_addr = str(value)
-        print('Starting Stream for ', client_addr)
+        print(name, 'Starting Stream for ', client_addr)
         client_socket = (streamer_q.get()) ## Get the socket to stream o
         stream_clients[client_socket] = client_addr
         streams.append(client_socket)
@@ -485,7 +498,7 @@ Please select the one you want to use and update the config.ini accordingly.
         try:          
             s_ctl, stream  = start_slingbox_session(streams)
         except Exception as e:
-            print('Badness starting slingbox session ', e, traceback.print_exc())
+            print(name, 'Badness starting slingbox session ', e, traceback.print_exc())
             killmyself()
         if s_ctl and stream :
             pc = 0
@@ -496,13 +509,13 @@ Please select the one you want to use and update the config.ini accordingly.
                     try:
                         msg = process_solo_msg( msg )
                     except:
-                        print('Error Processing Solo Message, switching to 500')
+                        print(name, 'Error Processing Solo Message, switching to 500')
                         Solo = False
                     if len(msg) == 0 :
-                        print(ts(), 'Bad or Corrupted Solo message')
+                        print(ts(), name, 'Bad or Corrupted Solo message')
                 
                 if len(msg) == 0 :
-                    print(ts(), 'Stream Stopped Unexpectly, possible slingbox video format change')
+                    print(ts(), name, 'Stream Stopped Unexpectly, possible slingbox video format change')
                     stream = closeconn(stream)
                     s_ctl = closeconn(s_ctl)
                     break
@@ -512,7 +525,7 @@ Please select the one you want to use and update the config.ini accordingly.
                     try:
                         sent = stream_socket.send(msg)
                     except Exception as e:
-                        print(ts(), 'Stream Terminated for ', stream_clients[stream_socket], e)
+                        print(ts(), name, 'Stream Terminated for ', stream_clients[stream_socket], e)
                         del stream_clients[stream_socket]
                         streams.remove(stream_socket)
                         closeconn(stream_socket)
@@ -521,12 +534,12 @@ Please select the one you want to use and update the config.ini accordingly.
                 curtime = time.time()
                 if curtime - lasttick > 10.0 :
                     print('.', end='')
-                    status = 'Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
+                    stati[server_port] = name + ' Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
                     lasttick = curtime
                     sys.stdout.flush()
 
                 if curtime - laststatus > 90.0 :
-                    print( ts(),'%d Clients.' % len(streams), end='')
+                    print( ts(), name, '%d Clients.' % len(streams), end='')
                     for c in stream_clients.values(): print( c, end=' ')
                     print('')
                     laststatus = curtime
@@ -541,7 +554,7 @@ Please select the one you want to use and update the config.ini accordingly.
 
                 if (not streamer_q.empty()) and (curtime - last_remote_command_time > 0.5):
                     cmd, data = parse_cmd(streamer_q.get())
-                    print( 'Got Streamer Control Message', cmd, data )
+                    print( name, 'Got Streamer Control Message', cmd, data )
                     if cmd == 'RESOLUTION' :
                         resolution = int(value)
                         s_ctl = closeconn(s_ctl)
@@ -561,24 +574,18 @@ Please select the one you want to use and update the config.ini accordingly.
                             print('New Stream Starting')
                             Thread(target=start_new_stream, args=(new_stream,)).start()
                     elif cmd == 'IR':
-                        data = bytearray(data)
-                        data[2] = 0xf4
-                        data[3] = 0x01
-                        end = 2
-                       # data[2] = 0xfa
-                       # data[3] = 0x00
-                       # end = 3
-                        sling_cmd(0x87, data + pack('464x 4h', end, 0, 0, 0), msg_type=0x0101)
+                        print(name,'Sending IR command', data[0:4])
+                        sling_cmd(0x87, data[0:4] + pack('467x 4h', data[3], 0, 0, 0), msg_type=0x0101)
                         last_remote_command_time = time.time()
 
             ### No More Streams OR input stream stopped
-            print('Shutting down connections')
+            print(name, 'Shutting down connections')
             s_ctl = closeconn(s_ctl)
             stream = closeconn(stream)
             for s in streams: closeconn(s)
         else:
-            print('ERROR: Slingbox session startup failed.')
-    print('Streamer Exiting.. should never get here')
+            print(name,'ERROR: Slingbox session startup failed.')
+    print(name, 'Streamer Exiting.. should never get here')
     s_ctl = closeconn(s_ctl)
     stream = closeconn(stream)
 
@@ -593,7 +600,8 @@ def remote_control_stream( connection, client, request):
  #       print('Waiting for data')
         read_sockets, _, _ = select.select(sockets, [], [])
         for sock in read_sockets:
-            data = sock.recv(32768)
+            try: data = sock.recv(32768)
+            except: break
             if len(data) == 0 :
                 break
             if sock == connection: remote_control_socket.sendall(data)
@@ -607,20 +615,20 @@ def remote_control_stream( connection, client, request):
 
 
 ########################################################################
-def ConnectionManager():
-    global streamer_q
+def ConnectionManager(config_fn):
+    global streamer_qs
 
     cp = ConfigParser()
-    cp.read('config.ini')
+    cp.read(config_fn)
     serverinfo = cp['SERVER']
     port = int(serverinfo.get('port', 8080))
     maxstreams = int(serverinfo.get('maxstreams', 4))
     remoteenabled = serverinfo.get('enableremote', 'yes') == 'yes'
-    print('Connection Manager Running %d max streams....' % maxstreams)
+    print('Connection Manager Running on port %d with %d max streams....' % (port,maxstreams))
 
     server_address = ('', port)
 
-    Thread(target=streamer, args=(maxstreams,)).start()
+    Thread(target=streamer, args=(maxstreams, config_fn, port)).start()
 
     # Create a TCP/IP socket
     ConnectionManagerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -657,7 +665,8 @@ def ConnectionManager():
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
                 connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 connection.setblocking(False)
-                if streamer_q : # Streamer Thread ready to accept connections
+                if streamer_qs[port] : # Streamer Thread ready to accept connections
+                    streamer_q = streamer_qs[port]
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
                     streamer_q.put(connection)
                 else:
@@ -684,6 +693,7 @@ def parse_buttons(buttons):
 #        print('LINES=', lines)
     cmds = []
     for line in lines:
+#            print('Line=', line)
             name, value = line.split(':', 1)
 #               print( name, value)
             name = name.replace("'", '')
@@ -692,7 +702,6 @@ def parse_buttons(buttons):
     return cmds
 
 def BuildPage(cp):
-
     BasePage = '''
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
 <head>
@@ -705,11 +714,11 @@ def BuildPage(cp):
      %s
   </style>
 </head>
-<body >
+<body>
      <form method="post" action="/Remote">
         %s
      </form>
-     <h3>Status:%s</h2>
+     <h3>Status:%s</h3>
 </body>
 </html>
 '''
@@ -727,6 +736,20 @@ def BuildPage(cp):
   cursor: pointer;
 }
 
+.round {
+  border: none;
+  color: white;
+  background-color: green;
+  padding: 0px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 70px;
+  margin: 4px 2px;
+ cursor: pointer;
+  border-radius: 50%;
+}
+  
 .text {
   border: none;
   color: black;
@@ -739,26 +762,25 @@ def BuildPage(cp):
   cursor: pointer;
 }'''
 
-    default_buttons=''''1' : 9
+    default_buttons=''''1' : 9 : round
         :&nbsp;&nbsp;
-        '2' : 10
+        '2' : 10 : round
          :&nbsp;&nbsp;
-        '3' : 11
+        '3' : 11 : round
         :&nbsp;&nbsp;
-        '4' : 12
+        '4' : 12 : round
          :&nbsp;&nbsp;
-        '5' : 13
+        '5' : 13 : round
         :&nbsp;&nbsp;
-        '6' : 14
+        '6' : 14 : round
          :&nbsp;&nbsp;
-        '7' : 15
+        '7' : 15 : round
         :&nbsp;&nbsp;
-        '8' : 16
+        '8' : 16 : round
         :&nbsp;&nbsp;
-        '9' : 17
+        '9' : 17 : round
         :&nbsp;&nbsp;
-        :&nbsp;&nbsp;
-        '0' : 18
+        '0' : 18 : round
         :<br><br>
         'OK' : 42
          :&nbsp;&nbsp;
@@ -813,13 +835,31 @@ def BuildPage(cp):
         :<br><br>
         'Restart': Restart
         :&nbsp;&nbsp;
-        'Channel': Channel'''
+        'Channel': Channel
+        'RT' : RCtest'''
 
-    remoteinfo = cp['REMOTE']
+    remoteinfo = cp['REMOTE']  
     style=remoteinfo.get('style', default_style )
     #    print('STYLE', style)
     buttons=remoteinfo.get('buttons', default_buttons)
     #    print('BUTTONS', buttons)
+       
+    fn = remoteinfo.get('include', '')
+    if fn:  # Get form data myself
+        print('Reading Custom Remote definition from', fn)
+        try:
+            f = open(fn)
+            data = f.read()
+            f.close()
+            start_style = data.find('style=')
+            start_buttons = data.find('buttons=')
+            style=data[start_style+6:start_buttons].strip()
+            buttons = data[start_buttons+8:].strip()
+#            print('STYLE', style,'BUTTONS', buttons)
+        except:
+            print('Error reading remote definition file, using defaults')
+            
+    style = style.replace('%', '%%')
     cmds = parse_buttons(buttons)
     formstr = ''
     for key, data in cmds:
@@ -833,75 +873,110 @@ def BuildPage(cp):
             if 'Channel' == data:
                 formstr = formstr + '<input class=text type="text" name="Digits" maxlength="4" size="4" id="" value=""></input>'
         page = BasePage % ( style, formstr, '%s' )
+ #       print('PAGE', page)
     return page, cmds
-
-def dynk(sid):
-    with open('keys.dat', 'rb') as f:
-        f.seek( sid * 16 )
-        data = f.read(16)
-        return list(unpack('IIII', data))
+        
 ###############################################################################
 ###########   START OF EXECUTION #####################################
 print( 'Version :', version, 'Running on', platform.platform())
 mypid = os.getpid()
 
-streamer_q = None
-status = 'Waiting for first update...'
+streamer_qs = {}
+stati = {}
+remotes = {}
+tcode = 0
+rccode = 0
+if len(sys.argv) == 1 : sys.argv.append('config.ini')
+for config_fn in sys.argv[1:] :
+    if os.path.exists( config_fn ):
+        print( 'Using config file', config_fn )
+    else:
+        print( "Can't find specified config file", config_fn, 'Giving up.' ) 
 
-Thread(target=ConnectionManager).start()
+    Thread(target=ConnectionManager, args=(config_fn,)).start()
 
-cp = ConfigParser()
-cp.read('config.ini')
-serverinfo = cp['SERVER']
-cmds = None
-if serverinfo.get('enableremote', 'yes') == 'yes' :
-    from flask import Flask, render_template, request, render_template_string
-    Page, cmds = BuildPage(cp)
-    app = Flask(__name__)
-
-    @app.route('/Remote', methods=["GET"])
-    def index():
-        return render_template_string(Page % status)
-
-    @app.route('/Remote', methods=["POST"])
-    def button():
-        global streamer_q
-        digits2buttons = [18,9,10,11,12,13,14,15,16,17]
-        print('Button Clicked', request.form)
-        if request.form.get('Digits'):
-            channel = request.form.get('Digits').strip()
-            if channel[0] == '?' :
-                kc = int(channel[1:])
-                print('Sending test keycode', kc )
-                streamer_q.put(kc.to_bytes(1, byteorder='little') +
-                                      b'\x00\x00\x00\x00\x00\x00\x00')
-            else:
-                print('Sending Channel Digits', channel)
-                for digit in channel:
-                    if digit in '0123456789' :
-                        streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') +
-                    b'\x00\x00\x00\x00\x00\x00\x00')
-        else:
-            for tuple in cmds:
-                cmd = tuple[0]
-                data = request.form.get(cmd)
-                if data != None:
-                    if cmd == 'Restart' :
-                        print('Restarting, killing myself')
-                        killmyself()
-                    elif 'x' in cmd and cmd != 'Exit':
- #                       print('Changing Resolution', data )
-                        streamer_q.put( bytearray(1) + bytes('RESOLUTION=%s' % data, 'utf-8'))
-                    elif cmd == 'Channel' : pass # Channel request with no digits
-                    else:
-                        data = data.split(':')[0].strip()
-#                       print('KEY', data )
-                        streamer_q.put(int(data).to_bytes(1, byteorder='little') +
-                                      b'\x00\x00\x00\x00\x00\x00\x00')
-        return render_template_string(Page%status)
     cp = ConfigParser()
-    cp.read('config.ini')
+    cp.read(config_fn)
     serverinfo = cp['SERVER']
-    http_port = int(serverinfo.get('port', 8080))+1
-    app.run(host='0.0.0.0', port=http_port, debug=False)
+    port = int(serverinfo.get('port', 8080))
+    streamer_qs[port] = None
+    stati[port] = 'Waiting for first update...'
+    http_port = port + 1
+    cmds = None
+    if serverinfo.get('enableremote', 'yes') == 'yes' :
+        from flask import Flask, render_template, request, render_template_string
+        remotes[port] = BuildPage(cp)
+        
+        app = Flask(__name__)
+
+        @app.route('/Remote', methods=["GET"])
+        def index():
+            port = int(request.host.split(':')[1])
+            return render_template_string(remotes[port][0] % stati[port])
+
+        @app.route('/Remote', methods=["POST"])
+        def button():
+            global streamer_qs, tcode, rccode, status
+            port = int(request.host.split(':')[1])
+ #           print('PORT', port, streamer_qs)
+            streamer_q = streamer_qs[port]
+            Page, cmds = remotes[port]
+            tcodes = [0,1,2,3,250,251,252,253,500,501,502,503,1000,1001,1002,1003]
+            rcsrc = rccode % 50
+            rctype = rccode - rcsrc
+            rcbytes = bytearray(3)
+            rcbytes[0] = rctype >> 8
+            rcbytes[1] = rctype & 255
+            rcbytes[2] = rcsrc
+            print('Remote Type:', rctype, 'Src:', rcsrc, hex(rcbytes[0]),hex(rcbytes[1]),hex(rcbytes[2]))
+                
+            digits2buttons = [18,9,10,11,12,13,14,15,16,17]
+            print('Button Clicked', request.form)
+            if request.form.get('Digits'):
+                channel = request.form.get('Digits').strip()
+                if channel[0] == '?' :
+                    kc = int(channel[1:])
+                    print('Sending test keycode', kc )
+                    streamer_q.put(kc.to_bytes(1, byteorder='little') + rcbytes)
+                else:
+                    print('Sending Channel Digits', channel)
+                    for digit in channel:
+                        if digit in '0123456789' :
+                            streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') + rcbytes)
+            else:
+                for tuple in cmds:
+                    cmd = tuple[0]
+                    data = request.form.get(cmd)
+                    if data != None:
+                        if data == 'RCtest':
+                            rccode = tcodes[tcode]
+                            print('Remote Test', rccode )
+                            tbytes = bytearray(3)
+                            tsrc = rccode % 50
+                            ttype = rccode - tsrc
+                            tbytes = bytearray(4)
+                            tbytes[0] = 1
+                            tbytes[1] = ttype >> 8
+                            tbytes[2] = ttype & 255
+                            tbytes[3] = tsrc
+                            streamer_q.put(tbytes) 
+                            stati[port] = 'Testing Remote Code = %d' % rccode
+                            tcode += 1
+                            if tcode == len(tcodes) : tcode = 0
+                        elif cmd == 'Restart' :
+                            print('Restarting, killing myself')
+                            killmyself()
+                        elif 'x' in cmd and cmd != 'Exit':
+     #                       print('Changing Resolution', data )
+                            streamer_q.put( bytearray(1) + bytes('RESOLUTION=%s' % data, 'utf-8'))
+                        elif cmd == 'Channel' : pass # Channel request with no digits
+                        else:
+                            data = data.split(':')[0].strip()
+    #                       print('KEY', data )
+                            streamer_q.put(int(data).to_bytes(1, byteorder='little') + rcbytes)
+            return render_template_string(Page%stati[port])
+
+ #       app.run(host='0.0.0.0', port=http_port, debug=False)
+        Thread(target=lambda: app.run(host='0.0.0.0', port=http_port, debug=True, use_reloader=False)).start()
+        time.sleep(1) # give Flask sometime to start up makes logs easier to read
 

@@ -1,0 +1,116 @@
+style=.button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+    }
+    
+   .round {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+      border-radius: 50%;
+    }
+        
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+buttons='1' : 9 : round
+        :&nbsp;&nbsp;
+       '2' : 10 : round 
+         :&nbsp;&nbsp;
+        '3' : 11 : round 
+        :&nbsp;&nbsp;
+        '4' : 12 : round 
+         :&nbsp;&nbsp;
+        '5' : 13  : round
+        :&nbsp;&nbsp;
+        '6' : 14 : round 
+         :&nbsp;&nbsp;
+        '7' : 15 : round 
+        :&nbsp;&nbsp;
+        '8' : 16 : round 
+        :&nbsp;&nbsp;
+        '9' : 17 : round 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '0' : 18  : round
+        :<br><br>
+        'OK' : 42 
+         :&nbsp;&nbsp;
+        'Up' : 38 
+        :&nbsp;&nbsp;
+        'Down' : 39 
+        :&nbsp;&nbsp;
+        'Left' : 40 
+        :&nbsp;&nbsp;
+        'Right': 41 
+        :<br><br>
+        :&nbsp;&nbsp;
+        'Guide' : 35 
+        :&nbsp;&nbsp;
+        'Last' : 56         
+        :&nbsp;&nbsp;
+        'Exit' : 36
+        :&nbsp;&nbsp;
+        'DVR' : 62
+        :<br><br>
+        'FF' : 28
+        :&nbsp;&nbsp;
+        'Rew' : 27 
+        :&nbsp;&nbsp;
+        'Play' : 24 
+        :&nbsp;&nbsp;
+        'Pause' : 26 
+        : <br><br>
+        'Ch+' : 4
+        :&nbsp;&nbsp;
+        'Ch-' : 5
+        :&nbsp;&nbsp;
+        'Pg-' : 43 
+        :&nbsp;&nbsp;
+        'Pg+' : 44
+        : <br><br>
+        'Day-' : 59
+        :&nbsp;&nbsp;
+        'Day+' : 60        
+        :<br><br>
+        'Rec' : 29 
+        :&nbsp;&nbsp;
+        'OnDemand': 34
+        :&nbsp;&nbsp;
+        'Menu' : 33 
+        :<br><br>
+        'Power' : 1 
+        :&nbsp;&nbsp;
+        '1920x1080' : 16
+        :&nbsp;&nbsp;
+        '1280x720' : 12
+        :<br><br>
+        'Restart': Restart
+        :&nbsp;&nbsp;
+        'Channel': Channel
+        :&nbsp;&nbsp;
+        'RT' : RCtest
