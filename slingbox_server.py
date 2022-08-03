@@ -6,7 +6,7 @@ import time
 import select
 import binascii
 import queue
-from threading import Thread
+from threading import Thread, get_ident
 import platform
 import datetime
 import traceback
@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.00'
+version='3.01'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -274,6 +274,14 @@ def streamer(maxstreams, config_fn, server_port):
             sling_cmd(0x6a, pack("I 172x", 1)); # unk fn
             sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         
+        sling_cmd( 0x86, pack("h 254x", 0x0401 ))
+        i = 1
+        codes = []
+        while dbuf[i] != 0 : 
+            codes.append(dbuf[i])
+            i += 1
+        codes.sort()
+        print('Keycodes=', codes)
         ## Select input
         if VideoSource :
             print(name,'Selecting Video Source', VideoSource)
@@ -589,13 +597,26 @@ Please select the one you want to use and update the config.ini accordingly.
     s_ctl = closeconn(s_ctl)
     stream = closeconn(stream)
 
-def remote_control_stream( connection, client, request):
+def remote_control_stream( connection, client, request, server_port):
+    def fix_host(request):
+        http_port = server_port + 1
+        start_host = request.find('Host:')
+        end_host = request.find('\r\n', start_host)
+        print('Fixing', start_host, end_host, request[start_host:end_host])
+        return bytes(request[0:start_host] + 'Host: 127.0.0.1:%d' % http_port + request[end_host:], 'utf-8')
+        
     print('\r\nStarting remote control stream hander for ', str(client))
     remote_control_socket =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     remote_control_socket.connect(('127.0.0.1', http_port ))  ## Send Packets to Flask
     print('Remote Control Connected')
-    remote_control_socket.sendall( bytes(request, 'utf-8' ))
+#    print('GOT', request )
+    request = fix_host(request)
+#    print(request)
+
+    remote_control_socket.sendall(request)
     sockets = [remote_control_socket, connection]
+    POST = 'POST'.encode('utf-8')
+    GET = 'GET'.encode('utf-8')
     while True:
  #       print('Waiting for data')
         read_sockets, _, _ = select.select(sockets, [], [])
@@ -604,7 +625,11 @@ def remote_control_stream( connection, client, request):
             except: break
             if len(data) == 0 :
                 break
-            if sock == connection: remote_control_socket.sendall(data)
+            if sock == connection: 
+ #               print(data[0:10].decode("utf-8"))
+                if POST in data or GET in data: 
+                    data = fix_host(data.decode("utf-8"))
+                remote_control_socket.sendall(data)
             if sock == remote_control_socket: connection.sendall(data)
         else:
             continue
@@ -621,14 +646,14 @@ def ConnectionManager(config_fn):
     cp = ConfigParser()
     cp.read(config_fn)
     serverinfo = cp['SERVER']
-    port = int(serverinfo.get('port', 8080))
+    local_port = int(serverinfo.get('port', '8080'))
     maxstreams = int(serverinfo.get('maxstreams', 4))
     remoteenabled = serverinfo.get('enableremote', 'yes') == 'yes'
-    print('Connection Manager Running on port %d with %d max streams....' % (port,maxstreams))
+    print('Connection Manager Running on port %d with %d max streams....' % (local_port,maxstreams))
 
-    server_address = ('', port)
+    server_address = ('', local_port)
 
-    Thread(target=streamer, args=(maxstreams, config_fn, port)).start()
+    Thread(target=streamer, args=(maxstreams, config_fn, local_port)).start()
 
     # Create a TCP/IP socket
     ConnectionManagerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -654,7 +679,7 @@ def ConnectionManager(config_fn):
         try:
             print(ts(), ' connection from', str(client_address))
 
-            ready_read, ready_write, exceptional = select.select([connection], [], [], 0.2)
+            ready_read, ready_write, exceptional = select.select([connection], [], [], 0.4)
             if not ready_read:
                 print('No request in time, hacker?')
                 connection = closeconn(connection)
@@ -665,14 +690,14 @@ def ConnectionManager(config_fn):
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
                 connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 connection.setblocking(False)
-                if streamer_qs[port] : # Streamer Thread ready to accept connections
-                    streamer_q = streamer_qs[port]
+                if streamer_qs[local_port] : # Streamer Thread ready to accept connections
+                    streamer_q = streamer_qs[local_port]
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
                     streamer_q.put(connection)
                 else:
                     connetion = closeconn(connection)
             elif 'emote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
-                Thread(target=remote_control_stream, args=(connection, client_address, data )).start()
+                Thread(target=remote_control_stream, args=(connection, client_address, data, local_port)).start()
             else:
                 print('Hacker Alert. Invalid Request from ', client_address )
                 connection = closeconn(connection)
@@ -838,12 +863,10 @@ def BuildPage(cp):
         'Channel': Channel
         'RT' : RCtest'''
 
-    remoteinfo = cp['REMOTE']  
-    style=remoteinfo.get('style', default_style )
-    #    print('STYLE', style)
-    buttons=remoteinfo.get('buttons', default_buttons)
-    #    print('BUTTONS', buttons)
-       
+    style = default_style
+    buttons = default_buttons
+    
+    remoteinfo = cp['REMOTE']    
     fn = remoteinfo.get('include', '')
     if fn:  # Get form data myself
         print('Reading Custom Remote definition from', fn)
@@ -880,7 +903,6 @@ def BuildPage(cp):
 ###########   START OF EXECUTION #####################################
 print( 'Version :', version, 'Running on', platform.platform())
 mypid = os.getpid()
-
 streamer_qs = {}
 stati = {}
 remotes = {}
@@ -898,8 +920,8 @@ for config_fn in sys.argv[1:] :
     cp = ConfigParser()
     cp.read(config_fn)
     serverinfo = cp['SERVER']
-    port = int(serverinfo.get('port', 8080))
-    streamer_qs[port] = None
+    port = int(serverinfo.get('port', '8080'))
+    
     stati[port] = 'Waiting for first update...'
     http_port = port + 1
     cmds = None
@@ -911,13 +933,14 @@ for config_fn in sys.argv[1:] :
 
         @app.route('/Remote', methods=["GET"])
         def index():
-            port = int(request.host.split(':')[1])
+  #          print('HOST', request.host)
+            port = int(request.host.split(':')[1]) -1 
             return render_template_string(remotes[port][0] % stati[port])
 
         @app.route('/Remote', methods=["POST"])
         def button():
             global streamer_qs, tcode, rccode, status
-            port = int(request.host.split(':')[1])
+            port = int(request.host.split(':')[1]) -1
  #           print('PORT', port, streamer_qs)
             streamer_q = streamer_qs[port]
             Page, cmds = remotes[port]
@@ -976,7 +999,7 @@ for config_fn in sys.argv[1:] :
                             streamer_q.put(int(data).to_bytes(1, byteorder='little') + rcbytes)
             return render_template_string(Page%stati[port])
 
- #       app.run(host='0.0.0.0', port=http_port, debug=False)
         Thread(target=lambda: app.run(host='0.0.0.0', port=http_port, debug=True, use_reloader=False)).start()
+        app.extensions['sdsds'] = 8080
         time.sleep(1) # give Flask sometime to start up makes logs easier to read
 
