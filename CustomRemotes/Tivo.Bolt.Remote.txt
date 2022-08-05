@@ -1,65 +1,106 @@
-[REMOTE]
-
-
 style=.button {
       border: none;
       color: white;
       background-color: black;
-      padding: 0px 10px;
+      padding: 10px 10px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 20px;
+      font-size: 15px;
       margin: 2px 2px;
-     cursor: pointer;
+      cursor: pointer;
+      border-radius: 40%;
     }
     .red-button {
       border: none;
       color: white;
-      background-color: red;
-      padding: 0px 10px;
+      background-color: crimson;
+      padding: 10px 10px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 20px;
+      font-size: 15px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
     .yellow-button {
       border: none;
       color: black;
       background-color: gold;
-      padding: 0px 10px;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 20px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 45%; 
     }
     .blue-button {
       border: none;
       color: white;
       background-color: blue;
-      padding: 0px 10px;
+      padding: 10px 10px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 20px;
+      font-size: 15px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
     .green-button {
       border: none;
       color: white;
       background-color: green;
-      padding: 0px 10px;
+      padding: 10px 10px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 20px;
+      font-size: 15px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
+    }
+    .tivo-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 20px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .rec-button {
+      border: double;
+      color: white;
+      background-color: crimson;
+      padding: 20px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
     }
     .text {
       border: none;
@@ -71,59 +112,60 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
 
- button text, key code
+; button text, key code
 buttons=:<h1 style="color:darkblue">&emsp;&emsp;TIVO BOLT REMOTE</h1>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
-	'TIVO' : 72
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+	'TIVO' : 73 : tivo-button
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         'LIVE' : 32 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp
         'UP' : 38 
         :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         'INFO' : 46
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp
-        'LEFT' : 40
-        :&nbsp;&nbsp;
-        'SELECT' : 42 
-        :&nbsp;&nbsp;
-        'RIGHT' : 41 
-        :&nbsp;&nbsp;
-        'GUIDE' : 35
-	:<br>
         'BACK' : 36
-        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        'DOWN' : 39
+	:&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        'LT' : 40
+        :&nbsp;&nbsp;
+        'OK' : 42 
+        :&nbsp;&nbsp;
+        'RT' : 41 
+        :<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'DN' : 39
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         'CH+' : 4
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         'CH-' : 5 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&emsp;&nbsp;&nbsp;
+        'GUIDE' : 35
+	:&emsp;&nbsp;&nbsp;&nbsp;
         'REC' : 29 : red-button
 	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-        'PLAY' : 24 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '> ' : 24 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
         '<<': 27
-        :&emsp;&nbsp;&nbsp;
-        'PAUSE' : 26 :yellow-button
-        :&emsp;&emsp;
+        :&nbsp;&nbsp;
+        'II' : 26 : pause-button
+        :&nbsp;&nbsp;
         '>>' : 28         
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-        'SLOW' : 50
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'I>' : 50
 	:<br>
-        'SKIP-': 31
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        'SKIP+' : 30
+        'I<-': 31
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '->I' : 30
 	:<br><br>
 	:&emsp;&emsp;&emsp;
         'A' : 76 : yellow-button
@@ -155,12 +197,12 @@ buttons=:<h1 style="color:darkblue">&emsp;&emsp;TIVO BOLT REMOTE</h1>
         :&emsp;&emsp;&emsp;
         '9' : 17
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         'CLEAR' : 37     
         :&emsp;&nbsp;&nbsp;
 	'0' : 18
         :&emsp;&nbsp;&nbsp;
         'ENTER' : 19
 	:<br>
-        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         'LAST' : 21

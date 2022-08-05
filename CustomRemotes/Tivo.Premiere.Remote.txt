@@ -1,5 +1,3 @@
-[REMOTE]
-
 style=.button {
       border: none;
       color: white;
@@ -10,7 +8,8 @@ style=.button {
       display: inline-block;
       font-size: 20px;
       margin: 2px 2px;
-     cursor: pointer;
+      cursor: pointer;
+      border-radius: 40%; 
     }
     .red-button {
       border: none;
@@ -23,6 +22,7 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
     .yellow-button {
       border: none;
@@ -35,6 +35,7 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
     .blue-button {
       border: none;
@@ -47,6 +48,7 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
     }
     .green-button {
       border: none;
@@ -59,6 +61,46 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 40%; 
+    }
+    .tivo-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 20px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 24px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 45%; 
+    }
+    .rec-button {
+      border: double;
+      color: white;
+      background-color: crimson;
+      padding: 15px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%
     }
     .text {
       border: none;
@@ -70,14 +112,15 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
+      border-radius: 0%; 
     }
 
- button text, key code
+; button text, key code
 buttons=:<h1 style="color:darkgreen">&emsp;&nbsp;TIVO PREMIERE REMOTE</h1>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-	'TIVO' : 68
+	'TIVO' : 68 : tivo-button
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         'LIVE' : 32 
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -104,17 +147,17 @@ buttons=:<h1 style="color:darkgreen">&emsp;&nbsp;TIVO PREMIERE REMOTE</h1>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         'CH-' : 5 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
-        'REC' : 29 : red-button
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        'REC' : 29 : rec-button
 	:<br><br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;
         '>' : 24 
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         '<<': 27
-        :&emsp;&nbsp;
-        'II' : 26 : yellow-button
-        :&emsp;&nbsp;
+        :&emsp;
+        'II' : 26 : pause-button
+        :&emsp;
         '>>' : 28         
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
