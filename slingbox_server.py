@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.01'
+version='3.02'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -160,20 +160,62 @@ def streamer(maxstreams, config_fn, server_port):
             cnt += 16
         return out
 
-    def dynk(sid, challange, fn):
-        try:
-            f = open(fn, 'rb')
-        except:
-            print('Fetching new encryption keys from web for keys file', fn)
-            url = 'http://www.dazoo.net:65432/cgi-bin/Sling/genkeys/?challange=%s' % challange
-            r = requests.get(url, allow_redirects=False)
-            open(fn, 'wb').write(r.content)
-            
-        with open(fn, 'rb') as f:
-            f.seek( sid * 16 )
-            data = f.read(16)
-            return list(unpack('IIII', data))
+    def new_key( sid, rand, challange ):    
+        def bits2bytes(bits):
+            def abyte( b ):
+                n = 0
+                for abit in b[::-1]:
+                    n = (n << 1) + abit
+                return n
+                
+            ba = bytearray()
+            for i in range(0,len(bits), 8 ):
+                ba.append(abyte(bits[i:i+8]))     
+            return ba     
+               
+        def xor( b1, b2 ):
+            br = bytearray()
+            l = len(b2)
+            for i in range(0,l):
+                br.append( b1[i] ^ b2[i])  
+            return br + b1[l:]
+                
+        def dynk( rand, sid, a, b ): # hash function for dynamic key 
+           
+            def p(ba):  # make string from bits
+                z = ord('0')
+                out = ''
+                for b in ba : out = out + chr(z+b)
+                return out
 
+            def bytes2bits( buf ):
+                t = ''
+                for b in buf:
+                    t = t + '{:08b}'.format(b)[::-1]
+                ba = bytearray()
+                for c in t:
+                    ba.append( ord(c) & 1 )
+                return ba
+                
+        #******************************
+            t = bytes2bits(rand)  
+            s = bytes2bits(pack('H', sid ))
+            td = [a, b]
+            ti = 0 
+            v = bytearray()    
+            for i in range(1,17):
+                r = i * td[((sid >> (i - 1)) & 1)]
+                z = t[r:] + t[0:r]
+                t = xor(z,s)
+                v = xor(t, v)
+            return v
+
+ #       rand = bytearray.fromhex('feedfacedeadbeef1111222233334444')
+ #       c = bytearray.fromhex( challange )
+        my_key = xor( dynk(rand, sid, 2, 3), dynk(challange, sid, -1, -4))
+  #      print( 'SKEY', pbuf(bits2bytes(my_key)) )
+        return list(unpack('IIII', bits2bytes(my_key)))
+        
     def futf16(in_str):
         out_str = ''
         for c in in_str: out_str = out_str + c + chr(0)
@@ -254,10 +296,8 @@ def streamer(maxstreams, config_fn, server_port):
         except:
             print(name,'Error Starting Session. Check your admin password in config.ini file!')
             return None, None
-        c = binascii.hexlify(dbuf[0:16])
-        c = c.decode('utf-8')
-        print(name,'CHALLANGE', c)            
-        skey = dynk(sid, c, keysfile)
+           
+        skey = new_key(sid, rand, dbuf[0:16])
 #        print('New Key ', skey)
         smode = 0x8000                # use dynamic key from now on
         try:
@@ -274,18 +314,19 @@ def streamer(maxstreams, config_fn, server_port):
             sling_cmd(0x6a, pack("I 172x", 1)); # unk fn
             sling_cmd(0x7e, pack("I I", 1, 0)) # stream control
         
-        sling_cmd( 0x86, pack("h 254x", 0x0401 ))
+        ## Select input
+        if VideoSource :
+            print(name,'Selecting Video Source', VideoSource)
+            source = int(VideoSource)
+            sling_cmd(0x85, pack('4h', source, 0, 0, 0 ))          
+            sling_cmd( 0x86, pack("h 254x", 0x0400 + source )) # Get Key Codes
         i = 1
         codes = []
         while dbuf[i] != 0 : 
             codes.append(dbuf[i])
             i += 1
         codes.sort()
-        print('Keycodes=', codes)
-        ## Select input
-        if VideoSource :
-            print(name,'Selecting Video Source', VideoSource)
-            sling_cmd(0x85, pack('4h', int(VideoSource), 0, 0, 0 ))
+        print('Keycodes=', codes)            
             
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
