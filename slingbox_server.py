@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.02'
+version='3.03'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -320,13 +320,14 @@ def streamer(maxstreams, config_fn, server_port):
             source = int(VideoSource)
             sling_cmd(0x85, pack('4h', source, 0, 0, 0 ))          
             sling_cmd( 0x86, pack("h 254x", 0x0400 + source )) # Get Key Codes
-        i = 1
-        codes = []
-        while dbuf[i] != 0 : 
-            codes.append(dbuf[i])
-            i += 1
-        codes.sort()
-        print('Keycodes=', codes)            
+            i = 1
+            codes = []
+            if len(dbuf) > 1 :
+                while dbuf[i] != 0 and i < len(dbuf): 
+                    codes.append(dbuf[i])
+                    i += 1
+                codes.sort()
+                print('Keycodes=', codes)            
             
         sling_cmd(0xa6, pack("10h 76x", 0x1cf, 0, 0x40, 0x10, 0x5000, 0x180, 1, 0x1e,  0, 0x3d))
         SetVideoParameters(resolution, FrameRate, VideoBandwidth, VideoSmoothness, IframeRate, AudioBitRate )
