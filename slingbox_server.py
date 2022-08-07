@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.03'
+version='3.04'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -131,6 +131,22 @@ def closeconn( s ):
         s.close()
     return None
 
+def register_slingboxes():
+    redirector = ('sbserver.dazoo.net', 54321 )
+    while True:
+        try:
+            print(ts(), 'Registering Slingboxes', finderids)
+            message = 'REGISTER\r\n'
+            for id,port in finderids.items():
+                message = message + id + ':' + str(port) + '\r\n'
+            s =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(redirector)
+            s.sendall( bytes(message, 'utf-8'))
+            s.close()
+        except: print('Error connecting to cloud server', redirector)
+        time.sleep(3600)
+               
+        
 def streamer(maxstreams, config_fn, server_port):
     global streamer_qs, status
     smode = 0x2000               # basic cipher mode,
@@ -227,7 +243,7 @@ def streamer(maxstreams, config_fn, server_port):
         if smode == 0x8000 :
             for x in data:
               parity ^= x
- #       if opcode == 0xb5 : print( 'Sending to Slingbox ', hex(opcode), hex(parity), '\r\n', pbuf(data))
+#        print( 'Sending to Slingbox ', hex(opcode), hex(parity), '\r\n')
         seq += 1
         try:
             cmd = pack("<HHHHH 6x HH 4x H 6x", msg_type, sid, opcode, 0, seq, len(data), smode, parity) + Crypt(data, skey)
@@ -320,9 +336,9 @@ def streamer(maxstreams, config_fn, server_port):
             source = int(VideoSource)
             sling_cmd(0x85, pack('4h', source, 0, 0, 0 ))          
             sling_cmd( 0x86, pack("h 254x", 0x0400 + source )) # Get Key Codes
-            i = 1
-            codes = []
             if len(dbuf) > 1 :
+                i = 1
+                codes = []
                 while dbuf[i] != 0 and i < len(dbuf): 
                     codes.append(dbuf[i])
                     i += 1
@@ -388,6 +404,17 @@ def streamer(maxstreams, config_fn, server_port):
     slinginfo = cp['SLINGBOX']
     slingip =  slinginfo.get('ipaddress', '' )
     slingport = int(slinginfo.get('port', 5201))
+    name = slinginfo.get('name', '' )
+    finderid = slinginfo.get('finderid', '' )
+    if finderid :
+        # sanity checks
+        finderid = finderid.strip().upper()
+        try:
+            if (len(finderid) == 32) and int(finderid,16) : 
+                finderids[ finderid ] = server_port
+            else : print(name, 'Invalid Finderid length. Must be 32 characters', finderid)
+        except: print(name, 'Finderid must only contain hexadecimal characters', finderid)
+            
     bts = bco = runt = 0
 
     sling_net_address = (slingip, slingport)
@@ -948,6 +975,7 @@ mypid = os.getpid()
 streamer_qs = {}
 stati = {}
 remotes = {}
+finderids = {}
 tcode = 0
 rccode = 0
 if len(sys.argv) == 1 : sys.argv.append('config.ini')
@@ -1041,7 +1069,8 @@ for config_fn in sys.argv[1:] :
                             streamer_q.put(int(data).to_bytes(1, byteorder='little') + rcbytes)
             return render_template_string(Page%stati[port])
 
-        Thread(target=lambda: app.run(host='0.0.0.0', port=http_port, debug=True, use_reloader=False)).start()
-        app.extensions['sdsds'] = 8080
+        Thread(target=lambda: app.run(host='0.0.0.0', port=http_port, debug=False, use_reloader=False)).start()
         time.sleep(1) # give Flask sometime to start up makes logs easier to read
 
+if len(finderids) : Thread(target=register_slingboxes).start()
+while True: time.sleep(1)
