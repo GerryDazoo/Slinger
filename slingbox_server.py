@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.04'
+version='3.05'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -132,21 +132,109 @@ def closeconn( s ):
     return None
 
 def register_slingboxes():
-    redirector = ('sbserver.dazoo.net', 54321 )
-    while True:
+    global finderids
+    
+    def ping(addr):
         try:
-            print(ts(), 'Registering Slingboxes', finderids)
-            message = 'REGISTER\r\n'
-            for id,port in finderids.items():
-                message = message + id + ':' + str(port) + '\r\n'
-            s =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(redirector)
-            s.sendall( bytes(message, 'utf-8'))
-            s.close()
-        except: print('Error connecting to cloud server', redirector)
-        time.sleep(3600)
-               
+ #          print('Pinging', addr)
+           s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+           s.connect(addr)
+           s.sendall(b'PINGER')
+ #          print('Good PING', addr)
+           return True
+        except Exception as e: 
+           print('PING failure', addr, e)
+           
+        return False
         
+    def get_external_ip(): 
+        my_ip = ''
+        while not my_ip: # wait for an IPADDRESS
+           print('Getting external IP address')
+           try:
+               s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+               s.settimeout(10)
+               s.connect(redirector)
+               s.sendall(b'IPADDRESS')
+               my_ip = s.recv(512).decode("utf-8") 
+               s.close()
+           except:
+               print('Register: Error Getting Exteral IP Address, Retrying in 10 minutes')
+               s.close()
+               time.sleep(600)
+               my_ip = ''
+        print('Redirector, my external IP address', my_ip)
+        return my_ip
+ 
+    ############################################### 
+    redirector = ('sbfinder.dazoo.net', 54321 )
+    while True: 
+        print(ts(), 'Registering Slingboxes', finderids)
+        my_ip = get_external_ip()
+        message = ''
+        good_ping_addr = ''
+        for id,port in finderids.items():
+            pingaddr = (my_ip, port)
+            if ping(pingaddr):
+                good_ping_addr = pingaddr
+                message = message + id + ':' + str(port) + '\r\n'
+                
+        if message :
+            try:
+                print('Registering', message )
+                message = 'REGISTER\r\n' + message
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(10)
+                s.connect(redirector)
+                s.sendall( bytes(message, 'utf-8'))
+                resp = s.recv(512)
+                s.close()
+            except: 
+                print('Error connecting to cloud server', redirector)
+                s.close()
+                time.sleep(600)
+                continue
+        else:
+            print('No working external portmaps. Not registering slingboxes')
+            return()
+        
+        if resp != b'OK' : 
+            print('Not OK, pausing')
+            time.sleep(600)
+            continue
+        else:              
+            ## Starting pinging every minute until failure (External IP address change or could be a messed up Portmap on the router.      
+            fail_count = 0
+            while fail_count < 3: 
+                if good_ping_addr :
+                    if ping(good_ping_addr): 
+                        fail_count = 0 
+                    else : 
+                        fail_count = fail_count + 1
+                        good_ping_addr = ''
+                    time.sleep(60)
+                else: 
+                    print('Finding a good ping port')
+                    for port in finderids.values():  # Find a working port
+                        pingaddr = (my_ip, port)
+                        if ping(pingaddr): 
+                            good_ping_addr = pingaddr
+                            print('Pinger, Found good port', good_ping_addr)
+                            break
+                    if good_ping_addr :
+                        time.sleep(60)
+                        continue
+                    else: break
+                    
+            if not good_ping_addr :
+                print('Ping failed on all ports. External IP address changed?')
+                new_ip = get_external_ip()
+                if new_ip == my_ip :
+                    print('''!!!!!! No open ports or bad port maps on router !!!!!
+No external access is possible. Giving up''')
+                    return
+                                              
+               
 def streamer(maxstreams, config_fn, server_port):
     global streamer_qs, status
     smode = 0x2000               # basic cipher mode,
@@ -217,7 +305,6 @@ def streamer(maxstreams, config_fn, server_port):
             t = bytes2bits(rand)  
             s = bytes2bits(pack('H', sid ))
             td = [a, b]
-            ti = 0 
             v = bytearray()    
             for i in range(1,17):
                 r = i * td[((sid >> (i - 1)) & 1)]
@@ -668,13 +755,13 @@ Please select the one you want to use and update the config.ini accordingly.
 
 def remote_control_stream( connection, client, request, server_port):
     def fix_host(request):
-        http_port = server_port + 1
+ #       http_port = server_port + 1
         start_host = request.find('Host:')
         end_host = request.find('\r\n', start_host)
-        print('Fixing', start_host, end_host, request[start_host:end_host])
-        return bytes(request[0:start_host] + 'Host: 127.0.0.1:%d' % http_port + request[end_host:], 'utf-8')
+ #       print('Fixing', start_host, end_host, request[start_host:end_host], 'Host: 127.0.0.1:%d' % server_port)
+        return bytes(request[0:start_host] + 'Host: 127.0.0.1:%d' % server_port + request[end_host:], 'utf-8')
         
-    print('\r\nStarting remote control stream hander for ', str(client))
+    print('\r\nStarting remote control stream handler for ', str(client))
     remote_control_socket =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     remote_control_socket.connect(('127.0.0.1', http_port ))  ## Send Packets to Flask
     print('Remote Control Connected')
@@ -746,16 +833,15 @@ def ConnectionManager(config_fn):
             continue
 
         try:
-            print(ts(), ' connection from', str(client_address))
-
             ready_read, ready_write, exceptional = select.select([connection], [], [], 0.4)
             if not ready_read:
-                print('No request in time, hacker?')
+                print('No request in time, hacker?', str(client_address))
                 connection = closeconn(connection)
                 continue
 
             data = connection.recv(1024).decode("utf-8")
             if 'slingbox' in data and 'GET' in data:
+                print(ts(), ' Streaming connection from', str(client_address))
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024*1024*8)
                 connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 connection.setblocking(False)
@@ -766,8 +852,9 @@ def ConnectionManager(config_fn):
                 else:
                     connetion = closeconn(connection)
             elif 'emote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
+                print(ts(), ' RemoteControl connection from', str(client_address))
                 Thread(target=remote_control_stream, args=(connection, client_address, data, local_port)).start()
-            else:
+            elif not 'PINGER' in data:
                 print('Hacker Alert. Invalid Request from ', client_address )
                 connection = closeconn(connection)
                 continue
@@ -1004,13 +1091,13 @@ for config_fn in sys.argv[1:] :
         @app.route('/Remote', methods=["GET"])
         def index():
   #          print('HOST', request.host)
-            port = int(request.host.split(':')[1]) -1 
+            port = int(request.host.split(':')[1]) 
             return render_template_string(remotes[port][0] % stati[port])
 
         @app.route('/Remote', methods=["POST"])
         def button():
             global streamer_qs, tcode, rccode, status
-            port = int(request.host.split(':')[1]) -1
+            port = int(request.host.split(':')[1])
  #           print('PORT', port, streamer_qs)
             streamer_q = streamer_qs[port]
             Page, cmds = remotes[port]
