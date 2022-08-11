@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.05'
+version='3.06'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -196,7 +196,9 @@ def register_slingboxes():
                 continue
         else:
             print('No working external portmaps. Not registering slingboxes')
-            return()
+            print('Retrying in 10 minutes')
+            time.sleep(600)
+            continue
         
         if resp != b'OK' : 
             print('Not OK, pausing')
@@ -1022,7 +1024,8 @@ def BuildPage(cp):
     style = default_style
     buttons = default_buttons
     
-    remoteinfo = cp['REMOTE']    
+    remoteinfo = cp['REMOTE'] 
+    rccode = int(remoteinfo.get('code', '0'))
     fn = remoteinfo.get('include', '')
     if fn:  # Get form data myself
         print('Reading Custom Remote definition from', fn)
@@ -1053,7 +1056,7 @@ def BuildPage(cp):
                 formstr = formstr + '<input class=text type="text" name="Digits" maxlength="4" size="4" id="" value=""></input>'
         page = BasePage % ( style, formstr, '%s' )
  #       print('PAGE', page)
-    return page, cmds
+    return page, cmds, rccode
         
 ###############################################################################
 ###########   START OF EXECUTION #####################################
@@ -1064,7 +1067,6 @@ stati = {}
 remotes = {}
 finderids = {}
 tcode = 0
-rccode = 0
 if len(sys.argv) == 1 : sys.argv.append('config.ini')
 for config_fn in sys.argv[1:] :
     if os.path.exists( config_fn ):
@@ -1096,12 +1098,11 @@ for config_fn in sys.argv[1:] :
 
         @app.route('/Remote', methods=["POST"])
         def button():
-            global streamer_qs, tcode, rccode, status
+            global streamer_qs, tcode, stati
             port = int(request.host.split(':')[1])
  #           print('PORT', port, streamer_qs)
             streamer_q = streamer_qs[port]
-            Page, cmds = remotes[port]
-            tcodes = [0,1,2,3,250,251,252,253,500,501,502,503,1000,1001,1002,1003]
+            Page, cmds, rccode = remotes[port]
             rcsrc = rccode % 50
             rctype = rccode - rcsrc
             rcbytes = bytearray(3)
@@ -1129,20 +1130,21 @@ for config_fn in sys.argv[1:] :
                     data = request.form.get(cmd)
                     if data != None:
                         if data == 'RCtest':
-                            rccode = tcodes[tcode]
+                            rccode = tcode
                             print('Remote Test', rccode )
                             tbytes = bytearray(3)
                             tsrc = rccode % 50
                             ttype = rccode - tsrc
                             tbytes = bytearray(4)
                             tbytes[0] = 1
-                            tbytes[1] = ttype >> 8
-                            tbytes[2] = ttype & 255
+                            tbytes[1] = 0
+                            tbytes[2] = 0
                             tbytes[3] = tsrc
                             streamer_q.put(tbytes) 
-                            stati[port] = 'Testing Remote Code = %d' % rccode
+                            stati[port] = 'Testing Remote Code = %d' % tcode
                             tcode += 1
-                            if tcode == len(tcodes) : tcode = 0
+                            remotes[port] = (Page,cmds,rccode)
+                            if tcode == 3 : tcode = 0
                         elif cmd == 'Restart' :
                             print('Restarting, killing myself')
                             killmyself()
