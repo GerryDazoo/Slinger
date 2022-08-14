@@ -15,7 +15,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.06'
+version='3.07'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -190,7 +190,7 @@ def register_slingboxes():
                 resp = s.recv(512)
                 s.close()
             except: 
-                print('Error connecting to cloud server', redirector)
+                print('Error connecting to cloud server retrying in 10 minutes', redirector)
                 s.close()
                 time.sleep(600)
                 continue
@@ -201,10 +201,11 @@ def register_slingboxes():
             continue
         
         if resp != b'OK' : 
-            print('Not OK, pausing')
+            print('Not OK, pausing 10 minutes')
             time.sleep(600)
             continue
-        else:              
+        else:  
+            print('Register Successful')
             ## Starting pinging every minute until failure (External IP address change or could be a messed up Portmap on the router.      
             fail_count = 0
             while fail_count < 3: 
@@ -238,7 +239,7 @@ No external access is possible. Giving up''')
                                               
                
 def streamer(maxstreams, config_fn, server_port):
-    global streamer_qs, status
+    global streamer_qs, stati
     smode = 0x2000               # basic cipher mode,
     sid = 0
     seq = 0
@@ -387,7 +388,7 @@ def streamer(maxstreams, config_fn, server_port):
  
     def start_slingbox_session(streams):
         nonlocal stream_header, sid, seq, s_ctl, dbuf, skey, stat, smode
-        global status
+        global stati
         skey = [0xBCDEAAAA,0x87FBBBBA,0x7CCCCFFA,0xDDDDAABC]
  #       print('skey', skey )
         smode = 0x2000               # basic cipher mode,
@@ -492,17 +493,29 @@ def streamer(maxstreams, config_fn, server_port):
     cp.read(config_fn)
     slinginfo = cp['SLINGBOX']
     slingip =  slinginfo.get('ipaddress', '' )
-    slingport = int(slinginfo.get('port', 5201))
+    slingport = int(slinginfo.get('port', '5201'))
     name = slinginfo.get('name', '' )
     finderid = slinginfo.get('finderid', '' )
     if finderid :
         # sanity checks
-        finderid = finderid.strip().upper()
-        try:
-            if (len(finderid) == 32) and int(finderid,16) : 
-                finderids[ finderid ] = server_port
-            else : print(name, 'Invalid Finderid length. Must be 32 characters', finderid)
-        except: print(name, 'Finderid must only contain hexadecimal characters', finderid)
+        finderid = finderid.strip().upper().split(':')
+        ext_port = -1
+        if len(finderid) == 2:
+            try:
+                ext_port = int(finderid[1], 10)
+                if ext_port > 65535: raise
+            except:
+                print(name, 'ERROR: Finderid External Port must be between 0-65535')
+                ext_port = -1
+        else:
+            ext_port = server_port
+                
+        if ext_port != -1:
+            try:
+                if (len(finderid[0]) == 32) and int(finderid[0],16): 
+                    finderids[ finderid[0]] = ext_port
+                else : print(name, 'ERROR: Invalid Finderid length. Must be 32 characters', finderid)
+            except: print(name, 'ERROR: Finderid must only contain hexadecimal characters', finderid)
             
     bts = bco = runt = 0
 
@@ -660,8 +673,8 @@ Please select the one you want to use and update the config.ini accordingly.
         client_socket = (streamer_q.get()) ## Get the socket to stream o
         stream_clients[client_socket] = client_addr
         streams.append(client_socket)
-        client_socket.sendall(OK)
-        try:          
+        try: 
+            client_socket.sendall(OK)
             s_ctl, stream  = start_slingbox_session(streams)
         except Exception as e:
             print(name, 'Badness starting slingbox session ', e, traceback.print_exc())
@@ -757,13 +770,15 @@ Please select the one you want to use and update the config.ini accordingly.
 
 def remote_control_stream( connection, client, request, server_port):
     def fix_host(request):
- #       http_port = server_port + 1
         start_host = request.find('Host:')
-        end_host = request.find('\r\n', start_host)
- #       print('Fixing', start_host, end_host, request[start_host:end_host], 'Host: 127.0.0.1:%d' % server_port)
-        return bytes(request[0:start_host] + 'Host: 127.0.0.1:%d' % server_port + request[end_host:], 'utf-8')
-        
-    print('\r\nStarting remote control stream handler for ', str(client))
+        start_port = request.find(':', start_host + 5 )+1
+        end_port = request.find('\r\n', start_host)
+#        print(request)
+#        print('Fixing', start_port, end_port, request[0:start_port] + str(server_port) + request[end_port:])
+        return bytes(request[0:start_port] + str(server_port) + request[end_port:], 'utf-8')
+     
+    http_port = server_port + 1
+    print('\r\nStarting remote control stream handler for ', str(client), 'to port', http_port)
     remote_control_socket =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     remote_control_socket.connect(('127.0.0.1', http_port ))  ## Send Packets to Flask
     print('Remote Control Connected')
@@ -775,6 +790,7 @@ def remote_control_stream( connection, client, request, server_port):
     sockets = [remote_control_socket, connection]
     POST = 'POST'.encode('utf-8')
     GET = 'GET'.encode('utf-8')
+    
     while True:
  #       print('Waiting for data')
         read_sockets, _, _ = select.select(sockets, [], [])
@@ -785,16 +801,17 @@ def remote_control_stream( connection, client, request, server_port):
                 break
             if sock == connection: 
  #               print(data[0:10].decode("utf-8"))
-                if POST in data or GET in data: 
+                if POST in data or GET in data:
                     data = fix_host(data.decode("utf-8"))
                 remote_control_socket.sendall(data)
-            if sock == remote_control_socket: connection.sendall(data)
+            if sock == remote_control_socket: 
+                connection.sendall(data)
         else:
             continue
         break
     connection = closeconn(connection)
     remote_control_socket = closeconn(remote_control_socket)
-#    print('Exiting Remote Control Stream Handler for', client )
+    print('Exiting Remote Control Stream Handler for', client )
 
 
 ########################################################################
@@ -837,7 +854,8 @@ def ConnectionManager(config_fn):
         try:
             ready_read, ready_write, exceptional = select.select([connection], [], [], 0.4)
             if not ready_read:
-                print('No request in time, hacker?', str(client_address))
+                #print(ts(), 'No request in time, hacker?', str(client_address))
+                #close silenty Chrome browers opens connection and then doesn't send anything
                 connection = closeconn(connection)
                 continue
 
@@ -1060,8 +1078,9 @@ def BuildPage(cp):
         
 ###############################################################################
 ###########   START OF EXECUTION #####################################
-print( 'Version :', version, 'Running on', platform.platform())
 mypid = os.getpid()
+print( 'Version :', version, 'Running on', platform.platform(), 'pid=', mypid)
+
 streamer_qs = {}
 stati = {}
 remotes = {}
@@ -1103,13 +1122,11 @@ for config_fn in sys.argv[1:] :
  #           print('PORT', port, streamer_qs)
             streamer_q = streamer_qs[port]
             Page, cmds, rccode = remotes[port]
-            rcsrc = rccode % 50
-            rctype = rccode - rcsrc
             rcbytes = bytearray(3)
-            rcbytes[0] = rctype >> 8
-            rcbytes[1] = rctype & 255
-            rcbytes[2] = rcsrc
-            print('Remote Type:', rctype, 'Src:', rcsrc, hex(rcbytes[0]),hex(rcbytes[1]),hex(rcbytes[2]))
+            rcbytes[0] = 0
+            rcbytes[1] = 0
+            rcbytes[2] = rccode
+            print('Remote Code:', rccode, hex(rcbytes[0]),hex(rcbytes[1]),hex(rcbytes[2]))
                 
             digits2buttons = [18,9,10,11,12,13,14,15,16,17]
             print('Button Clicked', request.form)
@@ -1132,14 +1149,11 @@ for config_fn in sys.argv[1:] :
                         if data == 'RCtest':
                             rccode = tcode
                             print('Remote Test', rccode )
-                            tbytes = bytearray(3)
-                            tsrc = rccode % 50
-                            ttype = rccode - tsrc
                             tbytes = bytearray(4)
                             tbytes[0] = 1
                             tbytes[1] = 0
                             tbytes[2] = 0
-                            tbytes[3] = tsrc
+                            tbytes[3] = rccode
                             streamer_q.put(tbytes) 
                             stati[port] = 'Testing Remote Code = %d' % tcode
                             tcode += 1
