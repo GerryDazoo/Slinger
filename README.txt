@@ -1,5 +1,5 @@
-Version 2.0,0
-This now supports the 350/500/M1/Solo and probably the Pro and ProHD but I don't have a Pro/ProHD box to verify. The Solo will work.
+Version 2.0
+This now supports the 350/500/M1/Solo/Pro and ProHD.
 
 You can select what type of slingbox you have with the sbtype= entry in the config.ini file.
  
@@ -12,8 +12,6 @@ The web-based remote control is yet another huge hack to get something working q
 To watch your slingbox use a media player that supports http streaming. I've tested VLC, OBS studio, ffplayer and mxplayer. http://your_ip_address_or_FQDN:your_port_number/slingbox
 your_port_number defaults to 8080 but you can override that with the port= entry in the SERVER section of config.ini file.
 i.e. http://192.168.1.10:8080/slingbox
-
-Note: The first time you run the server it will connect to the web to download a file with the proper encryption keys for you sling box. I'll try to intergrate that code as some point to remove this step. You python interpreter will need the "requests" module installed to make this work.
 
 To access the Remote control functionality use the same IP address and port number but replace slingbox with Remote into any ol' web browser.
 i.e. http://192.168.1.10:8080/Remote
@@ -28,7 +26,6 @@ You'll need a working Python3 interpreter to get going. Comes pre-installed on t
     sudo apt-get install python3-pip
 # you don't need the flask module if you're not using the embedded web server to server out the Remote Control page. Disable the remote in your config.ini file set enableremote=no.
     sudo pip install flask
-    sudo pip install requests
 # you don't need netifaces if you configure the slingbox ip address and port number in the config.ini file
     sudo pip install netifaces
     
@@ -50,7 +47,7 @@ Add or modify the two following lines to your /etc/sysctl.conf
   
     
 Windows Notes
-    There is a windows executable now available so you don't need to do a python install but your welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask, requests and netifaces module for python. See note about netifaces and flask above.
+    There is a windows executable now available so you don't need to do a python install but your welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask and netifaces module for python. See note about netifaces and flask above.
     make a folder "slingbox" somewhere
     copy "slinbox_server.py, config.ini and RunSling.bat to the slingbox folder #
     if you want to have the server start automatically on boot make a shortcut to RunSling.bat in the Startup folder
