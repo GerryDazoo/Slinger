@@ -536,7 +536,7 @@ Please select the one you want to use and update the config.ini accordingly.
             sling_net_address = (slingip, slingport)
     
     if not slingip:
-        for port in stati.keys:
+        for port in stati.keys():
             msg =  "Can't find a slingbox on network. Please make sure it's plugged in and connected. Check config.ini"
             stati[port] = msg
         print(msg)
