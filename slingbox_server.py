@@ -11,6 +11,7 @@ import platform
 import datetime
 import traceback
 import requests
+import re
 from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
@@ -813,6 +814,26 @@ def remote_control_stream( connection, client, request, server_port):
     remote_control_socket = closeconn(remote_control_socket)
     print('Exiting Remote Control Stream Handler for', client )
 
+def remote_control_channel(server_port, channel):
+    global streamer_qs
+    streamer_q = streamer_qs[server_port]
+    Page, cmds, rccode = remotes[port]
+    rcbytes = bytearray(3)
+    rcbytes[0] = 0
+    rcbytes[1] = 0
+    rcbytes[2] = rccode
+    digits2buttons = [18,9,10,11,12,13,14,15,16,17]
+    if channel[0] == '?' :
+       kc = int(channel[1:])
+       print('Sending test keycode', kc )
+       streamer_q.put(kc.to_bytes(1, byteorder='little') + rcbytes)
+    else:
+        print('Sending Channel Digits', channel)
+        for digit in channel:
+            if digit in '0123456789' :
+                streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little') + rcbytes)
+    print('Exiting Remote Control Channel Handler for', channel )
+
 
 ########################################################################
 def ConnectionManager(config_fn):
@@ -869,6 +890,12 @@ def ConnectionManager(config_fn):
                     streamer_q = streamer_qs[local_port]
                     streamer_q.put( bytearray(1) + bytes('STREAM=%s:%d' % client_address, 'utf-8'))
                     streamer_q.put(connection)
+                    if 'channel' in data:
+                        result = re.search('channel=(\d+)', data)
+                        if result:
+                            channel = result.group(1)
+                            print('Sending Channel Digits', channel)
+                            Thread(target=remote_control_channel, args=(local_port, channel)).start()
                 else:
                     connetion = closeconn(connection)
             elif 'emote' in data and ('GET' in data or 'POST' in data) and remoteenabled :
