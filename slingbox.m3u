@@ -1,0 +1,1080 @@
+#EXTM3U
+#EXTINF:-1 tvg-chno="1" tvg-id="slingbox.1" tvg-name="Slingbox 1" tvg-logo="" group-title="slingbox",Slingbox 1
+http://localhost:8080/slingbox?channel=1
+#EXTM3U
+#EXTINF:-1 tvg-chno="2" tvg-id="slingbox.2" tvg-name="Slingbox 2" tvg-logo="" group-title="channels2to115",Slingbox 2
+http://localhost:8080/slingbox?channel=2
+#EXTM3U
+#EXTINF:-1 tvg-chno="3" tvg-id="slingbox.3" tvg-name="Slingbox 3" tvg-logo="" group-title="channels2to115",Slingbox 3
+http://localhost:8080/slingbox?channel=3
+#EXTM3U
+#EXTINF:-1 tvg-chno="4" tvg-id="slingbox.4" tvg-name="Slingbox 4" tvg-logo="" group-title="channels2to115",Slingbox 4
+http://localhost:8080/slingbox?channel=4
+#EXTM3U
+#EXTINF:-1 tvg-chno="5" tvg-id="slingbox.5" tvg-name="Slingbox 5" tvg-logo="" group-title="channels2to115",Slingbox 5
+http://localhost:8080/slingbox?channel=5
+#EXTM3U
+#EXTINF:-1 tvg-chno="6" tvg-id="slingbox.6" tvg-name="Slingbox 6" tvg-logo="" group-title="channels2to115",Slingbox 6
+http://localhost:8080/slingbox?channel=6
+#EXTM3U
+#EXTINF:-1 tvg-chno="7" tvg-id="slingbox.7" tvg-name="Slingbox 7" tvg-logo="" group-title="channels2to115",Slingbox 7
+http://localhost:8080/slingbox?channel=7
+#EXTM3U
+#EXTINF:-1 tvg-chno="8" tvg-id="slingbox.8" tvg-name="Slingbox 8" tvg-logo="" group-title="channels2to115",Slingbox 8
+http://localhost:8080/slingbox?channel=8
+#EXTM3U
+#EXTINF:-1 tvg-chno="9" tvg-id="slingbox.9" tvg-name="Slingbox 9" tvg-logo="" group-title="channels2to115",Slingbox 9
+http://localhost:8080/slingbox?channel=9
+#EXTM3U
+#EXTINF:-1 tvg-chno="10" tvg-id="slingbox.10" tvg-name="Slingbox 10" tvg-logo="" group-title="channels2to115",Slingbox 10
+http://localhost:8080/slingbox?channel=10
+#EXTM3U
+#EXTINF:-1 tvg-chno="11" tvg-id="slingbox.11" tvg-name="Slingbox 11" tvg-logo="" group-title="channels2to115",Slingbox 11
+http://localhost:8080/slingbox?channel=11
+#EXTM3U
+#EXTINF:-1 tvg-chno="12" tvg-id="slingbox.12" tvg-name="Slingbox 12" tvg-logo="" group-title="channels2to115",Slingbox 12
+http://localhost:8080/slingbox?channel=12
+#EXTM3U
+#EXTINF:-1 tvg-chno="13" tvg-id="slingbox.13" tvg-name="Slingbox 13" tvg-logo="" group-title="channels2to115",Slingbox 13
+http://localhost:8080/slingbox?channel=13
+#EXTM3U
+#EXTINF:-1 tvg-chno="14" tvg-id="slingbox.14" tvg-name="Slingbox 14" tvg-logo="" group-title="channels2to115",Slingbox 14
+http://localhost:8080/slingbox?channel=14
+#EXTM3U
+#EXTINF:-1 tvg-chno="15" tvg-id="slingbox.15" tvg-name="Slingbox 15" tvg-logo="" group-title="channels2to115",Slingbox 15
+http://localhost:8080/slingbox?channel=15
+#EXTM3U
+#EXTINF:-1 tvg-chno="16" tvg-id="slingbox.16" tvg-name="Slingbox 16" tvg-logo="" group-title="channels2to115",Slingbox 16
+http://localhost:8080/slingbox?channel=16
+#EXTM3U
+#EXTINF:-1 tvg-chno="17" tvg-id="slingbox.17" tvg-name="Slingbox 17" tvg-logo="" group-title="channels2to115",Slingbox 17
+http://localhost:8080/slingbox?channel=17
+#EXTM3U
+#EXTINF:-1 tvg-chno="18" tvg-id="slingbox.18" tvg-name="Slingbox 18" tvg-logo="" group-title="channels2to115",Slingbox 18
+http://localhost:8080/slingbox?channel=18
+#EXTM3U
+#EXTINF:-1 tvg-chno="19" tvg-id="slingbox.19" tvg-name="Slingbox 19" tvg-logo="" group-title="channels2to115",Slingbox 19
+http://localhost:8080/slingbox?channel=19
+#EXTM3U
+#EXTINF:-1 tvg-chno="20" tvg-id="slingbox.20" tvg-name="Slingbox 20" tvg-logo="" group-title="channels2to115",Slingbox 20
+http://localhost:8080/slingbox?channel=20
+#EXTM3U
+#EXTINF:-1 tvg-chno="21" tvg-id="slingbox.21" tvg-name="Slingbox 21" tvg-logo="" group-title="channels2to115",Slingbox 21
+http://localhost:8080/slingbox?channel=21
+#EXTM3U
+#EXTINF:-1 tvg-chno="22" tvg-id="slingbox.22" tvg-name="Slingbox 22" tvg-logo="" group-title="channels2to115",Slingbox 22
+http://localhost:8080/slingbox?channel=22
+#EXTM3U
+#EXTINF:-1 tvg-chno="23" tvg-id="slingbox.23" tvg-name="Slingbox 23" tvg-logo="" group-title="channels2to115",Slingbox 23
+http://localhost:8080/slingbox?channel=23
+#EXTM3U
+#EXTINF:-1 tvg-chno="24" tvg-id="slingbox.24" tvg-name="Slingbox 24" tvg-logo="" group-title="channels2to115",Slingbox 24
+http://localhost:8080/slingbox?channel=24
+#EXTM3U
+#EXTINF:-1 tvg-chno="25" tvg-id="slingbox.25" tvg-name="Slingbox 25" tvg-logo="" group-title="channels2to115",Slingbox 25
+http://localhost:8080/slingbox?channel=25
+#EXTM3U
+#EXTINF:-1 tvg-chno="26" tvg-id="slingbox.26" tvg-name="Slingbox 26" tvg-logo="" group-title="channels2to115",Slingbox 26
+http://localhost:8080/slingbox?channel=26
+#EXTM3U
+#EXTINF:-1 tvg-chno="27" tvg-id="slingbox.27" tvg-name="Slingbox 27" tvg-logo="" group-title="channels2to115",Slingbox 27
+http://localhost:8080/slingbox?channel=27
+#EXTM3U
+#EXTINF:-1 tvg-chno="28" tvg-id="slingbox.28" tvg-name="Slingbox 28" tvg-logo="" group-title="channels2to115",Slingbox 28
+http://localhost:8080/slingbox?channel=28
+#EXTM3U
+#EXTINF:-1 tvg-chno="29" tvg-id="slingbox.29" tvg-name="Slingbox 29" tvg-logo="" group-title="channels2to115",Slingbox 29
+http://localhost:8080/slingbox?channel=29
+#EXTM3U
+#EXTINF:-1 tvg-chno="30" tvg-id="slingbox.30" tvg-name="Slingbox 30" tvg-logo="" group-title="channels2to115",Slingbox 30
+http://localhost:8080/slingbox?channel=30
+#EXTM3U
+#EXTINF:-1 tvg-chno="31" tvg-id="slingbox.31" tvg-name="Slingbox 31" tvg-logo="" group-title="channels2to115",Slingbox 31
+http://localhost:8080/slingbox?channel=31
+#EXTM3U
+#EXTINF:-1 tvg-chno="32" tvg-id="slingbox.32" tvg-name="Slingbox 32" tvg-logo="" group-title="channels2to115",Slingbox 32
+http://localhost:8080/slingbox?channel=32
+#EXTM3U
+#EXTINF:-1 tvg-chno="33" tvg-id="slingbox.33" tvg-name="Slingbox 33" tvg-logo="" group-title="channels2to115",Slingbox 33
+http://localhost:8080/slingbox?channel=33
+#EXTM3U
+#EXTINF:-1 tvg-chno="34" tvg-id="slingbox.34" tvg-name="Slingbox 34" tvg-logo="" group-title="channels2to115",Slingbox 34
+http://localhost:8080/slingbox?channel=34
+#EXTM3U
+#EXTINF:-1 tvg-chno="35" tvg-id="slingbox.35" tvg-name="Slingbox 35" tvg-logo="" group-title="channels2to115",Slingbox 35
+http://localhost:8080/slingbox?channel=35
+#EXTM3U
+#EXTINF:-1 tvg-chno="36" tvg-id="slingbox.36" tvg-name="Slingbox 36" tvg-logo="" group-title="channels2to115",Slingbox 36
+http://localhost:8080/slingbox?channel=36
+#EXTM3U
+#EXTINF:-1 tvg-chno="37" tvg-id="slingbox.37" tvg-name="Slingbox 37" tvg-logo="" group-title="channels2to115",Slingbox 37
+http://localhost:8080/slingbox?channel=37
+#EXTM3U
+#EXTINF:-1 tvg-chno="38" tvg-id="slingbox.38" tvg-name="Slingbox 38" tvg-logo="" group-title="channels2to115",Slingbox 38
+http://localhost:8080/slingbox?channel=38
+#EXTM3U
+#EXTINF:-1 tvg-chno="39" tvg-id="slingbox.39" tvg-name="Slingbox 39" tvg-logo="" group-title="channels2to115",Slingbox 39
+http://localhost:8080/slingbox?channel=39
+#EXTM3U
+#EXTINF:-1 tvg-chno="40" tvg-id="slingbox.40" tvg-name="Slingbox 40" tvg-logo="" group-title="channels2to115",Slingbox 40
+http://localhost:8080/slingbox?channel=40
+#EXTM3U
+#EXTINF:-1 tvg-chno="41" tvg-id="slingbox.41" tvg-name="Slingbox 41" tvg-logo="" group-title="channels2to115",Slingbox 41
+http://localhost:8080/slingbox?channel=41
+#EXTM3U
+#EXTINF:-1 tvg-chno="42" tvg-id="slingbox.42" tvg-name="Slingbox 42" tvg-logo="" group-title="channels2to115",Slingbox 42
+http://localhost:8080/slingbox?channel=42
+#EXTM3U
+#EXTINF:-1 tvg-chno="43" tvg-id="slingbox.43" tvg-name="Slingbox 43" tvg-logo="" group-title="channels2to115",Slingbox 43
+http://localhost:8080/slingbox?channel=43
+#EXTM3U
+#EXTINF:-1 tvg-chno="44" tvg-id="slingbox.44" tvg-name="Slingbox 44" tvg-logo="" group-title="channels2to115",Slingbox 44
+http://localhost:8080/slingbox?channel=44
+#EXTM3U
+#EXTINF:-1 tvg-chno="45" tvg-id="slingbox.45" tvg-name="Slingbox 45" tvg-logo="" group-title="channels2to115",Slingbox 45
+http://localhost:8080/slingbox?channel=45
+#EXTM3U
+#EXTINF:-1 tvg-chno="46" tvg-id="slingbox.46" tvg-name="Slingbox 46" tvg-logo="" group-title="channels2to115",Slingbox 46
+http://localhost:8080/slingbox?channel=46
+#EXTM3U
+#EXTINF:-1 tvg-chno="47" tvg-id="slingbox.47" tvg-name="Slingbox 47" tvg-logo="" group-title="channels2to115",Slingbox 47
+http://localhost:8080/slingbox?channel=47
+#EXTM3U
+#EXTINF:-1 tvg-chno="48" tvg-id="slingbox.48" tvg-name="Slingbox 48" tvg-logo="" group-title="channels2to115",Slingbox 48
+http://localhost:8080/slingbox?channel=48
+#EXTM3U
+#EXTINF:-1 tvg-chno="49" tvg-id="slingbox.49" tvg-name="Slingbox 49" tvg-logo="" group-title="channels2to115",Slingbox 49
+http://localhost:8080/slingbox?channel=49
+#EXTM3U
+#EXTINF:-1 tvg-chno="50" tvg-id="slingbox.50" tvg-name="Slingbox 50" tvg-logo="" group-title="channels2to115",Slingbox 50
+http://localhost:8080/slingbox?channel=50
+#EXTM3U
+#EXTINF:-1 tvg-chno="51" tvg-id="slingbox.51" tvg-name="Slingbox 51" tvg-logo="" group-title="channels2to115",Slingbox 51
+http://localhost:8080/slingbox?channel=51
+#EXTM3U
+#EXTINF:-1 tvg-chno="52" tvg-id="slingbox.52" tvg-name="Slingbox 52" tvg-logo="" group-title="channels2to115",Slingbox 52
+http://localhost:8080/slingbox?channel=52
+#EXTM3U
+#EXTINF:-1 tvg-chno="53" tvg-id="slingbox.53" tvg-name="Slingbox 53" tvg-logo="" group-title="channels2to115",Slingbox 53
+http://localhost:8080/slingbox?channel=53
+#EXTM3U
+#EXTINF:-1 tvg-chno="54" tvg-id="slingbox.54" tvg-name="Slingbox 54" tvg-logo="" group-title="channels2to115",Slingbox 54
+http://localhost:8080/slingbox?channel=54
+#EXTM3U
+#EXTINF:-1 tvg-chno="55" tvg-id="slingbox.55" tvg-name="Slingbox 55" tvg-logo="" group-title="channels2to115",Slingbox 55
+http://localhost:8080/slingbox?channel=55
+#EXTM3U
+#EXTINF:-1 tvg-chno="56" tvg-id="slingbox.56" tvg-name="Slingbox 56" tvg-logo="" group-title="channels2to115",Slingbox 56
+http://localhost:8080/slingbox?channel=56
+#EXTM3U
+#EXTINF:-1 tvg-chno="57" tvg-id="slingbox.57" tvg-name="Slingbox 57" tvg-logo="" group-title="channels2to115",Slingbox 57
+http://localhost:8080/slingbox?channel=57
+#EXTM3U
+#EXTINF:-1 tvg-chno="58" tvg-id="slingbox.58" tvg-name="Slingbox 58" tvg-logo="" group-title="channels2to115",Slingbox 58
+http://localhost:8080/slingbox?channel=58
+#EXTM3U
+#EXTINF:-1 tvg-chno="59" tvg-id="slingbox.59" tvg-name="Slingbox 59" tvg-logo="" group-title="channels2to115",Slingbox 59
+http://localhost:8080/slingbox?channel=59
+#EXTM3U
+#EXTINF:-1 tvg-chno="60" tvg-id="slingbox.60" tvg-name="Slingbox 60" tvg-logo="" group-title="channels2to115",Slingbox 60
+http://localhost:8080/slingbox?channel=60
+#EXTM3U
+#EXTINF:-1 tvg-chno="61" tvg-id="slingbox.61" tvg-name="Slingbox 61" tvg-logo="" group-title="channels2to115",Slingbox 61
+http://localhost:8080/slingbox?channel=61
+#EXTM3U
+#EXTINF:-1 tvg-chno="62" tvg-id="slingbox.62" tvg-name="Slingbox 62" tvg-logo="" group-title="channels2to115",Slingbox 62
+http://localhost:8080/slingbox?channel=62
+#EXTM3U
+#EXTINF:-1 tvg-chno="63" tvg-id="slingbox.63" tvg-name="Slingbox 63" tvg-logo="" group-title="channels2to115",Slingbox 63
+http://localhost:8080/slingbox?channel=63
+#EXTM3U
+#EXTINF:-1 tvg-chno="64" tvg-id="slingbox.64" tvg-name="Slingbox 64" tvg-logo="" group-title="channels2to115",Slingbox 64
+http://localhost:8080/slingbox?channel=64
+#EXTM3U
+#EXTINF:-1 tvg-chno="65" tvg-id="slingbox.65" tvg-name="Slingbox 65" tvg-logo="" group-title="channels2to115",Slingbox 65
+http://localhost:8080/slingbox?channel=65
+#EXTM3U
+#EXTINF:-1 tvg-chno="66" tvg-id="slingbox.66" tvg-name="Slingbox 66" tvg-logo="" group-title="channels2to115",Slingbox 66
+http://localhost:8080/slingbox?channel=66
+#EXTM3U
+#EXTINF:-1 tvg-chno="67" tvg-id="slingbox.67" tvg-name="Slingbox 67" tvg-logo="" group-title="channels2to115",Slingbox 67
+http://localhost:8080/slingbox?channel=67
+#EXTM3U
+#EXTINF:-1 tvg-chno="68" tvg-id="slingbox.68" tvg-name="Slingbox 68" tvg-logo="" group-title="channels2to115",Slingbox 68
+http://localhost:8080/slingbox?channel=68
+#EXTM3U
+#EXTINF:-1 tvg-chno="69" tvg-id="slingbox.69" tvg-name="Slingbox 69" tvg-logo="" group-title="channels2to115",Slingbox 69
+http://localhost:8080/slingbox?channel=69
+#EXTM3U
+#EXTINF:-1 tvg-chno="70" tvg-id="slingbox.70" tvg-name="Slingbox 70" tvg-logo="" group-title="channels2to115",Slingbox 70
+http://localhost:8080/slingbox?channel=70
+#EXTM3U
+#EXTINF:-1 tvg-chno="71" tvg-id="slingbox.71" tvg-name="Slingbox 71" tvg-logo="" group-title="channels2to115",Slingbox 71
+http://localhost:8080/slingbox?channel=71
+#EXTM3U
+#EXTINF:-1 tvg-chno="72" tvg-id="slingbox.72" tvg-name="Slingbox 72" tvg-logo="" group-title="channels2to115",Slingbox 72
+http://localhost:8080/slingbox?channel=72
+#EXTM3U
+#EXTINF:-1 tvg-chno="73" tvg-id="slingbox.73" tvg-name="Slingbox 73" tvg-logo="" group-title="channels2to115",Slingbox 73
+http://localhost:8080/slingbox?channel=73
+#EXTM3U
+#EXTINF:-1 tvg-chno="74" tvg-id="slingbox.74" tvg-name="Slingbox 74" tvg-logo="" group-title="channels2to115",Slingbox 74
+http://localhost:8080/slingbox?channel=74
+#EXTM3U
+#EXTINF:-1 tvg-chno="75" tvg-id="slingbox.75" tvg-name="Slingbox 75" tvg-logo="" group-title="channels2to115",Slingbox 75
+http://localhost:8080/slingbox?channel=75
+#EXTM3U
+#EXTINF:-1 tvg-chno="76" tvg-id="slingbox.76" tvg-name="Slingbox 76" tvg-logo="" group-title="channels2to115",Slingbox 76
+http://localhost:8080/slingbox?channel=76
+#EXTM3U
+#EXTINF:-1 tvg-chno="77" tvg-id="slingbox.77" tvg-name="Slingbox 77" tvg-logo="" group-title="channels2to115",Slingbox 77
+http://localhost:8080/slingbox?channel=77
+#EXTM3U
+#EXTINF:-1 tvg-chno="78" tvg-id="slingbox.78" tvg-name="Slingbox 78" tvg-logo="" group-title="channels2to115",Slingbox 78
+http://localhost:8080/slingbox?channel=78
+#EXTM3U
+#EXTINF:-1 tvg-chno="79" tvg-id="slingbox.79" tvg-name="Slingbox 79" tvg-logo="" group-title="channels2to115",Slingbox 79
+http://localhost:8080/slingbox?channel=79
+#EXTM3U
+#EXTINF:-1 tvg-chno="80" tvg-id="slingbox.80" tvg-name="Slingbox 80" tvg-logo="" group-title="channels2to115",Slingbox 80
+http://localhost:8080/slingbox?channel=80
+#EXTM3U
+#EXTINF:-1 tvg-chno="81" tvg-id="slingbox.81" tvg-name="Slingbox 81" tvg-logo="" group-title="channels2to115",Slingbox 81
+http://localhost:8080/slingbox?channel=81
+#EXTM3U
+#EXTINF:-1 tvg-chno="82" tvg-id="slingbox.82" tvg-name="Slingbox 82" tvg-logo="" group-title="channels2to115",Slingbox 82
+http://localhost:8080/slingbox?channel=82
+#EXTM3U
+#EXTINF:-1 tvg-chno="83" tvg-id="slingbox.83" tvg-name="Slingbox 83" tvg-logo="" group-title="channels2to115",Slingbox 83
+http://localhost:8080/slingbox?channel=83
+#EXTM3U
+#EXTINF:-1 tvg-chno="84" tvg-id="slingbox.84" tvg-name="Slingbox 84" tvg-logo="" group-title="channels2to115",Slingbox 84
+http://localhost:8080/slingbox?channel=84
+#EXTM3U
+#EXTINF:-1 tvg-chno="85" tvg-id="slingbox.85" tvg-name="Slingbox 85" tvg-logo="" group-title="channels2to115",Slingbox 85
+http://localhost:8080/slingbox?channel=85
+#EXTM3U
+#EXTINF:-1 tvg-chno="86" tvg-id="slingbox.86" tvg-name="Slingbox 86" tvg-logo="" group-title="channels2to115",Slingbox 86
+http://localhost:8080/slingbox?channel=86
+#EXTM3U
+#EXTINF:-1 tvg-chno="87" tvg-id="slingbox.87" tvg-name="Slingbox 87" tvg-logo="" group-title="channels2to115",Slingbox 87
+http://localhost:8080/slingbox?channel=87
+#EXTM3U
+#EXTINF:-1 tvg-chno="88" tvg-id="slingbox.88" tvg-name="Slingbox 88" tvg-logo="" group-title="channels2to115",Slingbox 88
+http://localhost:8080/slingbox?channel=88
+#EXTM3U
+#EXTINF:-1 tvg-chno="89" tvg-id="slingbox.89" tvg-name="Slingbox 89" tvg-logo="" group-title="channels2to115",Slingbox 89
+http://localhost:8080/slingbox?channel=89
+#EXTM3U
+#EXTINF:-1 tvg-chno="90" tvg-id="slingbox.90" tvg-name="Slingbox 90" tvg-logo="" group-title="channels2to115",Slingbox 90
+http://localhost:8080/slingbox?channel=90
+#EXTM3U
+#EXTINF:-1 tvg-chno="91" tvg-id="slingbox.91" tvg-name="Slingbox 91" tvg-logo="" group-title="channels2to115",Slingbox 91
+http://localhost:8080/slingbox?channel=91
+#EXTM3U
+#EXTINF:-1 tvg-chno="92" tvg-id="slingbox.92" tvg-name="Slingbox 92" tvg-logo="" group-title="channels2to115",Slingbox 92
+http://localhost:8080/slingbox?channel=92
+#EXTM3U
+#EXTINF:-1 tvg-chno="93" tvg-id="slingbox.93" tvg-name="Slingbox 93" tvg-logo="" group-title="channels2to115",Slingbox 93
+http://localhost:8080/slingbox?channel=93
+#EXTM3U
+#EXTINF:-1 tvg-chno="94" tvg-id="slingbox.94" tvg-name="Slingbox 94" tvg-logo="" group-title="channels2to115",Slingbox 94
+http://localhost:8080/slingbox?channel=94
+#EXTM3U
+#EXTINF:-1 tvg-chno="95" tvg-id="slingbox.95" tvg-name="Slingbox 95" tvg-logo="" group-title="channels2to115",Slingbox 95
+http://localhost:8080/slingbox?channel=95
+#EXTM3U
+#EXTINF:-1 tvg-chno="96" tvg-id="slingbox.96" tvg-name="Slingbox 96" tvg-logo="" group-title="channels2to115",Slingbox 96
+http://localhost:8080/slingbox?channel=96
+#EXTM3U
+#EXTINF:-1 tvg-chno="97" tvg-id="slingbox.97" tvg-name="Slingbox 97" tvg-logo="" group-title="channels2to115",Slingbox 97
+http://localhost:8080/slingbox?channel=97
+#EXTM3U
+#EXTINF:-1 tvg-chno="98" tvg-id="slingbox.98" tvg-name="Slingbox 98" tvg-logo="" group-title="channels2to115",Slingbox 98
+http://localhost:8080/slingbox?channel=98
+#EXTM3U
+#EXTINF:-1 tvg-chno="99" tvg-id="slingbox.99" tvg-name="Slingbox 99" tvg-logo="" group-title="channels2to115",Slingbox 99
+http://localhost:8080/slingbox?channel=99
+#EXTM3U
+#EXTINF:-1 tvg-chno="100" tvg-id="slingbox.100" tvg-name="Slingbox 100" tvg-logo="" group-title="channels2to115",Slingbox 100
+http://localhost:8080/slingbox?channel=100
+#EXTM3U
+#EXTINF:-1 tvg-chno="101" tvg-id="slingbox.101" tvg-name="Slingbox 101" tvg-logo="" group-title="channels2to115",Slingbox 101
+http://localhost:8080/slingbox?channel=101
+#EXTM3U
+#EXTINF:-1 tvg-chno="102" tvg-id="slingbox.102" tvg-name="Slingbox 102" tvg-logo="" group-title="channels2to115",Slingbox 102
+http://localhost:8080/slingbox?channel=102
+#EXTM3U
+#EXTINF:-1 tvg-chno="103" tvg-id="slingbox.103" tvg-name="Slingbox 103" tvg-logo="" group-title="channels2to115",Slingbox 103
+http://localhost:8080/slingbox?channel=103
+#EXTM3U
+#EXTINF:-1 tvg-chno="104" tvg-id="slingbox.104" tvg-name="Slingbox 104" tvg-logo="" group-title="channels2to115",Slingbox 104
+http://localhost:8080/slingbox?channel=104
+#EXTM3U
+#EXTINF:-1 tvg-chno="105" tvg-id="slingbox.105" tvg-name="Slingbox 105" tvg-logo="" group-title="channels2to115",Slingbox 105
+http://localhost:8080/slingbox?channel=105
+#EXTM3U
+#EXTINF:-1 tvg-chno="106" tvg-id="slingbox.106" tvg-name="Slingbox 106" tvg-logo="" group-title="channels2to115",Slingbox 106
+http://localhost:8080/slingbox?channel=106
+#EXTM3U
+#EXTINF:-1 tvg-chno="107" tvg-id="slingbox.107" tvg-name="Slingbox 107" tvg-logo="" group-title="channels2to115",Slingbox 107
+http://localhost:8080/slingbox?channel=107
+#EXTM3U
+#EXTINF:-1 tvg-chno="108" tvg-id="slingbox.108" tvg-name="Slingbox 108" tvg-logo="" group-title="channels2to115",Slingbox 108
+http://localhost:8080/slingbox?channel=108
+#EXTM3U
+#EXTINF:-1 tvg-chno="109" tvg-id="slingbox.109" tvg-name="Slingbox 109" tvg-logo="" group-title="channels2to115",Slingbox 109
+http://localhost:8080/slingbox?channel=109
+#EXTM3U
+#EXTINF:-1 tvg-chno="110" tvg-id="slingbox.110" tvg-name="Slingbox 110" tvg-logo="" group-title="channels2to115",Slingbox 110
+http://localhost:8080/slingbox?channel=110
+#EXTM3U
+#EXTINF:-1 tvg-chno="111" tvg-id="slingbox.111" tvg-name="Slingbox 111" tvg-logo="" group-title="channels2to115",Slingbox 111
+http://localhost:8080/slingbox?channel=111
+#EXTM3U
+#EXTINF:-1 tvg-chno="112" tvg-id="slingbox.112" tvg-name="Slingbox 112" tvg-logo="" group-title="channels2to115",Slingbox 112
+http://localhost:8080/slingbox?channel=112
+#EXTM3U
+#EXTINF:-1 tvg-chno="113" tvg-id="slingbox.113" tvg-name="Slingbox 113" tvg-logo="" group-title="channels2to115",Slingbox 113
+http://localhost:8080/slingbox?channel=113
+#EXTM3U
+#EXTINF:-1 tvg-chno="114" tvg-id="slingbox.114" tvg-name="Slingbox 114" tvg-logo="" group-title="channels2to115",Slingbox 114
+http://localhost:8080/slingbox?channel=114
+#EXTM3U
+#EXTINF:-1 tvg-chno="115" tvg-id="slingbox.115" tvg-name="Slingbox 115" tvg-logo="" group-title="channels2to115",Slingbox 115
+http://localhost:8080/slingbox?channel=115
+#EXTM3U
+#EXTINF:-1 tvg-chno="116" tvg-id="slingbox.116" tvg-name="Slingbox 116" tvg-logo="" group-title="slingbox",Slingbox 116
+http://localhost:8080/slingbox?channel=116
+#EXTM3U
+#EXTINF:-1 tvg-chno="117" tvg-id="slingbox.117" tvg-name="Slingbox 117" tvg-logo="" group-title="slingbox",Slingbox 117
+http://localhost:8080/slingbox?channel=117
+#EXTM3U
+#EXTINF:-1 tvg-chno="118" tvg-id="slingbox.118" tvg-name="Slingbox 118" tvg-logo="" group-title="slingbox",Slingbox 118
+http://localhost:8080/slingbox?channel=118
+#EXTM3U
+#EXTINF:-1 tvg-chno="119" tvg-id="slingbox.119" tvg-name="Slingbox 119" tvg-logo="" group-title="slingbox",Slingbox 119
+http://localhost:8080/slingbox?channel=119
+#EXTM3U
+#EXTINF:-1 tvg-chno="120" tvg-id="slingbox.120" tvg-name="Slingbox 120" tvg-logo="" group-title="kids",Slingbox 120
+http://localhost:8080/slingbox?channel=120
+#EXTM3U
+#EXTINF:-1 tvg-chno="121" tvg-id="slingbox.121" tvg-name="Slingbox 121" tvg-logo="" group-title="kids",Slingbox 121
+http://localhost:8080/slingbox?channel=121
+#EXTM3U
+#EXTINF:-1 tvg-chno="122" tvg-id="slingbox.122" tvg-name="Slingbox 122" tvg-logo="" group-title="kids",Slingbox 122
+http://localhost:8080/slingbox?channel=122
+#EXTM3U
+#EXTINF:-1 tvg-chno="123" tvg-id="slingbox.123" tvg-name="Slingbox 123" tvg-logo="" group-title="kids",Slingbox 123
+http://localhost:8080/slingbox?channel=123
+#EXTM3U
+#EXTINF:-1 tvg-chno="124" tvg-id="slingbox.124" tvg-name="Slingbox 124" tvg-logo="" group-title="kids",Slingbox 124
+http://localhost:8080/slingbox?channel=124
+#EXTM3U
+#EXTINF:-1 tvg-chno="125" tvg-id="slingbox.125" tvg-name="Slingbox 125" tvg-logo="" group-title="kids",Slingbox 125
+http://localhost:8080/slingbox?channel=125
+#EXTM3U
+#EXTINF:-1 tvg-chno="126" tvg-id="slingbox.126" tvg-name="Slingbox 126" tvg-logo="" group-title="kids",Slingbox 126
+http://localhost:8080/slingbox?channel=126
+#EXTM3U
+#EXTINF:-1 tvg-chno="127" tvg-id="slingbox.127" tvg-name="Slingbox 127" tvg-logo="" group-title="kids",Slingbox 127
+http://localhost:8080/slingbox?channel=127
+#EXTM3U
+#EXTINF:-1 tvg-chno="128" tvg-id="slingbox.128" tvg-name="Slingbox 128" tvg-logo="" group-title="kids",Slingbox 128
+http://localhost:8080/slingbox?channel=128
+#EXTM3U
+#EXTINF:-1 tvg-chno="129" tvg-id="slingbox.129" tvg-name="Slingbox 129" tvg-logo="" group-title="kids",Slingbox 129
+http://localhost:8080/slingbox?channel=129
+#EXTM3U
+#EXTINF:-1 tvg-chno="130" tvg-id="slingbox.130" tvg-name="Slingbox 130" tvg-logo="" group-title="kids",Slingbox 130
+http://localhost:8080/slingbox?channel=130
+#EXTM3U
+#EXTINF:-1 tvg-chno="131" tvg-id="slingbox.131" tvg-name="Slingbox 131" tvg-logo="" group-title="kids",Slingbox 131
+http://localhost:8080/slingbox?channel=131
+#EXTM3U
+#EXTINF:-1 tvg-chno="132" tvg-id="slingbox.132" tvg-name="Slingbox 132" tvg-logo="" group-title="channels132to199",Slingbox 132
+http://localhost:8080/slingbox?channel=132
+#EXTM3U
+#EXTINF:-1 tvg-chno="133" tvg-id="slingbox.133" tvg-name="Slingbox 133" tvg-logo="" group-title="channels132to199",Slingbox 133
+http://localhost:8080/slingbox?channel=133
+#EXTM3U
+#EXTINF:-1 tvg-chno="134" tvg-id="slingbox.134" tvg-name="Slingbox 134" tvg-logo="" group-title="channels132to199",Slingbox 134
+http://localhost:8080/slingbox?channel=134
+#EXTM3U
+#EXTINF:-1 tvg-chno="135" tvg-id="slingbox.135" tvg-name="Slingbox 135" tvg-logo="" group-title="channels132to199",Slingbox 135
+http://localhost:8080/slingbox?channel=135
+#EXTM3U
+#EXTINF:-1 tvg-chno="136" tvg-id="slingbox.136" tvg-name="Slingbox 136" tvg-logo="" group-title="channels132to199",Slingbox 136
+http://localhost:8080/slingbox?channel=136
+#EXTM3U
+#EXTINF:-1 tvg-chno="137" tvg-id="slingbox.137" tvg-name="Slingbox 137" tvg-logo="" group-title="channels132to199",Slingbox 137
+http://localhost:8080/slingbox?channel=137
+#EXTM3U
+#EXTINF:-1 tvg-chno="138" tvg-id="slingbox.138" tvg-name="Slingbox 138" tvg-logo="" group-title="channels132to199",Slingbox 138
+http://localhost:8080/slingbox?channel=138
+#EXTM3U
+#EXTINF:-1 tvg-chno="139" tvg-id="slingbox.139" tvg-name="Slingbox 139" tvg-logo="" group-title="channels132to199",Slingbox 139
+http://localhost:8080/slingbox?channel=139
+#EXTM3U
+#EXTINF:-1 tvg-chno="140" tvg-id="slingbox.140" tvg-name="Slingbox 140" tvg-logo="" group-title="channels132to199",Slingbox 140
+http://localhost:8080/slingbox?channel=140
+#EXTM3U
+#EXTINF:-1 tvg-chno="141" tvg-id="slingbox.141" tvg-name="Slingbox 141" tvg-logo="" group-title="channels132to199",Slingbox 141
+http://localhost:8080/slingbox?channel=141
+#EXTM3U
+#EXTINF:-1 tvg-chno="142" tvg-id="slingbox.142" tvg-name="Slingbox 142" tvg-logo="" group-title="channels132to199",Slingbox 142
+http://localhost:8080/slingbox?channel=142
+#EXTM3U
+#EXTINF:-1 tvg-chno="143" tvg-id="slingbox.143" tvg-name="Slingbox 143" tvg-logo="" group-title="channels132to199",Slingbox 143
+http://localhost:8080/slingbox?channel=143
+#EXTM3U
+#EXTINF:-1 tvg-chno="144" tvg-id="slingbox.144" tvg-name="Slingbox 144" tvg-logo="" group-title="channels132to199",Slingbox 144
+http://localhost:8080/slingbox?channel=144
+#EXTM3U
+#EXTINF:-1 tvg-chno="145" tvg-id="slingbox.145" tvg-name="Slingbox 145" tvg-logo="" group-title="channels132to199",Slingbox 145
+http://localhost:8080/slingbox?channel=145
+#EXTM3U
+#EXTINF:-1 tvg-chno="146" tvg-id="slingbox.146" tvg-name="Slingbox 146" tvg-logo="" group-title="channels132to199",Slingbox 146
+http://localhost:8080/slingbox?channel=146
+#EXTM3U
+#EXTINF:-1 tvg-chno="147" tvg-id="slingbox.147" tvg-name="Slingbox 147" tvg-logo="" group-title="channels132to199",Slingbox 147
+http://localhost:8080/slingbox?channel=147
+#EXTM3U
+#EXTINF:-1 tvg-chno="148" tvg-id="slingbox.148" tvg-name="Slingbox 148" tvg-logo="" group-title="channels132to199",Slingbox 148
+http://localhost:8080/slingbox?channel=148
+#EXTM3U
+#EXTINF:-1 tvg-chno="149" tvg-id="slingbox.149" tvg-name="Slingbox 149" tvg-logo="" group-title="channels132to199",Slingbox 149
+http://localhost:8080/slingbox?channel=149
+#EXTM3U
+#EXTINF:-1 tvg-chno="150" tvg-id="slingbox.150" tvg-name="Slingbox 150" tvg-logo="" group-title="channels132to199",Slingbox 150
+http://localhost:8080/slingbox?channel=150
+#EXTM3U
+#EXTINF:-1 tvg-chno="151" tvg-id="slingbox.151" tvg-name="Slingbox 151" tvg-logo="" group-title="channels132to199",Slingbox 151
+http://localhost:8080/slingbox?channel=151
+#EXTM3U
+#EXTINF:-1 tvg-chno="152" tvg-id="slingbox.152" tvg-name="Slingbox 152" tvg-logo="" group-title="channels132to199",Slingbox 152
+http://localhost:8080/slingbox?channel=152
+#EXTM3U
+#EXTINF:-1 tvg-chno="153" tvg-id="slingbox.153" tvg-name="Slingbox 153" tvg-logo="" group-title="channels132to199",Slingbox 153
+http://localhost:8080/slingbox?channel=153
+#EXTM3U
+#EXTINF:-1 tvg-chno="154" tvg-id="slingbox.154" tvg-name="Slingbox 154" tvg-logo="" group-title="channels132to199",Slingbox 154
+http://localhost:8080/slingbox?channel=154
+#EXTM3U
+#EXTINF:-1 tvg-chno="155" tvg-id="slingbox.155" tvg-name="Slingbox 155" tvg-logo="" group-title="channels132to199",Slingbox 155
+http://localhost:8080/slingbox?channel=155
+#EXTM3U
+#EXTINF:-1 tvg-chno="156" tvg-id="slingbox.156" tvg-name="Slingbox 156" tvg-logo="" group-title="channels132to199",Slingbox 156
+http://localhost:8080/slingbox?channel=156
+#EXTM3U
+#EXTINF:-1 tvg-chno="157" tvg-id="slingbox.157" tvg-name="Slingbox 157" tvg-logo="" group-title="channels132to199",Slingbox 157
+http://localhost:8080/slingbox?channel=157
+#EXTM3U
+#EXTINF:-1 tvg-chno="158" tvg-id="slingbox.158" tvg-name="Slingbox 158" tvg-logo="" group-title="channels132to199",Slingbox 158
+http://localhost:8080/slingbox?channel=158
+#EXTM3U
+#EXTINF:-1 tvg-chno="159" tvg-id="slingbox.159" tvg-name="Slingbox 159" tvg-logo="" group-title="channels132to199",Slingbox 159
+http://localhost:8080/slingbox?channel=159
+#EXTM3U
+#EXTINF:-1 tvg-chno="160" tvg-id="slingbox.160" tvg-name="Slingbox 160" tvg-logo="" group-title="channels132to199",Slingbox 160
+http://localhost:8080/slingbox?channel=160
+#EXTM3U
+#EXTINF:-1 tvg-chno="161" tvg-id="slingbox.161" tvg-name="Slingbox 161" tvg-logo="" group-title="channels132to199",Slingbox 161
+http://localhost:8080/slingbox?channel=161
+#EXTM3U
+#EXTINF:-1 tvg-chno="162" tvg-id="slingbox.162" tvg-name="Slingbox 162" tvg-logo="" group-title="channels132to199",Slingbox 162
+http://localhost:8080/slingbox?channel=162
+#EXTM3U
+#EXTINF:-1 tvg-chno="163" tvg-id="slingbox.163" tvg-name="Slingbox 163" tvg-logo="" group-title="channels132to199",Slingbox 163
+http://localhost:8080/slingbox?channel=163
+#EXTM3U
+#EXTINF:-1 tvg-chno="164" tvg-id="slingbox.164" tvg-name="Slingbox 164" tvg-logo="" group-title="channels132to199",Slingbox 164
+http://localhost:8080/slingbox?channel=164
+#EXTM3U
+#EXTINF:-1 tvg-chno="165" tvg-id="slingbox.165" tvg-name="Slingbox 165" tvg-logo="" group-title="channels132to199",Slingbox 165
+http://localhost:8080/slingbox?channel=165
+#EXTM3U
+#EXTINF:-1 tvg-chno="166" tvg-id="slingbox.166" tvg-name="Slingbox 166" tvg-logo="" group-title="channels132to199",Slingbox 166
+http://localhost:8080/slingbox?channel=166
+#EXTM3U
+#EXTINF:-1 tvg-chno="167" tvg-id="slingbox.167" tvg-name="Slingbox 167" tvg-logo="" group-title="channels132to199",Slingbox 167
+http://localhost:8080/slingbox?channel=167
+#EXTM3U
+#EXTINF:-1 tvg-chno="168" tvg-id="slingbox.168" tvg-name="Slingbox 168" tvg-logo="" group-title="channels132to199",Slingbox 168
+http://localhost:8080/slingbox?channel=168
+#EXTM3U
+#EXTINF:-1 tvg-chno="169" tvg-id="slingbox.169" tvg-name="Slingbox 169" tvg-logo="" group-title="channels132to199",Slingbox 169
+http://localhost:8080/slingbox?channel=169
+#EXTM3U
+#EXTINF:-1 tvg-chno="170" tvg-id="slingbox.170" tvg-name="Slingbox 170" tvg-logo="" group-title="channels132to199",Slingbox 170
+http://localhost:8080/slingbox?channel=170
+#EXTM3U
+#EXTINF:-1 tvg-chno="171" tvg-id="slingbox.171" tvg-name="Slingbox 171" tvg-logo="" group-title="channels132to199",Slingbox 171
+http://localhost:8080/slingbox?channel=171
+#EXTM3U
+#EXTINF:-1 tvg-chno="172" tvg-id="slingbox.172" tvg-name="Slingbox 172" tvg-logo="" group-title="channels132to199",Slingbox 172
+http://localhost:8080/slingbox?channel=172
+#EXTM3U
+#EXTINF:-1 tvg-chno="173" tvg-id="slingbox.173" tvg-name="Slingbox 173" tvg-logo="" group-title="channels132to199",Slingbox 173
+http://localhost:8080/slingbox?channel=173
+#EXTM3U
+#EXTINF:-1 tvg-chno="174" tvg-id="slingbox.174" tvg-name="Slingbox 174" tvg-logo="" group-title="channels132to199",Slingbox 174
+http://localhost:8080/slingbox?channel=174
+#EXTM3U
+#EXTINF:-1 tvg-chno="175" tvg-id="slingbox.175" tvg-name="Slingbox 175" tvg-logo="" group-title="channels132to199",Slingbox 175
+http://localhost:8080/slingbox?channel=175
+#EXTM3U
+#EXTINF:-1 tvg-chno="176" tvg-id="slingbox.176" tvg-name="Slingbox 176" tvg-logo="" group-title="channels132to199",Slingbox 176
+http://localhost:8080/slingbox?channel=176
+#EXTM3U
+#EXTINF:-1 tvg-chno="177" tvg-id="slingbox.177" tvg-name="Slingbox 177" tvg-logo="" group-title="channels132to199",Slingbox 177
+http://localhost:8080/slingbox?channel=177
+#EXTM3U
+#EXTINF:-1 tvg-chno="178" tvg-id="slingbox.178" tvg-name="Slingbox 178" tvg-logo="" group-title="channels132to199",Slingbox 178
+http://localhost:8080/slingbox?channel=178
+#EXTM3U
+#EXTINF:-1 tvg-chno="179" tvg-id="slingbox.179" tvg-name="Slingbox 179" tvg-logo="" group-title="channels132to199",Slingbox 179
+http://localhost:8080/slingbox?channel=179
+#EXTM3U
+#EXTINF:-1 tvg-chno="180" tvg-id="slingbox.180" tvg-name="Slingbox 180" tvg-logo="" group-title="channels132to199",Slingbox 180
+http://localhost:8080/slingbox?channel=180
+#EXTM3U
+#EXTINF:-1 tvg-chno="181" tvg-id="slingbox.181" tvg-name="Slingbox 181" tvg-logo="" group-title="channels132to199",Slingbox 181
+http://localhost:8080/slingbox?channel=181
+#EXTM3U
+#EXTINF:-1 tvg-chno="182" tvg-id="slingbox.182" tvg-name="Slingbox 182" tvg-logo="" group-title="channels132to199",Slingbox 182
+http://localhost:8080/slingbox?channel=182
+#EXTM3U
+#EXTINF:-1 tvg-chno="183" tvg-id="slingbox.183" tvg-name="Slingbox 183" tvg-logo="" group-title="channels132to199",Slingbox 183
+http://localhost:8080/slingbox?channel=183
+#EXTM3U
+#EXTINF:-1 tvg-chno="184" tvg-id="slingbox.184" tvg-name="Slingbox 184" tvg-logo="" group-title="channels132to199",Slingbox 184
+http://localhost:8080/slingbox?channel=184
+#EXTM3U
+#EXTINF:-1 tvg-chno="185" tvg-id="slingbox.185" tvg-name="Slingbox 185" tvg-logo="" group-title="channels132to199",Slingbox 185
+http://localhost:8080/slingbox?channel=185
+#EXTM3U
+#EXTINF:-1 tvg-chno="186" tvg-id="slingbox.186" tvg-name="Slingbox 186" tvg-logo="" group-title="channels132to199",Slingbox 186
+http://localhost:8080/slingbox?channel=186
+#EXTM3U
+#EXTINF:-1 tvg-chno="187" tvg-id="slingbox.187" tvg-name="Slingbox 187" tvg-logo="" group-title="channels132to199",Slingbox 187
+http://localhost:8080/slingbox?channel=187
+#EXTM3U
+#EXTINF:-1 tvg-chno="188" tvg-id="slingbox.188" tvg-name="Slingbox 188" tvg-logo="" group-title="channels132to199",Slingbox 188
+http://localhost:8080/slingbox?channel=188
+#EXTM3U
+#EXTINF:-1 tvg-chno="189" tvg-id="slingbox.189" tvg-name="Slingbox 189" tvg-logo="" group-title="channels132to199",Slingbox 189
+http://localhost:8080/slingbox?channel=189
+#EXTM3U
+#EXTINF:-1 tvg-chno="190" tvg-id="slingbox.190" tvg-name="Slingbox 190" tvg-logo="" group-title="channels132to199",Slingbox 190
+http://localhost:8080/slingbox?channel=190
+#EXTM3U
+#EXTINF:-1 tvg-chno="191" tvg-id="slingbox.191" tvg-name="Slingbox 191" tvg-logo="" group-title="channels132to199",Slingbox 191
+http://localhost:8080/slingbox?channel=191
+#EXTM3U
+#EXTINF:-1 tvg-chno="192" tvg-id="slingbox.192" tvg-name="Slingbox 192" tvg-logo="" group-title="channels132to199",Slingbox 192
+http://localhost:8080/slingbox?channel=192
+#EXTM3U
+#EXTINF:-1 tvg-chno="193" tvg-id="slingbox.193" tvg-name="Slingbox 193" tvg-logo="" group-title="channels132to199",Slingbox 193
+http://localhost:8080/slingbox?channel=193
+#EXTM3U
+#EXTINF:-1 tvg-chno="194" tvg-id="slingbox.194" tvg-name="Slingbox 194" tvg-logo="" group-title="channels132to199",Slingbox 194
+http://localhost:8080/slingbox?channel=194
+#EXTM3U
+#EXTINF:-1 tvg-chno="195" tvg-id="slingbox.195" tvg-name="Slingbox 195" tvg-logo="" group-title="channels132to199",Slingbox 195
+http://localhost:8080/slingbox?channel=195
+#EXTM3U
+#EXTINF:-1 tvg-chno="196" tvg-id="slingbox.196" tvg-name="Slingbox 196" tvg-logo="" group-title="channels132to199",Slingbox 196
+http://localhost:8080/slingbox?channel=196
+#EXTM3U
+#EXTINF:-1 tvg-chno="197" tvg-id="slingbox.197" tvg-name="Slingbox 197" tvg-logo="" group-title="channels132to199",Slingbox 197
+http://localhost:8080/slingbox?channel=197
+#EXTM3U
+#EXTINF:-1 tvg-chno="198" tvg-id="slingbox.198" tvg-name="Slingbox 198" tvg-logo="" group-title="channels132to199",Slingbox 198
+http://localhost:8080/slingbox?channel=198
+#EXTM3U
+#EXTINF:-1 tvg-chno="199" tvg-id="slingbox.199" tvg-name="Slingbox 199" tvg-logo="" group-title="channels132to199",Slingbox 199
+http://localhost:8080/slingbox?channel=199
+#EXTM3U
+#EXTINF:-1 tvg-chno="200" tvg-id="slingbox.200" tvg-name="Slingbox 200" tvg-logo="" group-title="slingbox",Slingbox 200
+http://localhost:8080/slingbox?channel=200
+#EXTM3U
+#EXTINF:-1 tvg-chno="201" tvg-id="slingbox.201" tvg-name="Slingbox 201" tvg-logo="" group-title="sports",Slingbox 201
+http://localhost:8080/slingbox?channel=201
+#EXTM3U
+#EXTINF:-1 tvg-chno="202" tvg-id="slingbox.202" tvg-name="Slingbox 202" tvg-logo="" group-title="sports",Slingbox 202
+http://localhost:8080/slingbox?channel=202
+#EXTM3U
+#EXTINF:-1 tvg-chno="203" tvg-id="slingbox.203" tvg-name="Slingbox 203" tvg-logo="" group-title="sports",Slingbox 203
+http://localhost:8080/slingbox?channel=203
+#EXTM3U
+#EXTINF:-1 tvg-chno="204" tvg-id="slingbox.204" tvg-name="Slingbox 204" tvg-logo="" group-title="sports",Slingbox 204
+http://localhost:8080/slingbox?channel=204
+#EXTM3U
+#EXTINF:-1 tvg-chno="205" tvg-id="slingbox.205" tvg-name="Slingbox 205" tvg-logo="" group-title="sports",Slingbox 205
+http://localhost:8080/slingbox?channel=205
+#EXTM3U
+#EXTINF:-1 tvg-chno="206" tvg-id="slingbox.206" tvg-name="Slingbox 206" tvg-logo="" group-title="sports",Slingbox 206
+http://localhost:8080/slingbox?channel=206
+#EXTM3U
+#EXTINF:-1 tvg-chno="207" tvg-id="slingbox.207" tvg-name="Slingbox 207" tvg-logo="" group-title="sports",Slingbox 207
+http://localhost:8080/slingbox?channel=207
+#EXTM3U
+#EXTINF:-1 tvg-chno="208" tvg-id="slingbox.208" tvg-name="Slingbox 208" tvg-logo="" group-title="sports",Slingbox 208
+http://localhost:8080/slingbox?channel=208
+#EXTM3U
+#EXTINF:-1 tvg-chno="209" tvg-id="slingbox.209" tvg-name="Slingbox 209" tvg-logo="" group-title="sports",Slingbox 209
+http://localhost:8080/slingbox?channel=209
+#EXTM3U
+#EXTINF:-1 tvg-chno="210" tvg-id="slingbox.210" tvg-name="Slingbox 210" tvg-logo="" group-title="sports",Slingbox 210
+http://localhost:8080/slingbox?channel=210
+#EXTM3U
+#EXTINF:-1 tvg-chno="211" tvg-id="slingbox.211" tvg-name="Slingbox 211" tvg-logo="" group-title="sports",Slingbox 211
+http://localhost:8080/slingbox?channel=211
+#EXTM3U
+#EXTINF:-1 tvg-chno="212" tvg-id="slingbox.212" tvg-name="Slingbox 212" tvg-logo="" group-title="sports",Slingbox 212
+http://localhost:8080/slingbox?channel=212
+#EXTM3U
+#EXTINF:-1 tvg-chno="213" tvg-id="slingbox.213" tvg-name="Slingbox 213" tvg-logo="" group-title="sports",Slingbox 213
+http://localhost:8080/slingbox?channel=213
+#EXTM3U
+#EXTINF:-1 tvg-chno="214" tvg-id="slingbox.214" tvg-name="Slingbox 214" tvg-logo="" group-title="sports",Slingbox 214
+http://localhost:8080/slingbox?channel=214
+#EXTM3U
+#EXTINF:-1 tvg-chno="215" tvg-id="slingbox.215" tvg-name="Slingbox 215" tvg-logo="" group-title="sports",Slingbox 215
+http://localhost:8080/slingbox?channel=215
+#EXTM3U
+#EXTINF:-1 tvg-chno="216" tvg-id="slingbox.216" tvg-name="Slingbox 216" tvg-logo="" group-title="sports",Slingbox 216
+http://localhost:8080/slingbox?channel=216
+#EXTM3U
+#EXTINF:-1 tvg-chno="217" tvg-id="slingbox.217" tvg-name="Slingbox 217" tvg-logo="" group-title="sports",Slingbox 217
+http://localhost:8080/slingbox?channel=217
+#EXTM3U
+#EXTINF:-1 tvg-chno="218" tvg-id="slingbox.218" tvg-name="Slingbox 218" tvg-logo="" group-title="sports",Slingbox 218
+http://localhost:8080/slingbox?channel=218
+#EXTM3U
+#EXTINF:-1 tvg-chno="219" tvg-id="slingbox.219" tvg-name="Slingbox 219" tvg-logo="" group-title="sports",Slingbox 219
+http://localhost:8080/slingbox?channel=219
+#EXTM3U
+#EXTINF:-1 tvg-chno="220" tvg-id="slingbox.220" tvg-name="Slingbox 220" tvg-logo="" group-title="sports",Slingbox 220
+http://localhost:8080/slingbox?channel=220
+#EXTM3U
+#EXTINF:-1 tvg-chno="221" tvg-id="slingbox.221" tvg-name="Slingbox 221" tvg-logo="" group-title="sports",Slingbox 221
+http://localhost:8080/slingbox?channel=221
+#EXTM3U
+#EXTINF:-1 tvg-chno="222" tvg-id="slingbox.222" tvg-name="Slingbox 222" tvg-logo="" group-title="sports",Slingbox 222
+http://localhost:8080/slingbox?channel=222
+#EXTM3U
+#EXTINF:-1 tvg-chno="223" tvg-id="slingbox.223" tvg-name="Slingbox 223" tvg-logo="" group-title="sports",Slingbox 223
+http://localhost:8080/slingbox?channel=223
+#EXTM3U
+#EXTINF:-1 tvg-chno="224" tvg-id="slingbox.224" tvg-name="Slingbox 224" tvg-logo="" group-title="sports",Slingbox 224
+http://localhost:8080/slingbox?channel=224
+#EXTM3U
+#EXTINF:-1 tvg-chno="225" tvg-id="slingbox.225" tvg-name="Slingbox 225" tvg-logo="" group-title="sports",Slingbox 225
+http://localhost:8080/slingbox?channel=225
+#EXTM3U
+#EXTINF:-1 tvg-chno="226" tvg-id="slingbox.226" tvg-name="Slingbox 226" tvg-logo="" group-title="sports",Slingbox 226
+http://localhost:8080/slingbox?channel=226
+#EXTM3U
+#EXTINF:-1 tvg-chno="227" tvg-id="slingbox.227" tvg-name="Slingbox 227" tvg-logo="" group-title="sports",Slingbox 227
+http://localhost:8080/slingbox?channel=227
+#EXTM3U
+#EXTINF:-1 tvg-chno="228" tvg-id="slingbox.228" tvg-name="Slingbox 228" tvg-logo="" group-title="sports",Slingbox 228
+http://localhost:8080/slingbox?channel=228
+#EXTM3U
+#EXTINF:-1 tvg-chno="229" tvg-id="slingbox.229" tvg-name="Slingbox 229" tvg-logo="" group-title="sports",Slingbox 229
+http://localhost:8080/slingbox?channel=229
+#EXTM3U
+#EXTINF:-1 tvg-chno="230" tvg-id="slingbox.230" tvg-name="Slingbox 230" tvg-logo="" group-title="sports",Slingbox 230
+http://localhost:8080/slingbox?channel=230
+#EXTM3U
+#EXTINF:-1 tvg-chno="231" tvg-id="slingbox.231" tvg-name="Slingbox 231" tvg-logo="" group-title="sports",Slingbox 231
+http://localhost:8080/slingbox?channel=231
+#EXTM3U
+#EXTINF:-1 tvg-chno="232" tvg-id="slingbox.232" tvg-name="Slingbox 232" tvg-logo="" group-title="sports",Slingbox 232
+http://localhost:8080/slingbox?channel=232
+#EXTM3U
+#EXTINF:-1 tvg-chno="233" tvg-id="slingbox.233" tvg-name="Slingbox 233" tvg-logo="" group-title="sports",Slingbox 233
+http://localhost:8080/slingbox?channel=233
+#EXTM3U
+#EXTINF:-1 tvg-chno="234" tvg-id="slingbox.234" tvg-name="Slingbox 234" tvg-logo="" group-title="sports",Slingbox 234
+http://localhost:8080/slingbox?channel=234
+#EXTM3U
+#EXTINF:-1 tvg-chno="235" tvg-id="slingbox.235" tvg-name="Slingbox 235" tvg-logo="" group-title="sports",Slingbox 235
+http://localhost:8080/slingbox?channel=235
+#EXTM3U
+#EXTINF:-1 tvg-chno="236" tvg-id="slingbox.236" tvg-name="Slingbox 236" tvg-logo="" group-title="sports",Slingbox 236
+http://localhost:8080/slingbox?channel=236
+#EXTM3U
+#EXTINF:-1 tvg-chno="237" tvg-id="slingbox.237" tvg-name="Slingbox 237" tvg-logo="" group-title="sports",Slingbox 237
+http://localhost:8080/slingbox?channel=237
+#EXTM3U
+#EXTINF:-1 tvg-chno="238" tvg-id="slingbox.238" tvg-name="Slingbox 238" tvg-logo="" group-title="sports",Slingbox 238
+http://localhost:8080/slingbox?channel=238
+#EXTM3U
+#EXTINF:-1 tvg-chno="239" tvg-id="slingbox.239" tvg-name="Slingbox 239" tvg-logo="" group-title="sports",Slingbox 239
+http://localhost:8080/slingbox?channel=239
+#EXTM3U
+#EXTINF:-1 tvg-chno="240" tvg-id="slingbox.240" tvg-name="Slingbox 240" tvg-logo="" group-title="sports",Slingbox 240
+http://localhost:8080/slingbox?channel=240
+#EXTM3U
+#EXTINF:-1 tvg-chno="241" tvg-id="slingbox.241" tvg-name="Slingbox 241" tvg-logo="" group-title="sports",Slingbox 241
+http://localhost:8080/slingbox?channel=241
+#EXTM3U
+#EXTINF:-1 tvg-chno="242" tvg-id="slingbox.242" tvg-name="Slingbox 242" tvg-logo="" group-title="sports",Slingbox 242
+http://localhost:8080/slingbox?channel=242
+#EXTM3U
+#EXTINF:-1 tvg-chno="243" tvg-id="slingbox.243" tvg-name="Slingbox 243" tvg-logo="" group-title="sports",Slingbox 243
+http://localhost:8080/slingbox?channel=243
+#EXTM3U
+#EXTINF:-1 tvg-chno="244" tvg-id="slingbox.244" tvg-name="Slingbox 244" tvg-logo="" group-title="sports",Slingbox 244
+http://localhost:8080/slingbox?channel=244
+#EXTM3U
+#EXTINF:-1 tvg-chno="245" tvg-id="slingbox.245" tvg-name="Slingbox 245" tvg-logo="" group-title="sports",Slingbox 245
+http://localhost:8080/slingbox?channel=245
+#EXTM3U
+#EXTINF:-1 tvg-chno="246" tvg-id="slingbox.246" tvg-name="Slingbox 246" tvg-logo="" group-title="sports",Slingbox 246
+http://localhost:8080/slingbox?channel=246
+#EXTM3U
+#EXTINF:-1 tvg-chno="247" tvg-id="slingbox.247" tvg-name="Slingbox 247" tvg-logo="" group-title="sports",Slingbox 247
+http://localhost:8080/slingbox?channel=247
+#EXTM3U
+#EXTINF:-1 tvg-chno="248" tvg-id="slingbox.248" tvg-name="Slingbox 248" tvg-logo="" group-title="sports",Slingbox 248
+http://localhost:8080/slingbox?channel=248
+#EXTM3U
+#EXTINF:-1 tvg-chno="249" tvg-id="slingbox.249" tvg-name="Slingbox 249" tvg-logo="" group-title="sports",Slingbox 249
+http://localhost:8080/slingbox?channel=249
+#EXTM3U
+#EXTINF:-1 tvg-chno="250" tvg-id="slingbox.250" tvg-name="Slingbox 250" tvg-logo="" group-title="sports",Slingbox 250
+http://localhost:8080/slingbox?channel=250
+#EXTM3U
+#EXTINF:-1 tvg-chno="251" tvg-id="slingbox.251" tvg-name="Slingbox 251" tvg-logo="" group-title="sports",Slingbox 251
+http://localhost:8080/slingbox?channel=251
+#EXTM3U
+#EXTINF:-1 tvg-chno="252" tvg-id="slingbox.252" tvg-name="Slingbox 252" tvg-logo="" group-title="sports",Slingbox 252
+http://localhost:8080/slingbox?channel=252
+#EXTM3U
+#EXTINF:-1 tvg-chno="253" tvg-id="slingbox.253" tvg-name="Slingbox 253" tvg-logo="" group-title="sports",Slingbox 253
+http://localhost:8080/slingbox?channel=253
+#EXTM3U
+#EXTINF:-1 tvg-chno="254" tvg-id="slingbox.254" tvg-name="Slingbox 254" tvg-logo="" group-title="sports",Slingbox 254
+http://localhost:8080/slingbox?channel=254
+#EXTM3U
+#EXTINF:-1 tvg-chno="255" tvg-id="slingbox.255" tvg-name="Slingbox 255" tvg-logo="" group-title="sports",Slingbox 255
+http://localhost:8080/slingbox?channel=255
+#EXTM3U
+#EXTINF:-1 tvg-chno="256" tvg-id="slingbox.256" tvg-name="Slingbox 256" tvg-logo="" group-title="sports",Slingbox 256
+http://localhost:8080/slingbox?channel=256
+#EXTM3U
+#EXTINF:-1 tvg-chno="257" tvg-id="slingbox.257" tvg-name="Slingbox 257" tvg-logo="" group-title="sports",Slingbox 257
+http://localhost:8080/slingbox?channel=257
+#EXTM3U
+#EXTINF:-1 tvg-chno="258" tvg-id="slingbox.258" tvg-name="Slingbox 258" tvg-logo="" group-title="sports",Slingbox 258
+http://localhost:8080/slingbox?channel=258
+#EXTM3U
+#EXTINF:-1 tvg-chno="259" tvg-id="slingbox.259" tvg-name="Slingbox 259" tvg-logo="" group-title="sports",Slingbox 259
+http://localhost:8080/slingbox?channel=259
+#EXTM3U
+#EXTINF:-1 tvg-chno="260" tvg-id="slingbox.260" tvg-name="Slingbox 260" tvg-logo="" group-title="sports",Slingbox 260
+http://localhost:8080/slingbox?channel=260
+#EXTM3U
+#EXTINF:-1 tvg-chno="261" tvg-id="slingbox.261" tvg-name="Slingbox 261" tvg-logo="" group-title="sports",Slingbox 261
+http://localhost:8080/slingbox?channel=261
+#EXTM3U
+#EXTINF:-1 tvg-chno="262" tvg-id="slingbox.262" tvg-name="Slingbox 262" tvg-logo="" group-title="sports",Slingbox 262
+http://localhost:8080/slingbox?channel=262
+#EXTM3U
+#EXTINF:-1 tvg-chno="263" tvg-id="slingbox.263" tvg-name="Slingbox 263" tvg-logo="" group-title="sports",Slingbox 263
+http://localhost:8080/slingbox?channel=263
+#EXTM3U
+#EXTINF:-1 tvg-chno="264" tvg-id="slingbox.264" tvg-name="Slingbox 264" tvg-logo="" group-title="sports",Slingbox 264
+http://localhost:8080/slingbox?channel=264
+#EXTM3U
+#EXTINF:-1 tvg-chno="265" tvg-id="slingbox.265" tvg-name="Slingbox 265" tvg-logo="" group-title="sports",Slingbox 265
+http://localhost:8080/slingbox?channel=265
+#EXTM3U
+#EXTINF:-1 tvg-chno="266" tvg-id="slingbox.266" tvg-name="Slingbox 266" tvg-logo="" group-title="sports",Slingbox 266
+http://localhost:8080/slingbox?channel=266
+#EXTM3U
+#EXTINF:-1 tvg-chno="267" tvg-id="slingbox.267" tvg-name="Slingbox 267" tvg-logo="" group-title="sports",Slingbox 267
+http://localhost:8080/slingbox?channel=267
+#EXTM3U
+#EXTINF:-1 tvg-chno="268" tvg-id="slingbox.268" tvg-name="Slingbox 268" tvg-logo="" group-title="sports",Slingbox 268
+http://localhost:8080/slingbox?channel=268
+#EXTM3U
+#EXTINF:-1 tvg-chno="269" tvg-id="slingbox.269" tvg-name="Slingbox 269" tvg-logo="" group-title="sports",Slingbox 269
+http://localhost:8080/slingbox?channel=269
+#EXTM3U
+#EXTINF:-1 tvg-chno="270" tvg-id="slingbox.270" tvg-name="Slingbox 270" tvg-logo="" group-title="sports",Slingbox 270
+http://localhost:8080/slingbox?channel=270
+#EXTM3U
+#EXTINF:-1 tvg-chno="271" tvg-id="slingbox.271" tvg-name="Slingbox 271" tvg-logo="" group-title="sports",Slingbox 271
+http://localhost:8080/slingbox?channel=271
+#EXTM3U
+#EXTINF:-1 tvg-chno="272" tvg-id="slingbox.272" tvg-name="Slingbox 272" tvg-logo="" group-title="sports",Slingbox 272
+http://localhost:8080/slingbox?channel=272
+#EXTM3U
+#EXTINF:-1 tvg-chno="273" tvg-id="slingbox.273" tvg-name="Slingbox 273" tvg-logo="" group-title="sports",Slingbox 273
+http://localhost:8080/slingbox?channel=273
+#EXTM3U
+#EXTINF:-1 tvg-chno="274" tvg-id="slingbox.274" tvg-name="Slingbox 274" tvg-logo="" group-title="sports",Slingbox 274
+http://localhost:8080/slingbox?channel=274
+#EXTM3U
+#EXTINF:-1 tvg-chno="275" tvg-id="slingbox.275" tvg-name="Slingbox 275" tvg-logo="" group-title="sports",Slingbox 275
+http://localhost:8080/slingbox?channel=275
+#EXTM3U
+#EXTINF:-1 tvg-chno="276" tvg-id="slingbox.276" tvg-name="Slingbox 276" tvg-logo="" group-title="sports",Slingbox 276
+http://localhost:8080/slingbox?channel=276
+#EXTM3U
+#EXTINF:-1 tvg-chno="277" tvg-id="slingbox.277" tvg-name="Slingbox 277" tvg-logo="" group-title="sports",Slingbox 277
+http://localhost:8080/slingbox?channel=277
+#EXTM3U
+#EXTINF:-1 tvg-chno="278" tvg-id="slingbox.278" tvg-name="Slingbox 278" tvg-logo="" group-title="sports",Slingbox 278
+http://localhost:8080/slingbox?channel=278
+#EXTM3U
+#EXTINF:-1 tvg-chno="279" tvg-id="slingbox.279" tvg-name="Slingbox 279" tvg-logo="" group-title="sports",Slingbox 279
+http://localhost:8080/slingbox?channel=279
+#EXTM3U
+#EXTINF:-1 tvg-chno="280" tvg-id="slingbox.280" tvg-name="Slingbox 280" tvg-logo="" group-title="sports",Slingbox 280
+http://localhost:8080/slingbox?channel=280
+#EXTM3U
+#EXTINF:-1 tvg-chno="281" tvg-id="slingbox.281" tvg-name="Slingbox 281" tvg-logo="" group-title="sports",Slingbox 281
+http://localhost:8080/slingbox?channel=281
+#EXTM3U
+#EXTINF:-1 tvg-chno="282" tvg-id="slingbox.282" tvg-name="Slingbox 282" tvg-logo="" group-title="sports",Slingbox 282
+http://localhost:8080/slingbox?channel=282
+#EXTM3U
+#EXTINF:-1 tvg-chno="283" tvg-id="slingbox.283" tvg-name="Slingbox 283" tvg-logo="" group-title="sports",Slingbox 283
+http://localhost:8080/slingbox?channel=283
+#EXTM3U
+#EXTINF:-1 tvg-chno="284" tvg-id="slingbox.284" tvg-name="Slingbox 284" tvg-logo="" group-title="sports",Slingbox 284
+http://localhost:8080/slingbox?channel=284
+#EXTM3U
+#EXTINF:-1 tvg-chno="285" tvg-id="slingbox.285" tvg-name="Slingbox 285" tvg-logo="" group-title="sports",Slingbox 285
+http://localhost:8080/slingbox?channel=285
+#EXTM3U
+#EXTINF:-1 tvg-chno="286" tvg-id="slingbox.286" tvg-name="Slingbox 286" tvg-logo="" group-title="sports",Slingbox 286
+http://localhost:8080/slingbox?channel=286
+#EXTM3U
+#EXTINF:-1 tvg-chno="287" tvg-id="slingbox.287" tvg-name="Slingbox 287" tvg-logo="" group-title="sports",Slingbox 287
+http://localhost:8080/slingbox?channel=287
+#EXTM3U
+#EXTINF:-1 tvg-chno="288" tvg-id="slingbox.288" tvg-name="Slingbox 288" tvg-logo="" group-title="sports",Slingbox 288
+http://localhost:8080/slingbox?channel=288
+#EXTM3U
+#EXTINF:-1 tvg-chno="289" tvg-id="slingbox.289" tvg-name="Slingbox 289" tvg-logo="" group-title="sports",Slingbox 289
+http://localhost:8080/slingbox?channel=289
+#EXTM3U
+#EXTINF:-1 tvg-chno="290" tvg-id="slingbox.290" tvg-name="Slingbox 290" tvg-logo="" group-title="sports",Slingbox 290
+http://localhost:8080/slingbox?channel=290
+#EXTM3U
+#EXTINF:-1 tvg-chno="291" tvg-id="slingbox.291" tvg-name="Slingbox 291" tvg-logo="" group-title="sports",Slingbox 291
+http://localhost:8080/slingbox?channel=291
+#EXTM3U
+#EXTINF:-1 tvg-chno="292" tvg-id="slingbox.292" tvg-name="Slingbox 292" tvg-logo="" group-title="sports",Slingbox 292
+http://localhost:8080/slingbox?channel=292
+#EXTM3U
+#EXTINF:-1 tvg-chno="293" tvg-id="slingbox.293" tvg-name="Slingbox 293" tvg-logo="" group-title="slingbox",Slingbox 293
+http://localhost:8080/slingbox?channel=293
+#EXTM3U
+#EXTINF:-1 tvg-chno="294" tvg-id="slingbox.294" tvg-name="Slingbox 294" tvg-logo="" group-title="slingbox",Slingbox 294
+http://localhost:8080/slingbox?channel=294
+#EXTM3U
+#EXTINF:-1 tvg-chno="295" tvg-id="slingbox.295" tvg-name="Slingbox 295" tvg-logo="" group-title="slingbox",Slingbox 295
+http://localhost:8080/slingbox?channel=295
+#EXTM3U
+#EXTINF:-1 tvg-chno="296" tvg-id="slingbox.296" tvg-name="Slingbox 296" tvg-logo="" group-title="slingbox",Slingbox 296
+http://localhost:8080/slingbox?channel=296
+#EXTM3U
+#EXTINF:-1 tvg-chno="297" tvg-id="slingbox.297" tvg-name="Slingbox 297" tvg-logo="" group-title="slingbox",Slingbox 297
+http://localhost:8080/slingbox?channel=297
+#EXTM3U
+#EXTINF:-1 tvg-chno="298" tvg-id="slingbox.298" tvg-name="Slingbox 298" tvg-logo="" group-title="slingbox",Slingbox 298
+http://localhost:8080/slingbox?channel=298
+#EXTM3U
+#EXTINF:-1 tvg-chno="299" tvg-id="slingbox.299" tvg-name="Slingbox 299" tvg-logo="" group-title="slingbox",Slingbox 299
+http://localhost:8080/slingbox?channel=299
+#EXTM3U
+#EXTINF:-1 tvg-chno="300" tvg-id="slingbox.300" tvg-name="Slingbox 300" tvg-logo="" group-title="premiums",Slingbox 300
+http://localhost:8080/slingbox?channel=300
+#EXTM3U
+#EXTINF:-1 tvg-chno="301" tvg-id="slingbox.301" tvg-name="Slingbox 301" tvg-logo="" group-title="premiums",Slingbox 301
+http://localhost:8080/slingbox?channel=301
+#EXTM3U
+#EXTINF:-1 tvg-chno="302" tvg-id="slingbox.302" tvg-name="Slingbox 302" tvg-logo="" group-title="premiums",Slingbox 302
+http://localhost:8080/slingbox?channel=302
+#EXTM3U
+#EXTINF:-1 tvg-chno="303" tvg-id="slingbox.303" tvg-name="Slingbox 303" tvg-logo="" group-title="premiums",Slingbox 303
+http://localhost:8080/slingbox?channel=303
+#EXTM3U
+#EXTINF:-1 tvg-chno="304" tvg-id="slingbox.304" tvg-name="Slingbox 304" tvg-logo="" group-title="premiums",Slingbox 304
+http://localhost:8080/slingbox?channel=304
+#EXTM3U
+#EXTINF:-1 tvg-chno="305" tvg-id="slingbox.305" tvg-name="Slingbox 305" tvg-logo="" group-title="premiums",Slingbox 305
+http://localhost:8080/slingbox?channel=305
+#EXTM3U
+#EXTINF:-1 tvg-chno="306" tvg-id="slingbox.306" tvg-name="Slingbox 306" tvg-logo="" group-title="premiums",Slingbox 306
+http://localhost:8080/slingbox?channel=306
+#EXTM3U
+#EXTINF:-1 tvg-chno="307" tvg-id="slingbox.307" tvg-name="Slingbox 307" tvg-logo="" group-title="premiums",Slingbox 307
+http://localhost:8080/slingbox?channel=307
+#EXTM3U
+#EXTINF:-1 tvg-chno="308" tvg-id="slingbox.308" tvg-name="Slingbox 308" tvg-logo="" group-title="premiums",Slingbox 308
+http://localhost:8080/slingbox?channel=308
+#EXTM3U
+#EXTINF:-1 tvg-chno="309" tvg-id="slingbox.309" tvg-name="Slingbox 309" tvg-logo="" group-title="premiums",Slingbox 309
+http://localhost:8080/slingbox?channel=309
+#EXTM3U
+#EXTINF:-1 tvg-chno="310" tvg-id="slingbox.310" tvg-name="Slingbox 310" tvg-logo="" group-title="premiums",Slingbox 310
+http://localhost:8080/slingbox?channel=310
+#EXTM3U
+#EXTINF:-1 tvg-chno="311" tvg-id="slingbox.311" tvg-name="Slingbox 311" tvg-logo="" group-title="premiums",Slingbox 311
+http://localhost:8080/slingbox?channel=311
+#EXTM3U
+#EXTINF:-1 tvg-chno="312" tvg-id="slingbox.312" tvg-name="Slingbox 312" tvg-logo="" group-title="premiums",Slingbox 312
+http://localhost:8080/slingbox?channel=312
+#EXTM3U
+#EXTINF:-1 tvg-chno="313" tvg-id="slingbox.313" tvg-name="Slingbox 313" tvg-logo="" group-title="premiums",Slingbox 313
+http://localhost:8080/slingbox?channel=313
+#EXTM3U
+#EXTINF:-1 tvg-chno="314" tvg-id="slingbox.314" tvg-name="Slingbox 314" tvg-logo="" group-title="premiums",Slingbox 314
+http://localhost:8080/slingbox?channel=314
+#EXTM3U
+#EXTINF:-1 tvg-chno="315" tvg-id="slingbox.315" tvg-name="Slingbox 315" tvg-logo="" group-title="premiums",Slingbox 315
+http://localhost:8080/slingbox?channel=315
+#EXTM3U
+#EXTINF:-1 tvg-chno="316" tvg-id="slingbox.316" tvg-name="Slingbox 316" tvg-logo="" group-title="premiums",Slingbox 316
+http://localhost:8080/slingbox?channel=316
+#EXTM3U
+#EXTINF:-1 tvg-chno="317" tvg-id="slingbox.317" tvg-name="Slingbox 317" tvg-logo="" group-title="premiums",Slingbox 317
+http://localhost:8080/slingbox?channel=317
+#EXTM3U
+#EXTINF:-1 tvg-chno="318" tvg-id="slingbox.318" tvg-name="Slingbox 318" tvg-logo="" group-title="premiums",Slingbox 318
+http://localhost:8080/slingbox?channel=318
+#EXTM3U
+#EXTINF:-1 tvg-chno="319" tvg-id="slingbox.319" tvg-name="Slingbox 319" tvg-logo="" group-title="premiums",Slingbox 319
+http://localhost:8080/slingbox?channel=319
+#EXTM3U
+#EXTINF:-1 tvg-chno="320" tvg-id="slingbox.320" tvg-name="Slingbox 320" tvg-logo="" group-title="premiums",Slingbox 320
+http://localhost:8080/slingbox?channel=320
+#EXTM3U
+#EXTINF:-1 tvg-chno="321" tvg-id="slingbox.321" tvg-name="Slingbox 321" tvg-logo="" group-title="premiums",Slingbox 321
+http://localhost:8080/slingbox?channel=321
+#EXTM3U
+#EXTINF:-1 tvg-chno="322" tvg-id="slingbox.322" tvg-name="Slingbox 322" tvg-logo="" group-title="premiums",Slingbox 322
+http://localhost:8080/slingbox?channel=322
+#EXTM3U
+#EXTINF:-1 tvg-chno="323" tvg-id="slingbox.323" tvg-name="Slingbox 323" tvg-logo="" group-title="premiums",Slingbox 323
+http://localhost:8080/slingbox?channel=323
+#EXTM3U
+#EXTINF:-1 tvg-chno="324" tvg-id="slingbox.324" tvg-name="Slingbox 324" tvg-logo="" group-title="premiums",Slingbox 324
+http://localhost:8080/slingbox?channel=324
+#EXTM3U
+#EXTINF:-1 tvg-chno="325" tvg-id="slingbox.325" tvg-name="Slingbox 325" tvg-logo="" group-title="premiums",Slingbox 325
+http://localhost:8080/slingbox?channel=325
+#EXTM3U
+#EXTINF:-1 tvg-chno="326" tvg-id="slingbox.326" tvg-name="Slingbox 326" tvg-logo="" group-title="premiums",Slingbox 326
+http://localhost:8080/slingbox?channel=326
+#EXTM3U
+#EXTINF:-1 tvg-chno="327" tvg-id="slingbox.327" tvg-name="Slingbox 327" tvg-logo="" group-title="premiums",Slingbox 327
+http://localhost:8080/slingbox?channel=327
+#EXTM3U
+#EXTINF:-1 tvg-chno="328" tvg-id="slingbox.328" tvg-name="Slingbox 328" tvg-logo="" group-title="premiums",Slingbox 328
+http://localhost:8080/slingbox?channel=328
+#EXTM3U
+#EXTINF:-1 tvg-chno="329" tvg-id="slingbox.329" tvg-name="Slingbox 329" tvg-logo="" group-title="premiums",Slingbox 329
+http://localhost:8080/slingbox?channel=329
+#EXTM3U
+#EXTINF:-1 tvg-chno="330" tvg-id="slingbox.330" tvg-name="Slingbox 330" tvg-logo="" group-title="premiums",Slingbox 330
+http://localhost:8080/slingbox?channel=330
+#EXTM3U
+#EXTINF:-1 tvg-chno="331" tvg-id="slingbox.331" tvg-name="Slingbox 331" tvg-logo="" group-title="premiums",Slingbox 331
+http://localhost:8080/slingbox?channel=331
+#EXTM3U
+#EXTINF:-1 tvg-chno="332" tvg-id="slingbox.332" tvg-name="Slingbox 332" tvg-logo="" group-title="premiums",Slingbox 332
+http://localhost:8080/slingbox?channel=332
+#EXTM3U
+#EXTINF:-1 tvg-chno="333" tvg-id="slingbox.333" tvg-name="Slingbox 333" tvg-logo="" group-title="premiums",Slingbox 333
+http://localhost:8080/slingbox?channel=333
+#EXTM3U
+#EXTINF:-1 tvg-chno="334" tvg-id="slingbox.334" tvg-name="Slingbox 334" tvg-logo="" group-title="premiums",Slingbox 334
+http://localhost:8080/slingbox?channel=334
+#EXTM3U
+#EXTINF:-1 tvg-chno="335" tvg-id="slingbox.335" tvg-name="Slingbox 335" tvg-logo="" group-title="premiums",Slingbox 335
+http://localhost:8080/slingbox?channel=335
+#EXTM3U
+#EXTINF:-1 tvg-chno="336" tvg-id="slingbox.336" tvg-name="Slingbox 336" tvg-logo="" group-title="premiums",Slingbox 336
+http://localhost:8080/slingbox?channel=336
+#EXTM3U
+#EXTINF:-1 tvg-chno="337" tvg-id="slingbox.337" tvg-name="Slingbox 337" tvg-logo="" group-title="premiums",Slingbox 337
+http://localhost:8080/slingbox?channel=337
+#EXTM3U
+#EXTINF:-1 tvg-chno="338" tvg-id="slingbox.338" tvg-name="Slingbox 338" tvg-logo="" group-title="premiums",Slingbox 338
+http://localhost:8080/slingbox?channel=338
+#EXTM3U
+#EXTINF:-1 tvg-chno="339" tvg-id="slingbox.339" tvg-name="Slingbox 339" tvg-logo="" group-title="premiums",Slingbox 339
+http://localhost:8080/slingbox?channel=339
+#EXTM3U
+#EXTINF:-1 tvg-chno="340" tvg-id="slingbox.340" tvg-name="Slingbox 340" tvg-logo="" group-title="premiums",Slingbox 340
+http://localhost:8080/slingbox?channel=340
+#EXTM3U
+#EXTINF:-1 tvg-chno="341" tvg-id="slingbox.341" tvg-name="Slingbox 341" tvg-logo="" group-title="premiums",Slingbox 341
+http://localhost:8080/slingbox?channel=341
+#EXTM3U
+#EXTINF:-1 tvg-chno="342" tvg-id="slingbox.342" tvg-name="Slingbox 342" tvg-logo="" group-title="premiums",Slingbox 342
+http://localhost:8080/slingbox?channel=342
+#EXTM3U
+#EXTINF:-1 tvg-chno="343" tvg-id="slingbox.343" tvg-name="Slingbox 343" tvg-logo="" group-title="premiums",Slingbox 343
+http://localhost:8080/slingbox?channel=343
+#EXTM3U
+#EXTINF:-1 tvg-chno="344" tvg-id="slingbox.344" tvg-name="Slingbox 344" tvg-logo="" group-title="premiums",Slingbox 344
+http://localhost:8080/slingbox?channel=344
+#EXTM3U
+#EXTINF:-1 tvg-chno="345" tvg-id="slingbox.345" tvg-name="Slingbox 345" tvg-logo="" group-title="premiums",Slingbox 345
+http://localhost:8080/slingbox?channel=345
+#EXTM3U
+#EXTINF:-1 tvg-chno="346" tvg-id="slingbox.346" tvg-name="Slingbox 346" tvg-logo="" group-title="premiums",Slingbox 346
+http://localhost:8080/slingbox?channel=346
+#EXTM3U
+#EXTINF:-1 tvg-chno="347" tvg-id="slingbox.347" tvg-name="Slingbox 347" tvg-logo="" group-title="premiums",Slingbox 347
+http://localhost:8080/slingbox?channel=347
+#EXTM3U
+#EXTINF:-1 tvg-chno="348" tvg-id="slingbox.348" tvg-name="Slingbox 348" tvg-logo="" group-title="premiums",Slingbox 348
+http://localhost:8080/slingbox?channel=348
+#EXTM3U
+#EXTINF:-1 tvg-chno="349" tvg-id="slingbox.349" tvg-name="Slingbox 349" tvg-logo="" group-title="premiums",Slingbox 349
+http://localhost:8080/slingbox?channel=349
+#EXTM3U
+#EXTINF:-1 tvg-chno="350" tvg-id="slingbox.350" tvg-name="Slingbox 350" tvg-logo="" group-title="premiums",Slingbox 350
+http://localhost:8080/slingbox?channel=350
+#EXTM3U
+#EXTINF:-1 tvg-chno="351" tvg-id="slingbox.351" tvg-name="Slingbox 351" tvg-logo="" group-title="premiums",Slingbox 351
+http://localhost:8080/slingbox?channel=351
+#EXTM3U
+#EXTINF:-1 tvg-chno="352" tvg-id="slingbox.352" tvg-name="Slingbox 352" tvg-logo="" group-title="premiums",Slingbox 352
+http://localhost:8080/slingbox?channel=352
+#EXTM3U
+#EXTINF:-1 tvg-chno="353" tvg-id="slingbox.353" tvg-name="Slingbox 353" tvg-logo="" group-title="premiums",Slingbox 353
+http://localhost:8080/slingbox?channel=353
+#EXTM3U
+#EXTINF:-1 tvg-chno="354" tvg-id="slingbox.354" tvg-name="Slingbox 354" tvg-logo="" group-title="premiums",Slingbox 354
+http://localhost:8080/slingbox?channel=354
+#EXTM3U
+#EXTINF:-1 tvg-chno="355" tvg-id="slingbox.355" tvg-name="Slingbox 355" tvg-logo="" group-title="premiums",Slingbox 355
+http://localhost:8080/slingbox?channel=355
+#EXTM3U
+#EXTINF:-1 tvg-chno="356" tvg-id="slingbox.356" tvg-name="Slingbox 356" tvg-logo="" group-title="premiums",Slingbox 356
+http://localhost:8080/slingbox?channel=356
+#EXTM3U
+#EXTINF:-1 tvg-chno="357" tvg-id="slingbox.357" tvg-name="Slingbox 357" tvg-logo="" group-title="premiums",Slingbox 357
+http://localhost:8080/slingbox?channel=357
+#EXTM3U
+#EXTINF:-1 tvg-chno="358" tvg-id="slingbox.358" tvg-name="Slingbox 358" tvg-logo="" group-title="premiums",Slingbox 358
+http://localhost:8080/slingbox?channel=358
+#EXTM3U
+#EXTINF:-1 tvg-chno="359" tvg-id="slingbox.359" tvg-name="Slingbox 359" tvg-logo="" group-title="premiums",Slingbox 359
+http://localhost:8080/slingbox?channel=359
+#EXTM3U
+#EXTINF:-1 tvg-chno="1000" tvg-id="slingbox.1000" tvg-name="Slingbox 1000" tvg-logo="" group-title="current",Slingbox 1000
+http://localhost:8080/slingbox
