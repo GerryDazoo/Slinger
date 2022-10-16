@@ -1,5 +1,5 @@
-Version 2.0
-This now supports the 350/500/M1/Solo/Pro and ProHD.
+Version 3.08
+This now supports the 240/350/500/M1/M2/Solo/Pro and ProHD.
 
 You can select what type of slingbox you have with the sbtype= entry in the config.ini file.
  
@@ -29,7 +29,7 @@ You'll need a working Python3 interpreter to get going. Comes pre-installed on t
 # you don't need netifaces if you configure the slingbox ip address and port number in the config.ini file
     sudo pip install netifaces
     
-    copy "slinbox_server.py, config.ini and sling.service to /home/slingbox  # 
+    copy "slingbox_server.py, config.ini and sling.service to /home/slingbox   
 
     sudo cp sling.service /etc/systemd/system/.
  #   enable it

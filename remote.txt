@@ -105,12 +105,7 @@ buttons='1' : 9 : round
         :<br><br>
         'Power' : 1 
         :&nbsp;&nbsp;
-        '1920x1080' : 16
-        :&nbsp;&nbsp;
-        '1280x720' : 12
-        :<br><br>
         'Restart': Restart
-        :&nbsp;&nbsp;
+        :<br><br>
         'Channel': Channel
         :&nbsp;&nbsp;
-        'RT' : RCtest
