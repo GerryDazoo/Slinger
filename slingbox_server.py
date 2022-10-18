@@ -21,7 +21,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.08'
+version='3.08a'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -1009,8 +1009,11 @@ def ConnectionManager(config_fn):
                 #close silenty Chrome browers opens connection and then doesn't send anything
                 connection = closeconn(connection)
                 continue
-
-            data = connection.recv(1024).decode("utf-8")
+            try:
+                data = connection.recv(1024).decode("utf-8")
+            except:
+ #               print('bad data')
+                data = 'Bad Request'
             if URLbase in data and 'GET' in data:
                 print(ts(), ' Streaming connection from', str(client_address))
                 connection.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, max_send_tcp_size )
@@ -1051,6 +1054,11 @@ def ConnectionManager(config_fn):
                 if 'GET' in data : print(data)
                 connection = closeconn(connection)
                 continue
+            else:
+                # Ping
+                connection = closeconn(connection)
+                continue
+                
         except Exception as e:
             print( 'Program Bug? Please report. ', client_address, data, e, traceback.print_exc())
             connection = closeconn(connection)
@@ -1274,7 +1282,7 @@ def BuildPage(cp, section_name):
  #       print('PAGE', page)
     return page, cmds, rccode
  
-def get_streamer( text ):
+def get_streamer( request, text ):
     global streamer_qs
     try: streamer = text.split('/')[1]
     except : streamer = request.host.split(':')[1]
@@ -1336,7 +1344,7 @@ for config_fn in sys.argv[1:] :
         @app.route('/<path:text>', methods=["GET"])
         def index(text):
             if 'emote' in text:
-                streamer, client = get_streamer( text )
+                streamer, client = get_streamer( request, text )
                 if streamer :
                     return render_template_string(remotes[streamer][0] % stati[streamer])
                 else:
@@ -1348,7 +1356,7 @@ for config_fn in sys.argv[1:] :
         def button(text):
             global streamer_qs, tcode, stati
  #           print('URI', text, 'Streamer', streamer)
-            streamer, client = get_streamer( text )
+            streamer, client = get_streamer( request, text )
             if not streamer : abort(404)
             streamer_q = streamer_qs[streamer]
             Page, cmds, rccode = remotes[streamer]          
@@ -1382,7 +1390,7 @@ for config_fn in sys.argv[1:] :
                             streamer_q.put(int(data).to_bytes(1, byteorder='little') + bytes(client, 'utf-8'))
             return render_template_string(Page%stati[streamer])
 
-        Thread(target=lambda: app.run(host='0.0.0.0', port=http_port, debug=False, use_reloader=False)).start()
+        Thread(target=lambda: app.run(host='127.0.0.1', port=http_port, debug=False, use_reloader=False)).start()
         time.sleep(1) # give Flask sometime to start up makes logs easier to read
 
 if len(finderids) : Thread(target=register_slingboxes).start()
