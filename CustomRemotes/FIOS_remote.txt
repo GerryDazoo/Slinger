@@ -11,10 +11,34 @@ style=.button {
       cursor: pointer;
       border-radius: 40%;
     }
+    .arrow-button {
+      border: none;
+      color: black;
+      width: 45px;
+      padding: 0px 8px 6px;
+      background-color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 40px;
+      cursor: pointer;
+    } 
+    .rot-arrow-button {
+      border: none;
+      color: black;
+      padding: 0px 8px 6px;
+      background-color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 40px;
+      cursor: pointer;
+      transform: rotate(90deg)
+    } 
     .menu-button {
       border: none;
       color: white;
-      background-color: black;
+      background-color: blue;
       padding: 10px 10px;
       text-align: center;
       text-decoration: none;
@@ -29,7 +53,7 @@ style=.button {
     .info-button {
       border: none;
       color: white;
-      background-color: black;
+      background-color: blue;
       padding: 10px 10px;
       text-align: center;
       text-decoration: none;
@@ -110,14 +134,28 @@ style=.button {
       border: double;
       color: white;
       background-color: crimson;
-      padding: 20px 10px;
+      padding: 15px 10px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 10px;
+      font-size: 15px;
       margin: 2px 2px;
       cursor: pointer;
       border-radius: 50%; 
+    }
+    .ok-button {
+      border: double;
+      color: black;
+      font-weight: bold;
+      background-color: lightgreen;
+      padding: 15px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%;
     }
     .text {
       border: none;
@@ -129,7 +167,7 @@ style=.button {
       font-size: 20px;
       margin: 2px 2px;
       cursor: pointer;
-     }
+    }
     .od-button {
      border: none;
       color: black;
@@ -146,48 +184,91 @@ style=.button {
       transform : rotate(-90deg);
       transform-origin : top left;
     }
-     .play-pause-button {
+     .play-button {
       border: none;
       color: black;
+      width : 40px;
       background-color: gold;
-      padding: 10px 20px;
+      padding: 10px 4px 10px 4px;
       font-weight: bold;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 25px;
+      font-size: 30px;
       margin: 2px 2px;
       cursor: pointer;
-       transform : rotate(-90deg);
-      transform-origin : top right;
-      translate: -127px 60px;
+      transform: translate(0, 10px);
+    }
+    .skip-back-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 2px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 30px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%;
+      transform: translate(30px,-40px); 
+    }
+    .skip-ahead-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 2px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 30px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+      transform: translate(-30px,-40px); 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      width : 40px;
+      background-color: gold;
+      padding: 10px 10px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 30px;
+      margin: 2px 2px;
+      cursor: pointer;
     }
 ; button text, key code
 buttons=:<h1 style="color:darkblue">&emsp;&emsp;FIOS REMOTE</h1>
 	:<br>
-		:&nbsp;&emsp;&nbsp;&emsp;
+		:&nbsp;&emsp;&nbsp;&emsp;&thinsp;
 	'Menu' : 33 : menu-button
 	:&nbsp;&nbsp;&emsp;&nbsp;&nbsp;
-        'GUIDE' : 35
+        'GUIDE' : 35 :blue-button
 	:&nbsp;&nbsp;&emsp;&nbsp;&nbsp;
         'INFO' : 46  : info-button
 	:<br><br>
 	'FIOS ' : 62 
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
-        'UP' : 38 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&thinsp;
+        '◀' : 38 :  rot-arrow-button
         :&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
 	'LAST' : 21
 	:<br>
-       	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        'LT' : 40
+       	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '◀' :  40  :  arrow-button
         :&nbsp;&nbsp;
-        'OK' : 42 
-        :&nbsp;&nbsp;
-        'RT' : 41 
+        'OK' : 42 :ok-button
+        :&nbsp;
+        '▶' :  41  :  arrow-button
         :<br>
         'EXIT ' : 36
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
-        'DN' : 39
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&thinsp;
+        '▶' : 39  :  rot-arrow-button
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
         'CH+' : 4
 	:<br><br>
@@ -197,29 +278,30 @@ buttons=:<h1 style="color:darkblue">&emsp;&emsp;FIOS REMOTE</h1>
         'CH-' : 5 
 	:<br><br>
   :&emsp;&emsp;&emsp;&emsp;   
-  :&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+  :&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&thinsp;
         'DVR' : 73 : blue-button
-        '=  V' : 24 : play-pause-button
   :<br>
     'On Demand'  :  81  : od-button
-     :<br>
-      'I<-': 31
-	:&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+  :&emsp;&nbsp;&nbsp;&emsp;&nbsp;
+     '▶' : 24 : play-button
+  :<br>
+      '↶': 31 : skip-back-button
+	:&emsp;&nbsp;&nbsp;&nbsp;&ensp;&thinsp;
         '<<': 27
-  :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        :&nbsp;&nbsp;&nbsp;&nbsp;
-        :&nbsp;&nbsp;&emsp;&emsp;
+  :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       'II' : 26 : pause-button
+         :&emsp;&emsp;
         '>>' : 28         
-	:&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
-	'->I' : 30
+	:&emsp;&emsp;&emsp;&nbsp;
+	'↷' : 30 : skip-ahead-button
 	:<br>
 	:&emsp;&emsp;&emsp;&nbsp;&nbsp;
   :&emsp;&emsp;&emsp;
-  :&emsp;&emsp;
+  :&emsp;&emsp;&nbsp;&thinsp;
   'Stop' :  25 
-		:&emsp;&emsp;
+		:&emsp;&emsp;&emsp;
         :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        'REC' : 29 : red-button
+        'REC' : 29 : rec-button
 	        :<br><br>
 	:&nbsp;
         'A' : 76 : yellow-button
@@ -230,28 +312,28 @@ buttons=:<h1 style="color:darkblue">&emsp;&emsp;FIOS REMOTE</h1>
         :&emsp;&emsp;&emsp;&emsp;
         'D' : 75 : green-button
 	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&ensp;
         '1' : 9 
         :&emsp;&emsp;&emsp;
         '2' : 10
         :&emsp;&emsp;&emsp;
         '3' : 11
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&ensp;
         '4' : 12
         :&emsp;&emsp;&emsp;
         '5' : 13     
         :&emsp;&emsp;&emsp;
         '6' : 14
 	:<br>
-	:&emsp;&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&emsp;&emsp;&ensp;
         '7' : 15 
         :&emsp;&emsp;&emsp;
         '8' : 16   
         :&emsp;&emsp;&emsp;
         '9' : 17
 	:<br>
-	:&emsp;&emsp;&emsp;&nbsp;&nbsp;
+	:&emsp;&emsp;&emsp;&nbsp;&nbsp;&ensp;
         'CC' : 78     
         :&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         '0' : 18
