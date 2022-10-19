@@ -21,7 +21,7 @@ from struct import pack, unpack, calcsize
 from configparser import ConfigParser
 from ctypes import *
 
-version='3.08a'
+version='3.08c'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -776,7 +776,8 @@ Please select the one you want to use and update the config.ini accordingly.
         if channel == '0': StartChannel = slinginfo.get('StartChannel', '' )
         else: StartChannel = channel
         RemoteLock = slinginfo.get('RemoteLock', '')
-        rccode = remotes[box_name][2]
+        if box_name in remotes.keys():
+            rccode = remotes[box_name][2]
         pksize = 3072
         if Solo : pksize = 3000
         print( '\r\nSlinginfo ', sbtype, resolution, FrameRate, slingip, slingport, pksize, my_max_streams )
@@ -1355,6 +1356,13 @@ for config_fn in sys.argv[1:] :
         @app.route('/<path:text>', methods=["POST"])
         def button(text):
             global streamer_qs, tcode, stati
+            
+            def SendChannelDigits(channel):
+                print('Sending Channel Digits', channel)
+                for digit in channel:
+                    if digit in '0123456789' :
+                        streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little')+ bytes(client, 'utf-8'))
+
  #           print('URI', text, 'Streamer', streamer)
             streamer, client = get_streamer( request, text )
             if not streamer : abort(404)
@@ -1368,11 +1376,7 @@ for config_fn in sys.argv[1:] :
                     kc = int(channel[1:])
                     print('Sending test keycode', kc )
                     streamer_q.put(kc.to_bytes(1, byteorder='little'))
-                else:
-                    print('Sending Channel Digits', channel)
-                    for digit in channel:
-                        if digit in '0123456789' :
-                            streamer_q.put(digits2buttons[int(digit)].to_bytes(1, byteorder='little')+ bytes(client, 'utf-8'))
+                else: SendChannelDigits(channel)
             else:
                 for tuple in cmds:
                     cmd = tuple[0]
@@ -1386,8 +1390,12 @@ for config_fn in sys.argv[1:] :
                         elif cmd == 'Channel' : pass # Channel request with no digits
                         else:
                             data = data.split(':')[0].strip()
-    #                       print('KEY', data )
-                            streamer_q.put(int(data).to_bytes(1, byteorder='little') + bytes(client, 'utf-8'))
+                            print('KEY', data )
+                            if data.startswith('?') : 
+                                SendChannelDigits(data[1:])
+                            else:
+                                for keycode in data.split(','):
+                                    streamer_q.put(int(keycode).to_bytes(1, byteorder='little') + bytes(client, 'utf-8'))
             return render_template_string(Page%stati[streamer])
 
         Thread(target=lambda: app.run(host='127.0.0.1', port=http_port, debug=False, use_reloader=False)).start()
