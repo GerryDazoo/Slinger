@@ -1,6 +1,8 @@
 [Unit]
 Description=SlingBox Server Service
-After=multi-user.target
+After=systemd-hostnamed.service
+Wants=systemd-hostnamed.service
+
 
 [Service]
 Type=idle
