@@ -1,0 +1,137 @@
+style=.button {
+      border: none;
+      color: yellow;
+      background-color: #0044CC;
+      padding: 0px 18px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 64px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+   .round {
+      border: none;
+      color: yellow;
+      background-color: green;
+      padding: 0px 18px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 64px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+   .digit {
+      border: none;
+      color: yellow;
+      background-color: #0044CC;
+      padding: 0px 56px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 80px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 64px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+buttons='1' : 9 : digit
+        :&nbsp;&nbsp;
+        '2' : 10 : digit
+         :&nbsp;&nbsp;
+        '3' : 11 : digit
+        :&nbsp;&nbsp;
+        '4' : 12 : digit
+         :&nbsp;&nbsp;
+        '5' : 13  : digit
+        :<br><br>
+        '6' : 14 : digit
+         :&nbsp;&nbsp;
+        '7' : 15 : digit
+        :&nbsp;&nbsp;
+        '8' : 16 : digit
+        :&nbsp;&nbsp;
+        '9' : 17 : digit
+        :&nbsp;&nbsp;
+        '0' : 18  : digit
+        :<br><br>
+        'OK' : 42
+         :&nbsp;&nbsp;
+        'Up' : 38
+        :&nbsp;&nbsp;
+        'Down' : 39
+        :&nbsp;&nbsp;
+        'Left' : 40
+        :&nbsp;&nbsp;
+        'Right': 41
+        :<br><br>
+        'Guide' : 35
+        :&nbsp;&nbsp;
+        'Prev' : 21
+        :&nbsp;&nbsp;
+        'List' : 67
+        :&nbsp;&nbsp;
+        'Info' : 65
+        :&nbsp;&nbsp;
+        'Exit' : 36
+        :<br><br>
+        'FF' : 28
+        :&nbsp;&nbsp;
+        'Rew' : 27
+        :&nbsp;&nbsp;
+        'Play' : 24
+        :&nbsp;&nbsp;
+        'Pause' : 26
+        :&nbsp;&nbsp;
+        'Stop' : 25
+        : <br><br>
+        'Ch+' : 4
+        :&nbsp;&nbsp;
+        'Ch-' : 5
+        :&nbsp;&nbsp;
+        'Pg-' : 43
+        :&nbsp;&nbsp;
+        'Pg+' : 44
+        :&nbsp;&nbsp;
+        '-5 Sec' : 31
+        : <br><br>
+        'Day-' : 63
+        :&nbsp;&nbsp;
+        'Day+' : 64
+        :&nbsp;&nbsp;
+        'Red' : 63
+        :&nbsp;&nbsp;
+        '+30 Sec' : 30
+        :<br><br>
+        'Rec' : 29
+        :&nbsp;&nbsp;
+        'Menu' : 33
+        :&nbsp;&nbsp;
+        'Back': 37
+        :&nbsp;&nbsp;
+        'Enter': 19
+        :<br><br>
+        'Power' : 1
+        :&nbsp;&nbsp;
+        'Restart' : Restart
+        :&nbsp;&nbsp;
+        'Format' : 68
+        :<br><br>
+        'Channel' : Channel
+        :&nbsp;&nbsp;
+        'RT' : RCtest
