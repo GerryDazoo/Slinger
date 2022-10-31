@@ -1,0 +1,227 @@
+style=.button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+    }
+
+.s500 {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+    }
+
+.menu {
+      border: none;
+      color: white;
+      background-color: red;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+    }
+
+    
+   .round {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+      border-radius: 50%;
+    }
+        
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+buttons='Sling350' : 81 : s500
+        :<br><br>
+        :<br><br>
+	'Rew' : 27 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Play' : 24 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Pause' : 26
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'FF' : 28
+        :<br><br>
+	'Exit' : 36 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Power': 1 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Rec' : 29
+        :<br><br>
+	'Guide' : 35 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Menu' : 33 : menu
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'CH+' : 4
+        :<br><br>
+        :<br><br>
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+        'UP' : 38
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	'PG+' : 43
+        :<br><br>
+	'LT' : 40
+        :&nbsp;&nbsp;
+        'OK' : 42 
+        :&nbsp;&nbsp;
+        'RT': 41
+        :<br><br>
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+        'DN' : 39
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	:&nbsp;&nbsp;
+	'PG-' : 44
+        :<br><br>
+        :<br><br>
+	'Last' : 21 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'Info' : 46 
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        'CH-' : 5
+        :<br><br>
+        :<br><br>
+	'1' : 9
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+	'2' : 10
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '3' : 11
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '4' : 12
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '5' : 13
+        :<br><br>
+        :<br><br>
+        '6' : 14
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '7' : 15
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '8' : 16
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '9' : 17
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        :&nbsp;&nbsp;
+        '0' : 18
+
+
+

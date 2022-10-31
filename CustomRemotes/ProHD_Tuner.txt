@@ -1,0 +1,48 @@
+style=.button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+    }
+    
+   .round {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+     cursor: pointer;
+      border-radius: 50%;
+    }
+        
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 70px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+buttons=:<h1 style="font-size: 70px;">ProHD Tuner</h1>
+        'Ch+' : 0.0
+        :&nbsp;&nbsp;
+        'Ch-' : 1.0
+        :&nbsp;&nbsp;
+        'Last' : 3.0 
+        :<br><br>
+        'Channel': Channel
+ 
