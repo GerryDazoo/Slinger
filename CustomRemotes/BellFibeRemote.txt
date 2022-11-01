@@ -1,0 +1,226 @@
+style=.button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .red-button {
+      border: none;
+      color: white;
+      background-color: crimson;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .yellow-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .blue-button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .green-button {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .bell-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 20px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 24px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 45%; 
+    }
+    .rec-button {
+      border: double;
+      color: white;
+      background-color: crimson;
+      padding: 15px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%
+    }
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 0%; 
+    }
+
+; button text, key code
+buttons=:<h1 style="color:darkgreen">&emsp;&nbsp;BELL FIBE REMOTE</h1>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+	'Bell' : 68 : bell-button
+	:<br>
+	'INPUT' : 22
+		:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        'LIVE' : 32 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'UP' : 38 
+        :&emsp;&emsp;&emsp;&emsp;&emsp;
+        'INFO' : 46
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;&emsp;&emsp;
+        'LT' : 40
+        :&nbsp;&nbsp;
+        'SEL' : 42 
+        :&nbsp;&nbsp;
+        'RT' : 41 
+        :&nbsp;&nbsp;&emsp;
+        'GUIDE' : 35
+	:<br>
+	'PVR' : 33
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;&nbsp;
+        'DN' : 39
+	:<br>
+	
+	:&emsp;&emsp;&emsp;&emsp;&emsp;
+		'CNBC' : 9,13,18,17,19
+		:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CH+' : 4
+	:<br>
+	
+	:&emsp;&emsp;&emsp;&emsp;&emsp;
+		'CNN' : 9,13,18,18,19
+		:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CH-' : 5 
+	:<br>
+	'EXIT' : 36
+		:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        'REC' : 29 : rec-button
+	:<br>
+	'PG+' : 43
+		:&emsp;&emsp;
+		'PG-' : 44
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;
+        '>' : 24 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        '<<': 27
+        :&emsp;
+        'II' : 26 : pause-button
+        :&emsp;
+        '>>' : 28         
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        'I>' : 50
+	:<br>
+        'I<-': 31
+		:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		'3m->I' : 30,30,30,30,30,30
+		:&emsp;&emsp;
+        '->I' : 30
+	:<br><br>
+	:&emsp;&emsp;&emsp;
+        'A' : 76 : yellow-button
+        :&emsp;&emsp;&emsp;
+        'B' : 77 : blue-button
+        :&emsp;&emsp;&emsp;
+        'C' : 74 : red-button
+        :&emsp;&emsp;&emsp;
+        'D' : 75 : green-button
+	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '1' : 9 
+        :&emsp;&emsp;&emsp;
+        '2' : 10
+        :&emsp;&emsp;&emsp;
+        '3' : 11
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '4' : 12
+        :&emsp;&emsp;&emsp;
+        '5' : 13     
+        :&emsp;&emsp;&emsp;
+        '6' : 14
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '7' : 15 
+        :&emsp;&emsp;&emsp;
+        '8' : 16   
+        :&emsp;&emsp;&emsp;
+        '9' : 17
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CLR' : 37     
+        :&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		'0' : 18
+        :&emsp;&emsp;&nbsp;&nbsp;
+        'ENT' : 19
+	:<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'LAST' : 21
+	:<br><br>
+	'POWER' : 1
+	
+	

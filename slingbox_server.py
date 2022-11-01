@@ -930,7 +930,7 @@ Please select the one you want to use and update the config.ini accordingly.
 
                     if curtime - lasttick > 10.0:
                         print('.', end='')
-                        stati[section_name] = name + ' Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
+                        stati[box_name] = name + ' Slingbox Streaming %d clients. Resolution=%d Packets=%d' % (len(streams), resolution, pc)
                         lasttick = curtime
                         sys.stdout.flush()                  
                         if curtime - laststatus > 90.0 :
