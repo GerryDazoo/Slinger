@@ -122,8 +122,8 @@ def find_slingbox_info(name):
             try:
                 s.bind((local_ip, 0))
             except Exception as e:
-                print('Error binding socket to send broadcast', e )
-                return []
+ #               print('Error binding socket to send broadcast', e )
+                continue
          
             s.sendto( bytearray(query), (broadcast, 5004 ))
             while True:
