@@ -162,7 +162,6 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 	'CH-' : 5
 	:<br>
-;        'REC' : 29 : rec-button
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         '>' : 24 
 	:<br><br>
