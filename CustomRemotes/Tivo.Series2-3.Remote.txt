@@ -4,7 +4,7 @@
 ; Buttons spaced for fat fingers
 ; Use browser zoom for even larger spaces
 ; Includes EXIT button from DirecTV TiVo remote
-; Added 3x instant replay and 3x SKIP
+; Added 3x,6x instant replay and 3x,6x SKIP
 style=.button {
       border: none;
       color: white;
@@ -164,8 +164,12 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
         '>' : 24 
-	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+	:<br>
+	'I<6': 65,65,65,65,65,65
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '6>I' : 66,66,66,66,66,66
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
         '<<': 27
         :&emsp;&emsp;
         'II' : 26 : pause-button
@@ -182,7 +186,7 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
         'I<-': 65
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         '->I' : 66
-	:<br><br>
+	:<br>
 ;	:&emsp;&emsp;&emsp;
 ;        'A' : 76 : yellow-button
 ;        :&emsp;&emsp;&emsp;&emsp;
@@ -198,21 +202,21 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
         '2' : 10
         :&emsp;&emsp;&emsp;
         '3' : 11
-	:<br>
+	:<br><br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         '4' : 12
         :&emsp;&emsp;&emsp;
         '5' : 13     
         :&emsp;&emsp;&emsp;
         '6' : 14
-	:<br>
+	:<br><br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
         '7' : 15
         :&emsp;&emsp;&emsp;
         '8' : 16  
         :&emsp;&emsp;&emsp;
         '9' : 17
-	:<br>
+	:<br><br>
 	'CLR' : 67 
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
 	'0' : 18
