@@ -3,7 +3,7 @@ This now supports the 240/350/500/M1/M2/Solo/Pro and ProHD.
 
 You can select what type of slingbox you have with the sbtype= entry in the config.ini file.
  
-You'll need your SlingBox admin password. "https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js"
+You'll need your SlingBox admin password. You can obtain this by logging into Slingbox's site at http://newwatch.slingbox.com/ and then retrieving "https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js". That address is a JSON document that contains entries of "adminPassword".
 
 Bonus: The HTTP streaming server can server out mutliple simultaneous streams so more than one person can see the Sling content at once.
 
