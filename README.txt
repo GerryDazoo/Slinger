@@ -12,10 +12,15 @@ The web-based remote control is yet another huge hack to get something working q
 To watch your slingbox use a media player that supports http streaming. I've tested VLC, OBS studio, ffplayer and mxplayer. http://your_ip_address_or_FQDN:your_port_number/slingbox
 your_port_number defaults to 8080 but you can override that with the port= entry in the SERVER section of config.ini file.
 i.e. http://192.168.1.10:8080/slingbox
+THIS IS THE NUMBER ONE MISTAKE PEOPLE MAKE SETTING THIS UP. THE IP ADDRESS IS FOR THE HOST RUNNING THE SERVER CODE NOT THE SLINGBOX. DO NOT USE THE SLINGBOX IP ADDRESS, IT WILL NOT WORK.
+YOU CONNECT TO THE SERVER TO STREAM VIDEO NOT THE SLINGBOX. 
+IT'S THE SERVER THAT TALKS TO THE SLINGBOX AND FORWARDS THE VIDEO TO YOU.
+THE URL IS CASE SENSITIVE. DO NOT USE 'Slingbox' OR ANYTHING ELSE EXCEPT 'slingbox'. "slingbox" is the default. It is now possible to change this. Read the release notes.
+THE [SERVER] port number is configured in the config.ini file. IT DEFAULTS TO 8080.
+Some people feel compelled to change this to the same port number as the slingbox and I don't know why. It only seems to add confusion to what is happening.   
 
-To access the Remote control functionality use the same IP address and port number but replace slingbox with Remote into any ol' web browser.
+To access the Remote control functionality use the same IP address and port number but replace "slingbox" with Remote into any ol' web browser.
 i.e. http://192.168.1.10:8080/Remote
-
 
 Linux/RaspberryPi Notes
 You'll need a working Python3 interpreter to get going. Comes pre-installed on the Raspberry Pi distribution
@@ -41,10 +46,9 @@ sudo systemctl stop sling.service # to shut it down
     
 # The default config generates a log file /tmp/sling.log   to check to see what's going on....
 
-Add or modify the two following lines to your /etc/sysctl.conf 
+As root, add or modify the two following lines to your /etc/sysctl.conf 
     net.core.rmem_max = 8192000
-    net.core.wmem_max = 8192000
-  
+    net.core.wmem_max = 8192000  
     
 Windows Notes
     There is a windows executable now available so you don't need to do a python install but your welcome to run the python code directly if you want. I used cygwin Python on my Windows box but any windows python program should work. You'll need flask and netifaces module for python. See note about netifaces and flask above.
@@ -78,6 +82,7 @@ Not getting what your expecting. Note the Slingbox does not upscale the input, S
 #define SBVS_1680x544	14
 #define SBVS_1920x544	15
 #define SBVS_1920x1080	16
+Note: Resolution=0 is AudioOnly mode.
 
  #Key Codes : For my Motorola DCX3400M PVR. 1,4,5,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,53,54,55,56,57,58,59,60
  
