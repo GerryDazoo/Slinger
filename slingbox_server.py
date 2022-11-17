@@ -22,7 +22,7 @@ from configparser import ConfigParser
 from ctypes import *
 import mimetypes
 
-version='3.08e'
+version='3.08f'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -117,16 +117,17 @@ def find_slingbox_info(name):
     boxes = []
     print(name, 'No valid slingbox ip info found in config.ini')
     for local_ip, broadcast in ip4_addresses():
+        if local_ip == '127.0.0.1': continue
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(2)
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            print('Finding Slingbox on local network. My IP Info = ', local_ip)
             try:
                 s.bind((local_ip, 0))
             except Exception as e:
-                print('Error binding socket to send broadcast', e )
+ #               print('Error binding socket to send broadcast', e )
                 continue
-         
+                
+            print('Finding Slingbox on local network. My IP Info = ', local_ip)
             s.sendto( bytearray(query), (broadcast, 5004 ))
             while True:
                 try:
