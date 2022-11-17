@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+name="slinger"
+description="SlingBox Server Service"
+command_user="slingbox"
+directory="/home/${command_user}"
+export PYTHONUNBUFFERED=1
+command="${directory}/slingbox_server.py"
+output_log="/tmp/sling.log"
+error_log="/tmp/sling.log"
+pidfile="/run/${RC_SVCNAME}.pid"
+start_stop_daemon_args="--chdir $directory"
+supervisor="supervise-daemon"
+
+depend() {
+	after multi-user
+}

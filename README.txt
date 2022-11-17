@@ -35,6 +35,7 @@ You'll need a working Python3 interpreter to get going. Comes pre-installed on t
     sudo pip install netifaces
     
     copy "slingbox_server.py, config.ini and sling.service to /home/slingbox   
+    sudo chmod +x /home/slingbox/slingbox_server.py
 
     sudo cp sling.service /etc/systemd/system/.
  #   enable it
