@@ -1,15 +1,30 @@
 # Slinger
 
-Slinger is a add description here...
+Slinger is a project that allows SlingPlayer, Slingboxes and MediaPlayers to stream content:
+
+- On the same LAN
+- Connecting from the Internet
+- Fully distributed (Cloud-based) 
+
+> Sticking it to the Man, one slingbox at a time
 
 
 ## Version log
----
 
 - Ver. 3.08: This now supports the 240/350/500/M1/M2/Solo/Pro and ProHD
 
+## Documentation
+
+It is highly recommended to review the following documents located in this repo as they provide more information to help you with you own setup:
+
+- [SlingboxServerNetworkingGuide.pdf](SlingboxServerNetworkingGuide.pdf)
+- [V3.0x_ReleaseNotes.pdf](V3.0x_ReleaseNotes.pdf)
+- [V3.08_release_notes.pdf](V3.08_release_notes.pdf)
+- [V3.08d_release_notes.pdf](V3.08d_release_notes.pdf)
+- [V3.08e_release_notes.docx](V3.08e_release_notes.docx)
+
+
 ## Setup instructions
----
 
 You can select what type of slingbox you have with the `sbtype = entry` in the `config.ini` file.
  
@@ -46,14 +61,12 @@ var sling_account_boxes= {
 ```
 
 #### **Bonus**
----
 
 - The HTTP streaming server can server out mutliple simultaneous streams so more than one person can see the Sling content at once.
 
 - The web-based remote control is yet another huge hack to get something working quickly. Uses "Flask", definately can be made prettier. You can tweek the look in the [REMOTE] section of the config.ini file. You can insert any valid HTML between the buttons and change the button and text style.
 
 ## To watch your slingbox
----
 
 Use a media player that supports http streaming. I've tested
 - VLC
@@ -68,10 +81,11 @@ http://your_ip_address_or_FQDN:your_port_number/slingbox
 
 Your_port_number defaults to `8080` but you can override that with the `port = entry` in the `SERVER` section of `config.ini` file. I.e.:
 
-> http://192.168.1.10:8080/slingbox
+```
+http://192.168.1.10:8080/slingbox
+```
 
 ## Important
----
 
 THIS IS THE NUMBER ONE MISTAKE PEOPLE MAKE SETTING THIS UP. THE IP ADDRESS IS FOR THE HOST RUNNING THE SERVER CODE NOT THE SLINGBOX. DO NOT USE THE SLINGBOX IP ADDRESS, IT WILL NOT WORK.
 
@@ -88,14 +102,15 @@ THE [`SERVER`] port number is configured in the `config.ini` file. IT DEFAULTS T
 Some people feel compelled to change this to the same port number as the slingbox and I don't know why. It only seems to add confusion to what is happening.   
 
 ## Remote control
----
 
 To access the Remote control functionality, use the same IP address and port number but replace "`slingbox`" with Remote into any ol' web browser.i.e.
 
- > [http://192.168.1.10:8080/Remote](http://192.168.1.10:8080/Remote)
+```
+http://192.168.1.10:8080/Remote
+```
 
 ## Linux/RaspberryPi Notes
----
+
 You'll need a working **Python3** interpreter to get going. Comes pre-installed on the Raspberry Pi distribution:
 
 * A minimum system is just less that 2G. So for safety sake use at least a 4G micro sd card
@@ -138,13 +153,8 @@ As root, add or modify the two following lines to your /etc/sysctl.conf
     net.core.wmem_max = 8192000
 ```
 
-## Contribute
----
-
-
 
 ### Adding your own remote
----
 
 To add your own remote, please do following:
 
@@ -160,7 +170,7 @@ The branch will be reviewed and approved for merging if passed.
 
 
 ## Notes for Windows users
----
+
 There is a `windows executable` now available so you don't need to do a python install but your welcome to run the python code directly if you want.
 
 I used `cygwin` Python on my Windows box but any windows python program should work.
@@ -177,7 +187,6 @@ If you want to have the server start automatically on boot make a shortcut to `R
 1. If you want remote access add a port map on your firewall to redirect to your server box.
 
 ### Security
----
 
 Windows Defender may think there are two viruses in the slingbox_server.exe file. This is not the case. Add an exception on your system for slingbox_server.exe
 
@@ -188,13 +197,11 @@ Windows Defender may think there are two viruses in the slingbox_server.exe file
     Apparently there is a way around this by changing the source code and then signing the executable but I haven't tested it yet.
      
 ### Not getting what your expecting?
----
 
 Note the Slingbox does not upscale the input, See [https://www.slingbox.com/help/KB/KB-2000464](https://www.slingbox.com/help/KB/KB-2000464)
  for more info.
 
 ### Slingbox Video Sizes
----
 
 ```py
 #define SBVS_320x240	1
@@ -219,7 +226,6 @@ Note: `Resolution = 0`, is *AudioOnly* mode.
 #Key Codes : For my Motorola DCX3400M PVR. 1,4,5,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28,29,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,53,54,55,56,57,58,59,60
  
 ### Slingbox Command Codes
----
 
 ```py
 #define SBCMD_INVALID			0
