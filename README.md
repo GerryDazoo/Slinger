@@ -135,6 +135,7 @@ Make a user "slingbox" with whatever password you'd like
 * Copy "slingbox_server.py, config.ini and sling.service to /home/slingbox   
 
 ```sh
+    sudo chmod +x /home/slingbox/slingbox_server.py
     sudo cp sling.service /etc/systemd/system/.
     # enable it
     sudo systemctl daemon-reload
