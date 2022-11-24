@@ -437,7 +437,25 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
         sid = seq = 0                # no session ID, seq 0
  #       print(name, 'Opening Control stream', hex(smode), sid, seq)
         s_ctl = sling_open(sling_net_address, 'Control') # open control connection to SB
-        sling_cmd(0x67, pack('I 32s 32s 132x', 0, futf16('admin'), futf16(password))) # log in to SB
+        if password.upper().startswith('E1:'):
+            print( name, 'Using encrypted password:', password)
+            pw = password.upper().replace('E1:', '').strip()
+            try:
+                pw_bytes = bytearray.fromhex(pw)
+                clear = Decrypt(pw_bytes, skey)
+            except:
+                print('Bad E1: Password cannot decrypt. Missing/bad characters?')
+                return (closeconn(s_ctl), None)
+            eos = clear.find(b'\x00\x00')
+            if eos > 0:
+                clear = clear[0:eos+2]
+            else:
+                print('name, Bad E1: Password Missing characters')
+                return (closeconn(s_ctl), None)   
+ #           print(eos, clear)
+            sling_cmd(0x67, pack('I 32s 32s 132x', 0, futf16('admin'), clear)) # log in             
+        else:
+            sling_cmd(0x67, pack('I 32s 32s 132x', 0, futf16('admin'), futf16(password))) # log in to SB
         rand = bytearray.fromhex('feedfacedeadbeef1111222233334444') # 'random' challenge
         try:
             sling_cmd(0xc6, pack('I 16s 36x', 1, rand)) # setup dynamic key on SB
@@ -648,12 +666,12 @@ Please select the one you want to use and update the config.ini accordingly.
         try:
             while n > 0:
                 b = sock.recv(n)
-                buff += b
                 if len(b) == 0:
                     return b          # peer socket has received a SH_WR shutdown
+                buff += b
                 n -= len(b)
-        except:
-            print('Error Reading video stream')
+        except Exception as e:
+            print(name, 'Error Reading video stream')
             buff = b''
         return buff
 
@@ -676,7 +694,9 @@ Please select the one you want to use and update the config.ini accordingly.
             magic = bytes(u'Slingbox'.encode('utf-16le'))
  #           print('MAGIC', magic)
             if magic in msg:
-                print(ts(), name, 'Solo/ProHD Stream Restarted, Resyncing')
+                print(ts(), name, 'Solo/ProHD Input Video Format Changed. Stream Restarted')
+                return b'Restart'
+                
                 tbd = bts = bco = runt = 0
                 dco = b''
 
@@ -689,10 +709,12 @@ Please select the one you want to use and update the config.ini accordingly.
                 msg[audio_header_pos:audio_header_pos+10] = pack("H 8x", 0x9012)
 
                 header = msg[0:h264_header_pos]
-                stream_header = header
+#                print('Headers', len(stream_header), len(header))
+ #               stream_header = header
                 rest = readnbytes(sock, h264_header_pos)
                 msg = msg[h264_header_pos:] + bytearray(rest)
                 print( name, 'Synced')
+                return b''
 
         off = 16
         if pmode == 0x82000018 :
@@ -861,7 +883,7 @@ Please select the one you want to use and update the config.ini accordingly.
             continue
         if s_ctl and stream :
             pc = 0
-            stream.settimeout(10)
+            stream.settimeout(15)
             tick = lasttick = laststatus = lastkeepalive = last_remote_command_time = startchanneltime = time.time()
             if not Solo : StartChannel = send_start_channel(StartChannel, rccode)
             while streams:
@@ -872,8 +894,10 @@ Please select the one you want to use and update the config.ini accordingly.
                     except Exception as e:
                         print(name, 'Error Processing Solo Message. Stopping', e, traceback.print_exc())
                         break
-                    if len(msg) == 0 :
-                        print(ts(), name, 'Bad or Corrupted Solo message')
+                    if len(msg) < 10:
+                        if len(msg) == 0 :
+                            print(ts(), name, 'Bad or Corrupted Solo message')
+                        # Restart    
                         break
                 
                 if len(msg) == 0 :
@@ -886,10 +910,12 @@ Please select the one you want to use and update the config.ini accordingly.
                         sent = stream_socket.send(msg)
                     except Exception as e:
                         if stream_socket in stream_clients.keys():
-                            print(ts(), name, 'Stream Terminated for ', stream_clients[stream_socket], e)
+                            print(ts(), name, 'Stream Terminated for ', stream_clients[stream_socket])
+                            close_streaming_connection(stream_socket)
                         else:
-                            print(ts(), name, 'Stream Terminated', e)
-                        close_streaming_connection(stream_socket)
+                            print(ts(), name, 'Stream Terminated', e, traceback.print_exc())
+                            streams.remove(stream_socket)
+
                         my_num_streams = my_num_streams - 1
                         continue
                 msg = b''
@@ -899,13 +925,15 @@ Please select the one you want to use and update the config.ini accordingly.
                     print( name, 'Got Streamer Control Message', cmd )
                     if cmd == 'STREAM' :
                         new_stream = streamer_q.get()
+                        #print(new_stream)
                         if my_num_streams == my_max_streams :
                             print( name, 'Max streams', my_max_streams, 'for this slingbox has been reached. Not starting connection')
                             new_stream.sendall(ERROR)
                             new_stream = closeconn(new_stream)
                         elif not start_streaming_connection(data) :
+                            print(name, 'Video Stream Startup Error')
                             new_stream.sendall(ERROR)
-                            closeconn(new_stream)
+                            new_steam = closeconn(new_stream)
                         else:
                             my_num_streams = my_num_streams + 1
                             new_stream.sendall(OK)
@@ -915,10 +943,11 @@ Please select the one you want to use and update the config.ini accordingly.
                             if channel != '0':
                                 if not RemoteLock : StartChannel = channel
                                 else: print( name, 'RemoteLocked, ignoring channel request')
-                            Thread(target=start_new_stream, args=(new_stream,)).start()
+                            streams.append(new_stream) 
+                            #Thread(target=start_new_stream, args=(new_stream,)).start()
                     elif cmd == 'ProHD':
                         channel, sender_ip = data.split(':')
-                        print(ts(), 'got ProHD', channel, sender_ip)
+                        print(ts(), name, 'got ProHD', channel, sender_ip)
                         stream_ip = primary_stream_client
                         if not RemoteLocked(sender_ip):
                             SendKeycode( channel, rccode)                              
@@ -1401,7 +1430,7 @@ def get_streamer( request, text ):
 ###############################################################################
 ###########   START OF EXECUTION #####################################
 mypid = os.getpid()
-print( 'Version :', version, 'Running on', platform.platform(), 'pid=', mypid)
+print( 'Version :', version, 'Running on', platform.platform(), 'pid=', mypid, sys.argv[0])
 
 streamer_qs = {}
 stati = {}
@@ -1486,6 +1515,7 @@ for config_fn in sys.argv[1:] :
             def SendChannelDigits(channel):
                 print('Sending Channel Digits', channel)
                 if '.' in channel: # ProHD
+                    if channel.endswith('.') : channel = channel + '0'
                     send_pro_control('2.' + channel)
                 else:
                     keylist = []
