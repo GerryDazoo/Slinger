@@ -1,0 +1,227 @@
+; TIVO SERIES 2-3 REMOTE
+; Based on Tivo.Premiere.Remote.txt
+; Tested with M1 and TiVo-HD
+; Buttons spaced for fat fingers
+; Use browser zoom for even larger spaces
+; Includes EXIT button from DirecTV TiVo remote
+; Added 3x,6x instant replay and 3x,6x SKIP
+style=.button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .red-button {
+      border: none;
+      color: white;
+      background-color: crimson;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .yellow-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .blue-button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .green-button {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 0px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .tivo-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 20px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 24px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 45%; 
+    }
+    .rec-button {
+      border: double;
+      color: white;
+      background-color: crimson;
+      padding: 15px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%
+    }
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 0%; 
+    }
+
+; button text, key code
+buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+        'REC' : 29 : rec-button
+	:&emsp;&emsp;&emsp;
+	'TIVO' : 68 : tivo-button
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	'LIVE' : 32 
+	:<br>
+	'EXIT' : 67
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        'INFO' : 46 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'UP' : 38 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;&emsp;&emsp;
+        'LT' : 40
+        :&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'RT' : 41 
+        :&nbsp;&nbsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+        'GUIDE' : 35
+	:<br>
+	'ZOOM' : 62
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&emsp;&nbsp;
+        'DN' : 39
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CH+' : 4
+	:<br>
+	:&emsp;&emsp;&emsp;
+	'TDn' : 63 : red-button	
+	:&emsp;&emsp;&emsp;&emsp;&emsp;
+	'SEL' : 42 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	'TUp' : 64 : green-button
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	'CH-' : 5
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '>' : 24 
+	:<br>
+	'I<6': 65,65,65,65,65,65
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '6>I' : 66,66,66,66,66,66
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        '<<': 27
+        :&emsp;&emsp;
+        'II' : 26 : pause-button
+        :&emsp;&emsp;
+        '>>' : 28         
+	:<br>
+	'I<3': 65,65,65
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '3>I' : 66,66,66
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        'I>' : 50
+	:<br>
+        'I<-': 65
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '->I' : 66
+	:<br>
+;	:&emsp;&emsp;&emsp;
+;        'A' : 76 : yellow-button
+;        :&emsp;&emsp;&emsp;&emsp;
+;        'B' : 77 : blue-button
+;        :&emsp;&emsp;&emsp;&emsp;
+;        'C' : 74 : red-button
+;        :&emsp;&emsp;&emsp;&emsp;
+;        'D' : 75 : green-button
+;	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '1' : 9 
+        :&emsp;&emsp;&emsp;
+        '2' : 10
+        :&emsp;&emsp;&emsp;
+        '3' : 11
+	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '4' : 12
+        :&emsp;&emsp;&emsp;
+        '5' : 13     
+        :&emsp;&emsp;&emsp;
+        '6' : 14
+	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '7' : 15
+        :&emsp;&emsp;&emsp;
+        '8' : 16  
+        :&emsp;&emsp;&emsp;
+        '9' : 17
+	:<br><br>
+	'CLR' : 67 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+	'0' : 18
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+        'ENT' : 70
+	:<br>
+;        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+;        'LAST' : 21

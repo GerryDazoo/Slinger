@@ -1,0 +1,211 @@
+style=.button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%;
+    }
+    .red-button {
+      border: none;
+      color: white;
+      background-color: crimson;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .yellow-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .pause-button {
+      border: none;
+      color: black;
+      background-color: gold;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 45%; 
+    }
+    .blue-button {
+      border: none;
+      color: white;
+      background-color: blue;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .green-button {
+      border: none;
+      color: white;
+      background-color: green;
+      padding: 10px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+    .tivo-button {
+      border: none;
+      color: white;
+      background-color: black;
+      padding: 20px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .rec-button {
+      border: double;
+      color: white;
+      background-color: crimson;
+      padding: 20px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 50%; 
+    }
+    .text {
+      border: none;
+      color: black;
+      background-color: lightblue;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 20px;
+      margin: 2px 2px;
+      cursor: pointer;
+      border-radius: 40%; 
+    }
+
+; button text, key code
+buttons=:<h1 style="color:darkblue">&emsp;&emsp;TIVO MINI REMOTE</h1>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+	'TIVO' : 34 : tivo-button
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;
+        'LIVE' : 68 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp
+        'UP' : 38 
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'INFO' : 46
+	:<br>
+        'BACK' : 36
+	:&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        'LT' : 40
+        :&nbsp;&nbsp;
+        'SEL' : 42 
+        :&nbsp;&nbsp;
+        'RT' : 41 
+        :<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'DN' : 39
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CH+' : 4
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'CH-' : 5 
+	:<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&emsp;&nbsp;&nbsp;
+        'GUIDE' : 35
+	:&emsp;&nbsp;&nbsp;&nbsp;
+        'REC' : 29 : red-button
+	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '> ' : 24 
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+        '<<': 27
+        :&nbsp;&nbsp;
+        'II' : 26 : pause-button
+        :&nbsp;&nbsp;
+        '>>' : 28         
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        'I>' : 50
+	:<br>
+        'I<-': 31
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '->I' : 30
+	:<br><br>
+	:&emsp;&emsp;&emsp;
+        'A' : 76 : yellow-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'B' : 77 : blue-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'C' : 74 : red-button
+        :&emsp;&emsp;&emsp;&emsp;
+        'D' : 75 : green-button
+	:<br><br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '1' : 9 
+        :&emsp;&emsp;&emsp;
+        '2' : 10
+        :&emsp;&emsp;&emsp;
+        '3' : 11
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '4' : 12
+        :&emsp;&emsp;&emsp;
+        '5' : 13     
+        :&emsp;&emsp;&emsp;
+        '6' : 14
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        '7' : 15 
+        :&emsp;&emsp;&emsp;
+        '8' : 16   
+        :&emsp;&emsp;&emsp;
+        '9' : 17
+	:<br>
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'CLEAR' : 37     
+        :&emsp;&nbsp;&nbsp;
+	'0' : 18
+        :&emsp;&nbsp;&nbsp;
+        'ENTER' : 19
+	:<br>
+        :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        'LAST' : 21
+	:<br>
+	:<br>
+        'Channel': Channel

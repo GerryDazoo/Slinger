@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 try:
     assert sys.version_info >= (3,7)

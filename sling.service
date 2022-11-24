@@ -1,6 +1,8 @@
 [Unit]
 Description=SlingBox Server Service
-After=multi-user.target
+After=systemd-hostnamed.service
+Wants=systemd-hostnamed.service
+
 
 [Service]
 Type=idle
@@ -8,7 +10,7 @@ User=slingbox
 WorkingDirectory=/home/slingbox
 StandardOutput=append:/tmp/sling.log
 StandardError=append:/tmp/sling.log
-ExecStart=/usr/bin/python -u slingbox_server.py 
+ExecStart=/usr/bin/env python -u slingbox_server.py 
 Restart=always
 
 [Install]
