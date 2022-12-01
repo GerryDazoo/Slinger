@@ -28,16 +28,41 @@ It is highly recommended to review the following documents located in this repo 
 
 You can select what type of slingbox you have with the `sbtype = entry` in the `config.ini` file.
  
- You'll need your SlingBox **admin password**. You can obtain this by logging into Slingbox's site at
+ You'll need your SlingBox **admin password**.
  
- - [http://newwatch.slingbox.com/](http://newwatch.slingbox.com/)
- 
- And then browsing:
- 
- - [https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js](https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js)
+ You can obtain this by using "Postman" to call 2 APIs in order to get the memberslingbox info. This process is detailed below:
 
- 
- That address is a JSON document that contains entries of: `adminPassword`.
+> Obtain a method of your preference for using Postman here https://www.postman.com/downloads/
+>
+> Request 1:
+>
+> POST https://secure.sling.com/slingaccounts/rest/v3/identitypoint?contentType=application/json
+>
+> Under Body select x-www-form-urlencoded
+>
+> Enter following key / values
+>
+> | key	| value |
+> | ------ | ------ |
+> | context	| SLINGIT_PORTAL |
+> | policy_code	| MAS |
+> | email_address	| {user-email} |
+> | password	| {user-password} |
+> 
+> Hit send. If it worked, you should get a 200 OK with JSON response. Save the identity and ticket from response, you will need those for the next call.
+>
+> Request 2:
+>
+> New Request
+> GET https://secure.sling.com/slingaccounts/rest/v5/member/{member-id}/device/slingboxes?contentType=application/json
+>
+> Replace {member-id} with the "identity" value from first request
+>
+> Under Authorization tab, select Basic Auth.
+> Enter the "ticket" value from first request as the username. Leave the password blank.
+> Hit Send.
+
+ It should list out your memberslingbox JSON, a document that contains entries of: `adminPassword`.
 
  *Sample* output:
  
