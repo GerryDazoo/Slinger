@@ -21,44 +21,17 @@ It is highly recommended to review the following documents located in this repo 
 - [V3.0x_ReleaseNotes.pdf](V3.0x_ReleaseNotes.pdf)
 - [V3.08_release_notes.pdf](V3.08_release_notes.pdf)
 - [V3.08d_release_notes.pdf](V3.08d_release_notes.pdf)
-- [V3.08e_release_notes.docx](V3.08e_release_notes.docx)
-
+- [V3.08e_release_notes.pdf](V3.08e_release_notes.pdf)
+- [V3.08f_release_notes.pdf](V3.08f_release_notes.pdf)
 
 ## Setup instructions
 
-You can select what type of slingbox you have with the `sbtype = entry` in the `config.ini` file.
+1. Obtain your [SlingBox admin password](sb-pwd.md)
+1. Edit the `config.ini` file:
+    1.  You can select what type of slingbox you have with the `sbtype = entry`
+1. Run `slingbox_server.py`
  
- You'll need your SlingBox **admin password**. You can obtain this by logging into Slingbox's site at
- 
- - [http://newwatch.slingbox.com/](http://newwatch.slingbox.com/)
- 
- And then browsing:
- 
- - [https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js](https://newwatchsecure.slingbox.com/watch/slingAccounts/account_boxes_js)
 
- 
- That address is a JSON document that contains entries of: `adminPassword`.
-
- *Sample* output:
- 
- ```json
-var sling_account_boxes= {
-    "memberslingbox":{
-        "0ffffe4a2950f319d6e6bd7dcb4e4ebc" : {
-            "lookupByFinderId":true,
-            "adminPassword":"09s6HW1Nwk8iRYB",
-            "userPassword":"11fwWpl3drrfcRgf9",
-            "finderId":"0FFFFE4A2950F319D6E6BD7DCB4E4EBCC",
-            "isOwner":true,
-            "productSignature":16,
-            "passwordAutoMode":true,
-            "displayName":"My Slingbox",
-            "memberSlingBoxId":2146240
-        }
-    }
-    ,"size":1
-}
-```
 
 #### **Bonus**
 
