@@ -5,6 +5,8 @@
 ; Use browser zoom for even larger spaces
 ; Includes EXIT button from DirecTV TiVo remote
 ; Added 3x,6x instant replay and 3x,6x SKIP
+; Added ZM2 (ZOOM 2x) because testing showed 1x ZOOM displays current zoom mode
+; and times out before you can press ZOOM again
 style=.button {
       border: none;
       color: white;
@@ -124,9 +126,10 @@ style=.button {
 
 ; button text, key code
 buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+	'ZM2' : 62,62
+	:&emsp;&nbsp;&nbsp;&nbsp;
         'REC' : 29 : rec-button
-	:&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&nbsp;&nbsp;
 	'TIVO' : 68 : tivo-button
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 	'LIVE' : 32 
