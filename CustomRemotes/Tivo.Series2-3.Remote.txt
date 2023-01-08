@@ -129,7 +129,7 @@ style=.button {
     }
 
 ; button text, key code
-buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
+buttons=:<h1 style="color:darkgreen">TIVO SERIES 2&amp3 REMOTE</h1>
 	'ZM2' : 62,62
 	:&emsp;&nbsp;&nbsp;&nbsp;
         'REC' : 29 : rec-button
