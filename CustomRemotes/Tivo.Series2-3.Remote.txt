@@ -5,6 +5,12 @@
 ; Use browser zoom for even larger spaces
 ; Includes EXIT button from DirecTV TiVo remote
 ; Added 3x,6x instant replay and 3x,6x SKIP
+; Added ZM2 (ZOOM 2x) because testing showed 1x ZOOM displays current zoom mode
+; and times out before you can press ZOOM again
+; Increased size of Play and Digits for a more uniform look
+; Tested with Chromium/Linux, Firefox/Linux, Konqueror/Linux
+; and Samsung Internet/Android (200%)
+; <ocd>Alignment varies by browser</ocd>
 style=.button {
       border: none;
       color: white;
@@ -123,10 +129,11 @@ style=.button {
     }
 
 ; button text, key code
-buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
+buttons=:<h1 style="color:darkgreen">TIVO SERIES 2&amp3 REMOTE</h1>
+	'ZM2' : 62,62
+	:&emsp;&nbsp;&nbsp;&nbsp;
         'REC' : 29 : rec-button
-	:&emsp;&emsp;&emsp;
+	:&emsp;&emsp;&nbsp;&nbsp;
 	'TIVO' : 68 : tivo-button
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 	'LIVE' : 32 
@@ -163,7 +170,7 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
 	'CH-' : 5
 	:<br>
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-        '>' : 24 
+	'&nbsp>&nbsp' : 24 
 	:<br>
 	'I<6': 65,65,65,65,65,65
         :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
@@ -196,30 +203,30 @@ buttons=:<h1 style="color:darkgreen">&nbsp;TIVO SERIES 2&amp3 REMOTE</h1>
 ;        :&emsp;&emsp;&emsp;&emsp;
 ;        'D' : 75 : green-button
 ;	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        '1' : 9 
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '&nbsp1&nbsp' : 9 
         :&emsp;&emsp;&emsp;
-        '2' : 10
+        '&nbsp2&nbsp' : 10
         :&emsp;&emsp;&emsp;
-        '3' : 11
+        '&nbsp3&nbsp' : 11
 	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        '4' : 12
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '&nbsp4&nbsp' : 12
         :&emsp;&emsp;&emsp;
-        '5' : 13     
+        '&nbsp5&nbsp' : 13     
         :&emsp;&emsp;&emsp;
-        '6' : 14
+        '&nbsp6&nbsp' : 14
 	:<br><br>
-	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-        '7' : 15
+	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
+        '&nbsp7&nbsp' : 15
         :&emsp;&emsp;&emsp;
-        '8' : 16  
+        '&nbsp8&nbsp' : 16  
         :&emsp;&emsp;&emsp;
-        '9' : 17
+        '&nbsp9&nbsp' : 17
 	:<br><br>
 	'CLR' : 67 
 	:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;
-	'0' : 18
+	'&nbsp0&nbsp' : 18
         :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;
         'ENT' : 70
 	:<br>
