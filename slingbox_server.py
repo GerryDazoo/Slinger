@@ -315,7 +315,7 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
     def sling_open(addr, connection_type):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, max_recv_tcp_buffer)
-        s.settimeout(5)
+        s.settimeout(10)
         print('Connecting...', addr, connection_type )
         s.connect(addr)
         s.sendall(str.encode('GET /stream.asf HTTP/1.1\r\nAccept: */*\r\nPragma: Sling-Connection-Type=%s, Session-Id=%d\r\n\r\n' % (connection_type, sid)))
