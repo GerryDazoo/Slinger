@@ -18,7 +18,7 @@ from configparser import ConfigParser
 from ctypes import *
 import mimetypes
 
-version='4.0'
+version='4.01'
 
 def encipher(v, k):
     y = c_uint32(v[0])
@@ -364,7 +364,7 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
         if stat != 0:
             if stat == 0x2:
                 print(name,'Error Starting Session. Check your admin password in config.ini file!')
-            elif start == 0x2b:
+            elif stat == 0x2b:
                 print(name,'Error Starting Session. Slingbox might be Bricked')
             else:
                 print(name,'Unknown Error Starting Session. Can''t Continue.')
@@ -1475,12 +1475,13 @@ def BuildPage(cp, section_name):
     if fn:  # Get form data myself
         print('Reading Custom Remote definition from', fn)
         try:
-            f = open(fn)
+            f = open(fn, 'rb')
             data = f.read()
             f.close()
+            data = data.decode('UTF-8', errors='ignore')
 #            print('STYLE', style,'BUTTONS', buttons)
         except Exception as e:
-            print('Error reading remote definition file, using defaults', e )
+            print('Error reading remote definition file, using defaults', e, traceback.print_exc())
     else:
         print('Using built in default remote page definition.')
 
