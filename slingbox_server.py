@@ -807,6 +807,7 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
                 print('name, Bad E1: Password Missing characters')
                 continue             
         
+        remotedelay = float(slinginfo.get('RemoteDelay', 10.0))
         resolution = int(slinginfo.get('Resolution', 12 ))
         if resolution < 0 or resolution > 16 : 
             print(name, 'Invalid Resolution', resolution, 'Defaulting to 640x480')
@@ -943,7 +944,7 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
                         if socket_ready : s_ctl.recv(8192)
                           
                     if StartChannel : 
-                        if curtime - startchanneltime > 10.0 :
+                        if curtime - startchanneltime > remotedelay :
                             StartChannel = send_start_channel(StartChannel, rccode)
                     
 
