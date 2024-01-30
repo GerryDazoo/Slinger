@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+
+This is a custom remote file for GerryDazoo's Slinger server, for the AB
+Cryptobox 700HD satellite receiver (should work with other AB Cryptobox
+receivers, but probably not Mini). However, I wrote this file with a bit of
+universality in my mind - you can easily extend and modify it, or use it as-is,
+since it includes some (IMHO) nice features.
+
+Some technical details:
+
+The layout is organized into blocks, the blocks are separate html tables - the
+rationale is that they follow each other vertically, thus simulating the look
+&amp; feel of the original remote; but if there is not enough vertical space,
+they will overflow horizontally, making the interaction much easier. And you
+can zoom in your browser window if you have enough free space. This also makes
+the remote fit Android Slinger app better. I also try hard to use only relative
+sizes.
+
+You can control your remove with the keyboard, see the table keyMap below.
+However, this can interfere with your browser keyboard shortcuts sometimes,
+especially if you are using keyboard-focused extensions (e.g. cVim). If this is
+your case, you can focus the "scratchpad" input box and the keys - at least the
+"normal" ones - won't control the browser.
+
+The remote contains all the codes up to the code 81 wrapped up in a
+<details><summary> block.  You can open the table by clicking on the "codes"
+widget. This proved to be invaluable when designing and debugging the remote
+and might help you adapting this remote to your box (or even using this as an
+universal one).
+
+There is some javascript (the sendCode() function) that sends POST requests
+without displaying the result - the original way of using POST on submit means
+that the remote would not react while the browser was refreshing the page - a
+small time interval, but enough to be a big nuisance, if you were pressing the
+buttons rapidly. And it also jumped to the top of the remote on each button
+press, which was especially annoying on the Android app.
+The drawback is that you lose updates to the Status line.
+
+This remote is still hackish in some parts, but it works for me...
+
+
+
+The layout replicates the layout of the original remote, with some exceptions:
+
+- I haven't been able to find the codes for the F1, SHIFT and MEDIA buttons
+(since I do not have a HDD connected to the receiver). I included these buttons
+but they are hidden. In any case, you can use the INFO key instead of F1, if
+you click the following three digits very rapidly (takes some attempts to make
+it right, and won't work without the sendCode javascript).
+
+- There are some codes that seem to have the same functionality. It might be a
+mistake in the .bin remote definition for the Slingbox, though.  Again, I keep
+these buttons hidden, to save some screen real estate (important for the
+Android player). I do not remember where I got the .bin years ago (probably the
+JP1 forum?), but it was for a different box that was rumoured to be compatible
+with the AB Cryptobox one (that turned out to be really the case).
+
+- Media keys are less useful when placeshifting, I moved the block with media
+keys downwards.
+
+-->
+
+<head>
+<meta charset="UTF-8">
+<title>AB Cryptobox Remote</title>
+
+<style>
+
+body {
+ background-color: #ddd;
+ margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 100vh;
+  align-content: flex-start;
+  column-gap: 0.5em;
+  margin-left: 1em;
+}
+
+.statusline {
+  position: absolute;
+  bottom: 1ex;
+  font-family:sans;
+  font-size: smaller;
+}
+
+.button {
+  box-shadow: 0.5em 0.5em 1em 0px #222;
+  background:linear-gradient(to bottom, #999 5%, #222 100%);
+  background-color:#555;
+  border-radius:1.25em;
+  min-width: 2.5em;
+  max-width: 4.5em;
+  height: 2.5em;
+  border:1px solid #999;
+  display:block;
+  margin: auto;
+  margin-top: 0.5ex;
+  margin-bottom: 0.5ex;
+  cursor:pointer;
+  color:white;
+  font-family:sans;
+  font-weight:bold;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #58c;
+  text-align: center;
+}
+
+.wide {
+  min-width: 4.5em;
+  max-width: 4.5em;
+  width: 4.5em;
+}
+
+.buttonred {
+  background:linear-gradient(to bottom, red 5%, #600 100%);
+  background-color: red;
+}
+
+.buttongreen {
+  background:linear-gradient(to bottom, green 5%, #030 100%);
+  background-color: green;
+}
+
+.buttonyellow {
+  background:linear-gradient(to bottom, yellow 5%, #505 100%);
+  background-color: yellow;
+}
+
+.buttonblue {
+  background:linear-gradient(to bottom, blue 5%, #006 100%);
+  background-color: blue;
+}
+
+.bigbutton {
+  width: 4em;
+  height: 4em;
+  border-radius:2em;
+}
+
+.disabled {
+  background:linear-gradient(to bottom, #ddd 5%, #888 100%);
+  background-color:#ddd;
+  display: none;
+}
+
+.button:hover {
+  background:linear-gradient(to bottom, #222 5%, #999 100%);
+  background-color:#222;
+}
+
+.button:active {
+  position:relative;
+  top:1px;
+}
+
+table {
+  margin-left:auto;
+  margin-right: auto;
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  border-collapse:collapse;
+  background-color:#bbb;
+  border-radius:0.5em;
+}
+
+.squeeze {
+  transform: scaleX(0.7);
+}
+
+.hidden {
+  display: none;
+}
+
+#ir {
+  color: white;
+  padding-left: 1em;
+  padding-right: 0.5em;
+  display: inline-block;
+}
+
+.scratchpad {
+  background-color: #ccc;
+  border: 1px solid #bbb;
+  outline: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<form id="remoteform" class="container" method='post' action='#'>
+
+<input class="hidden" type="submit" name="dummy" >
+
+<table>
+  <tr>
+  <td><button class="button buttonred" type="submit" value="1"  name="power" >⦿</button></td>
+  <td><button class="button disabled" type="submit" value="46" name="F1"     >F1</button></td><!-- cannot find a code for this, but you can use INFO instead -->
+  <td><button class="button disabled" type="submit"  name="shift"            >SHIFT</button></td><!-- cannot find a code for this -->
+  <td><button class="button" type="submit" value="8" name="mute"             >MUTE</button></td>
+  <td><span id="ir">⇈ </span></td><!-- to signal IR code is being sent -->
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+  <td><button class="button wide" style="margin-right: -2em" type="submit" value="33" name="menu" >MENU</button></td>
+  <td></td>
+  <td><button class="button"  type="submit" value="38" name="up"   >↑</button></td>
+  <td></td>
+  <td><button class="button wide" style="margin-left: -2em" type="submit" value="36" name="exit" >EXIT</button></td>
+  </tr>
+  <tr>
+  <td></td>
+  <td><button class="button"  type="submit" value="40" name="left"  >←</button></td>
+  <td><button class="button bigbutton"  type="submit" value="42" name="sel"   >OK</button></td>
+  <td><button class="button"  type="submit" value="41" name="right" >→</button></td>
+  <td></td>
+  </tr>
+  <tr>
+  <td><button class="button wide" style="margin-right: -2em" type="submit" value="21" name="last"  >()</button></td>
+  <td></td>
+  <td><button class="button"  type="submit" value="39" name="down"  >↓</button></td>
+  <td></td>
+  <td><button class="button wide" style="margin-left: -2em" type="submit" value="35" name="guide" >EPG</button></td>
+</table>
+
+<table>
+  <tr>
+  <td><button class="button wide"  type="submit" value="46" name="info" >INFO</button></td>
+  <td><button class="button wide"  type="submit" value="63" name="FAV"  >FAV</button></td>
+  </tr>
+</table>
+
+<table class="hidden"><!-- V± and Channel up/down are already covered by arrows, to recude clutter I moved INFO and FAV to a separate table -->
+  <tr>
+  <td><button class="button"  type="submit" value="6" name="volup" >V+</button></td>
+  <td><button class="button wide"  type="submit" value="46" name="info"  >INFO</button></td>
+  <td><button class="button"  type="submit" value="4"  name="chup"  >P+</button></td>
+  </tr>
+  <tr>
+  <td><button class="button"  type="submit" value="7" name="voldown"   >V−</button></td>
+  <td><button class="button wide"  type="submit" value="63" name="FAV" >FAV</button></td>
+  <td><button class="button"  type="submit" value="5"  name="chdown"   >P−</button></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+  <td><input class="text" type="text" name="Digits" id="Digits" placeholder="channel" maxlength="4" size="4" value=""><input type="submit" value="↲" ></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+  <td><button class="button"  type="submit" value="9" name="one"    >1</button></td>
+  <td><button class="button"  type="submit" value="10" name="two"   >2</button></td>
+  <td><button class="button"  type="submit" value="11" name="three" >3</button></td>
+  </tr>
+  <tr>
+  <td><button class="button"  type="submit" value="12" name="four"  >4</button></td>
+  <td><button class="button"  type="submit" value="13" name="five"  >5</button></td>
+  <td><button class="button"  type="submit" value="14" name="six"   >6</button></td>
+  </tr>
+  <tr>
+  <td><button class="button"  type="submit" value="15" name="seven" >7</button></td>
+  <td><button class="button"  type="submit" value="16" name="eight" >8</button></td>
+  <td><button class="button"  type="submit" value="17" name="nine"  >9</button></td>
+  </tr>
+  <tr>
+  <td><button class="button"  type="submit" value="44" name="pgup"   >Pg+</button></td>
+  <td><button class="button"  type="submit" value="18" name="zero"   >0</button></td>
+  <td><button class="button"  type="submit" value="43" name="pgdown" >Pg−</button></td>
+  </tr>
+</table>
+
+<table class="squeeze">
+  <tr>
+  <td><button class="button disabled"                      name="media"   >MEDIA</button></td><!-- cannot find a code for this -->
+  <td><button class="button wide" type="submit" value="64" name="sat"     >SAT</button></td>
+  <td><button class="button wide" type="submit" value="71" name="sub"     >SUB</button></td>
+  <td><button class="button wide" type="submit" value="69" name="tvradio" >TV/R</button></td>
+  </tr>
+
+  <tr>
+  <td><button class="button wide buttonred"  type="submit" value="74" name="red"      >FIND</button></td>
+  <td><button class="button wide buttongreen" type="submit" value="75" name="green"   >VMOD</button></td>
+  <td><button class="button wide buttonyellow" type="submit" value="76" name="yellow" >TXT</button></td>
+  <td><button class="button wide buttonblue" type="submit" value="77" name="blue"     >AUDIO</button></td>
+  </tr>
+</table>
+
+
+<table><!-- this block would be second in the original layout, however media control is way less useful when placeshifting -->
+  <tr>
+  <td><button class="button" type="submit" value="26" name="pause"    >II</button></td>
+  <td><button class="button"  type="submit" value="27" name="rewind"  >«</button></td>
+  <td><button class="button"  type="submit" value="28" name="forward" >»</button></td>
+  </tr>
+  <tr>
+  <td><button class="button" style="color:red" type="submit" value="29" name="record" >●</button></td>
+  <td><button class="button"  type="submit" value="24" name="play" >▶</button></td>
+  <td><button class="button"  type="submit" value="25" name="stop" >■</button></td>
+  </tr>
+</table>
+
+<table class="hidden"><!-- alternative codes -->
+  <tr>
+  <td><button class="button"  type="submit" value="65" name="search" >🔍</button></td>
+  <td><button class="button"  type="submit" value="62" name="audio"  >A/B</button></td>
+  <td><button class="button"  type="submit" value="66" name="txt"    >TXT</button></td>
+  </tr>
+</table>
+
+<script>
+
+const irFlash = [
+  { color: "red" },
+  { color: "white" },
+];
+
+const irFlashTiming = {
+  duration: 100,
+  iterations: 1,
+};
+
+function sendCode(buttonName, buttonValue) {
+    const dataString = encodeURIComponent(buttonName) + '=' + encodeURIComponent(buttonValue);
+    const xhr = new XMLHttpRequest(); // Create XHR object
+    xhr.open('POST', ''); // Set request method and URL
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        // console.log('Button code submitted successfully:', buttonName, buttonValue);
+        document.getElementById('ir').animate(irFlash, irFlashTiming);
+      } else {
+        console.error('Error submitting:', xhr.statusText);
+      }
+    };
+    xhr.send(dataString);
+}
+
+function addButtonListeners(buttons) {
+    for (let submitButton of buttons)  {
+        submitButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const buttonName = submitButton.getAttribute('name');
+            const buttonValue = submitButton.getAttribute('value');
+            sendCode(buttonName, buttonValue);
+        });
+    }
+}
+
+
+// control the remote with your keyboard
+const keyMap = new Map();
+
+// event.key, slingbox keycode
+keyMap.set('0',         18);
+keyMap.set('1',          9);
+keyMap.set('2',         10);
+keyMap.set('3',         11);
+keyMap.set('4',         12);
+keyMap.set('5',         13);
+keyMap.set('6',         14);
+keyMap.set('7',         15);
+keyMap.set('8',         16);
+keyMap.set('9',         17);
+keyMap.set('Enter',     42);
+keyMap.set(' ',         42);
+keyMap.set('ArrowRight',41);
+keyMap.set('ArrowLeft', 40);
+keyMap.set('ArrowUp',   38);
+keyMap.set('ArrowDown', 39);
+keyMap.set('M',          8); // mute
+keyMap.set('g',         35); // guide
+keyMap.set('s',         64); // sat
+keyMap.set('f',         63); // fav
+keyMap.set('i',         46); // info
+keyMap.set('x',         36); // exit
+keyMap.set('p',          1); // power
+keyMap.set('m',         33); // menu
+keyMap.set('PageUp',    44);
+keyMap.set('PageDown',  43);
+
+
+
+
+function handleKey(event) {
+    if (event.target == document.getElementById('Digits')) {
+       event.stopPropagation();
+       return;
+    }
+    // console.log('KBD detected:', event.key);
+
+    const name = 'fromKBD_'+event.keyCode ;
+    if (keyMap.has(event.key)) {
+        event.preventDefault();
+        const value = keyMap.get(event.key);
+        sendCode(name, value);
+    }
+}
+
+document.body.addEventListener('keydown', handleKey);
+
+
+/* create a table of all possible keycodes */
+var isFilled = false;
+
+function autoFill () {
+    if (isFilled) {
+      return;
+    }
+    let table = document.getElementById('autofill');
+    for (let row = 0; row <= 8; row++) {
+        let rowNode = document.createElement('tr');
+        for (let column = 0; column <= 9; column++) {
+            let cellNode = document.createElement('td');
+            let buttonNode = document.createElement('button');
+            let code = 10*row+column;
+            if (code > 81) {
+                break;
+            }
+            buttonNode.textContent = code;
+            buttonNode.setAttribute('name', `C${code}`);
+            buttonNode.setAttribute('value', code);
+            buttonNode.classList.add('button');
+            cellNode.appendChild(buttonNode);
+            rowNode.appendChild(cellNode);
+            addButtonListeners([buttonNode]);
+        }
+        table.appendChild(rowNode);
+    }
+    isFilled = true;
+}
+
+const submitButtons = document.querySelectorAll('button[type="submit"]');
+addButtonListeners(submitButtons);
+</script>
+
+
+<details ontoggle="autoFill()">
+<summary>codes</summary>
+<table id="autofill">
+</table>
+</details>
+
+<input class="scratchpad" type="text" name="Scratchpad" id="Scratchpad" placeholder="keyboard control" maxlength="4" size="4" value="" title="to safely use keyboard, click here">
+
+<div class="statusline">Status:%s</div>
+
+</form>
+</body>
+</html>
+
