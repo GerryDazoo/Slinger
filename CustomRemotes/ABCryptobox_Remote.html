@@ -94,15 +94,15 @@ body {
   box-shadow: 0.5em 0.5em 1em 0px #222;
   background:linear-gradient(to bottom, #999 5%, #222 100%);
   background-color:#555;
-  border-radius:1.25em;
+  border-radius:1.25em 1.25em 1.25em 1.25em;
   min-width: 2.5em;
   max-width: 4.5em;
   height: 2.5em;
   border:1px solid #999;
   display:block;
   margin: auto;
-  margin-top: 0.5ex;
-  margin-bottom: 0.5ex;
+  margin-top: 0.4ex;
+  margin-bottom: 0.4ex;
   cursor:pointer;
   color:white;
   font-family:sans;
@@ -215,21 +215,21 @@ table {
   <tr>
   <td><button class="button wide" style="margin-right: -2em" type="submit" value="33" name="menu" >MENU</button></td>
   <td></td>
-  <td><button class="button"  type="submit" value="38" name="up"   >↑</button></td>
+  <td><button class="button" style="border-radius: 1.25em 1.25em 0 0"  type="submit" value="38" name="up"   >↑</button></td>
   <td></td>
   <td><button class="button wide" style="margin-left: -2em" type="submit" value="36" name="exit" >EXIT</button></td>
   </tr>
   <tr>
   <td></td>
-  <td><button class="button"  type="submit" value="40" name="left"  >←</button></td>
+  <td><button class="button" style="border-radius: 1.25em 0 0 1.25em" type="submit" value="40" name="left"  >←</button></td>
   <td><button class="button bigbutton"  type="submit" value="42" name="sel"   >OK</button></td>
-  <td><button class="button"  type="submit" value="41" name="right" >→</button></td>
+  <td><button class="button" style="border-radius: 0 1.25em 1.25em 0"  type="submit" value="41" name="right" >→</button></td>
   <td></td>
   </tr>
   <tr>
   <td><button class="button wide" style="margin-right: -2em" type="submit" value="21" name="last"  >()</button></td>
   <td></td>
-  <td><button class="button"  type="submit" value="39" name="down"  >↓</button></td>
+  <td><button class="button" style="border-radius: 0 0 1.25em 1.25em" type="submit" value="39" name="down"  >↓</button></td>
   <td></td>
   <td><button class="button wide" style="margin-left: -2em" type="submit" value="35" name="guide" >EPG</button></td>
 </table>
@@ -296,6 +296,15 @@ table {
   <td><button class="button wide buttongreen" type="submit" value="75" name="green"   >VMOD</button></td>
   <td><button class="button wide buttonyellow" type="submit" value="76" name="yellow" >TXT</button></td>
   <td><button class="button wide buttonblue" type="submit" value="77" name="blue"     >AUDIO</button></td>
+  </tr>
+</table>
+
+<table class="squeeze">
+  <tr>
+  <td><button class="button" type="submit" value="46,13,13,13" name="macro555" >555</button></td>
+  <td><button class="button" type="submit" value="46,14,14,14" name="macro666" >666</button></td>
+  <td><button class="button" type="submit" value="46,17,17,17,39,39" name="macro999" >999</button></td>
+  </tr>
   </tr>
 </table>
 
@@ -391,7 +400,10 @@ keyMap.set('p',          1); // power
 keyMap.set('m',         33); // menu
 keyMap.set('PageUp',    44);
 keyMap.set('PageDown',  43);
-
+keyMap.set('R',  74);
+keyMap.set('G',  75);
+keyMap.set('Y',  76);
+keyMap.set('B',  77);
 
 
 
