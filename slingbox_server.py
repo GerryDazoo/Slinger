@@ -1164,7 +1164,7 @@ def ConnectionManager(config_fn):
             if ( 'remote' in data.lower() and ('GET' in data or 'POST' in data) and    remoteenabled ) or ('.php' in data) and 'HTTP' in data:
                 print(ts(), ' RemoteControl connection from', str(client_address))
                 Thread(target=remote_control_stream, args=(connection, client_address, data, local_port)).start()           
-            elif 'GET' and 'HTTP' in data:
+            elif 'GET' in data and 'HTTP' in data:
                 start_uri = data.find('GET') + 3
                 end_uri = data.find('HTTP', start_uri)
                 uri = data[start_uri:end_uri]
