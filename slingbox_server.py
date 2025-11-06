@@ -891,7 +891,7 @@ def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_p
                         elif not start_streaming_connection(data) :
                             print(name, 'Video Stream Startup Error')
                             new_stream.sendall(ERROR)
-                            new_steam = closeconn(new_stream)
+                            new_stream = closeconn(new_stream)
                         else:
                             my_num_streams = my_num_streams + 1
                             new_stream.sendall(OK)
