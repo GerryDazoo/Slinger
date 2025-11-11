@@ -1215,7 +1215,7 @@ def ConnectionManager(config_fn):
  #               connection.send(SendData(GetFile(data)))
  #               connection = closeconn(connection)
  #               continue
-            elif data.startswith('SENDIRKEYCODES=') :
+            elif data.startswith('SENDIRKEYCODES') :
                 SendIRKeycodes(data)
                 connection = closeconn(connection)
                 continue
