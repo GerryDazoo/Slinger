@@ -182,20 +182,35 @@ def closeconn( s ):
     return None
 
 def find_max_buffer_size( opt ):
-    size = 1024*1024*8
+
+    # we'll work in blocks of 256 bytes, to speed things up
+
+    # buffer size that works
+    minsize = 1
+
+    # smallest buffer size that is too large, i.e. bigger than our wanted maximum by 1
+    maxsize = 1024*1024*8 // 256 + 1
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    while size > 0 :
+
+    # there are good chances we are able to allocate the maximum buffer, so we initialize
+    # the midpoint to our wanted maximum
+    midpoint = maxsize - 1
+
+    while midpoint > minsize:
         try:
- #           print( 'trying', size )
-            sock.setsockopt(socket.SOL_SOCKET, opt, size )
-            break
-        except : 
-            size = size - (1024*1024)
-            continue 
+#            print( 'trying', minsize, midpoint, maxsize)
+            sock.setsockopt(socket.SOL_SOCKET, opt, midpoint*256)
+            minsize = midpoint
+        except:
+            maxsize = midpoint
+
+        midpoint = (maxsize + minsize) // 2
+
+    size = minsize * 256
     if size < 1024*1024*8 :
         print('Warning TCP buffering might not be sufficent for reliable streaming')
-    return size         
-        
+    return size
+
 def streamer(maxstreams, config_fn, section_name, box_name, streamer_q, server_port):
     global streamer_qs, stati, num_streams
     smode = 0x2000               # basic cipher mode,
