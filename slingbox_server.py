@@ -1517,7 +1517,11 @@ def BuildPage(cp, section_name):
     return page, cmds, rccode
  
 def get_streamer( request, text ):
-    port = request.headers.get('Host').split(':')[1]
+    host = request.headers.get('Host')
+    if host and ':' in host:
+        port = host.rsplit(':',1)[1]
+    else:
+        port = '80'
     try: box = text.split('/')[1]
     except : box = str(port)
 #    print('URI', text, 'Remote', box, port, remotes.keys())
